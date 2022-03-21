@@ -6,6 +6,10 @@
     "action": {
         "default_popup": "popup.html"
     },
+    "options_page": "options.html",
+    "permissions": [
+        "storage"
+    ],
     "chrome_url_overrides": {
         "newtab": "newTab.html"
     }

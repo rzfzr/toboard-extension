@@ -1,12 +1,16 @@
 const path = require('path');
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const {
+    options
+} = require('preact');
 
 module.exports = {
     mode: 'production',
     entry: {
         popup: './src/popup.jsx',
-        newtab: './src/newtab.jsx'
+        newtab: './src/newtab.jsx',
+        options: './src/options.jsx'
     },
     output: {
         filename: '[name].js',
@@ -35,6 +39,11 @@ module.exports = {
             chunks: ['popup'],
             template: 'template.html',
             filename: 'popup.html'
+        }),
+        new HtmlWebpackPlugin({
+            chunks: ['options'],
+            template: 'template.html',
+            filename: 'options.html'
         })
     ],
 };
