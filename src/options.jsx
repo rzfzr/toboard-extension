@@ -1,20 +1,35 @@
 import { render, h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 
-function OptionsPage(props) {
+function OptionsPage() {
+    const [tokenValue, setTokenValue]=useState('');
+    const [status, setStatus]=useState('');
 
-    const [value, setValue]=useState('');
+    useEffect(() => {
+        chrome.storage.sync.get(['token'], (result) => {
+            setTokenValue(result.token)
+            console.log('result', result)
+        })
+    }, [])
 
     const onSubmit=(event) => {
-        alert("Submitted a form "+value);
         event.preventDefault();
+        chrome.storage.sync.set({
+            token: tokenValue,
+        }, () => {
+            setStatus("Token was saved !")
+            setTimeout(() => {
+                setStatus('');
+            }, 750);
+        });
     }
 
-    const onInput=(event) => setValue(event.target.value)
+    const onInput=(event) => setTokenValue(event.target.value)
 
     return <form onSubmit={onSubmit}>
-        <label for="username">Enter API key:</label>
-        <input type="text" value={value} onInput={onInput} />
+        <label for="username">Enter API Token:</label>
+        <input type="text" value={tokenValue} onInput={onInput} />
+        <p>{status}</p>
         <button type="submit">Submit</button>
     </form>
 }
