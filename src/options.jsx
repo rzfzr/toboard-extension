@@ -8,7 +8,6 @@ function OptionsPage() {
     useEffect(() => {
         chrome.storage.sync.get(['token'], (result) => {
             setTokenValue(result.token)
-            console.log('result', result)
         })
     }, [])
 
