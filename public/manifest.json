@@ -1,0 +1,9 @@
+{
+    "name": "toboard",
+    "description": "Alternative client for quick switching entries with toggl's API",
+    "version": "0.0.1",
+    "manifest_version": 3,
+    "action": {
+        "default_popup": "popup.html"
+    }
+}
