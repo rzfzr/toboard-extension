@@ -5,5 +5,8 @@
     "manifest_version": 3,
     "action": {
         "default_popup": "popup.html"
+    },
+    "chrome_url_overrides": {
+        "newtab": "newTab.html"
     }
 }

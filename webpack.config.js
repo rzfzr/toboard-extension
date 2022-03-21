@@ -5,7 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     mode: 'production',
     entry: {
-        popup: './popup.js'
+        popup: './src/popup.jsx',
+        newtab: './src/newtab.jsx'
     },
     output: {
         filename: '[name].js',
@@ -26,8 +27,14 @@ module.exports = {
             }, ],
         }),
         new HtmlWebpackPlugin({
+            chunks: ['newtab'],
             template: 'template.html',
-            filename: '[name].html'
+            filename: 'newtab.html'
+        }),
+        new HtmlWebpackPlugin({
+            chunks: ['popup'],
+            template: 'template.html',
+            filename: 'popup.html'
         })
     ],
 };

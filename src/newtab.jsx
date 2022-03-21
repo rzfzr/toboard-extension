@@ -1,6 +1,6 @@
 import { render, h } from 'preact';
 
 render(
-    <div>Hello world</div>,
+    <div>newTab</div>,
     document.getElementById('app')
 );
