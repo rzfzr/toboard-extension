@@ -97,6 +97,10 @@ module.exports = {
         }
     },
     optimization: {
-        minimize: false
+        concatenateModules: false,
+        chunkIds: false,
+        minimize: false,
+        mangleExports: false,
+        mergeDuplicateChunks: false,
     },
 };

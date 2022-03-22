@@ -6,14 +6,14 @@ import css from "../global.css";
 function NewPage() {
     const [entries, setEntries]=useState([]);
     useEffect(() => {
-        chrome.storage.sync.get(['entries', 'projects'], (result) => {
+        chrome.storage.local.get(['entries', 'projects'], (result) => {
+            console.log('getting ', result)
 
 
-            result.entries.forEach(entry => {
+            result?.entries?.forEach(entry => {
                 entry.project=result.projects.find(p => p.id===entry.pid)
             });
 
-            console.log('setting', result.entries)
 
             setEntries(result.entries)
         })

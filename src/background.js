@@ -11,7 +11,7 @@ const initStorageCache = getAllStorageSyncData().then(items => {
     // Copy the data retrieved from storage into storageCache.
     Object.assign(storageCache, items);
 }).then(() => {
-
+    console.log('Background')
     client = new TogglClient({
         apiToken: storageCache.token
     })
@@ -22,7 +22,7 @@ const initStorageCache = getAllStorageSyncData().then(items => {
             console.log("Error getting workspaces: ", err)
         } else {
 
-            chrome.storage.sync.set({
+            chrome.storage.local.set({
                 workspaces: workspaces
             })
             workspaces.forEach(ws => {
@@ -33,7 +33,7 @@ const initStorageCache = getAllStorageSyncData().then(items => {
                     if (err) {
                         console.log("Error getting projects from workspace: ", err)
                     } else {
-                        chrome.storage.sync.set({
+                        chrome.storage.local.set({
                             projects: projects
                         })
                     }
@@ -50,11 +50,13 @@ const initStorageCache = getAllStorageSyncData().then(items => {
             if (err) {
                 console.log("Error getting timeEntries: ", err);
             } else {
+
                 timeEntries.forEach((entry) => {
                     entry.isRunning = entry.duration < 0
+                    entry.time = getTime(entry.duration)
                 });
-
-                chrome.storage.sync.set({
+                console.log('getting entries', timeEntries)
+                chrome.storage.local.set({
                     entries: timeEntries,
                 })
             }
@@ -80,7 +82,21 @@ const initStorageCache = getAllStorageSyncData().then(items => {
 
 
 
+function getTime(seconds, returnSeconds = false) {
+    const d = Number(seconds);
+    const h = Math.floor(d / 3600);
+    const m = Math.floor((d % 3600) / 60);
+    const s = Math.floor((d % 3600) % 60);
+    const hDisplay =
+        h > 0 ? `${h.toString().length > 1 ? `${h}` : `${0}${h}`}` : "00";
+    const mDisplay =
+        m > 0 ? `${m.toString().length > 1 ? `${m}` : `${0}${m}`}` : "00";
+    const sDisplay =
+        s > 0 ? `${s.toString().length>1? `${s}`:`${0}${s}`}` : "00";
 
+    if (returnSeconds) return `${hDisplay}:${mDisplay}:${sDisplay}`;
+    else return `${hDisplay}:${mDisplay}`;
+}
 
 
 
@@ -107,7 +123,7 @@ function getAllStorageSyncData() {
     // Immediately return a promise and start asynchronous work
     return new Promise((resolve, reject) => {
         // Asynchronously fetch all data from storage.sync.
-        chrome.storage.sync.get(null, (items) => {
+        chrome.storage.local.get(null, (items) => {
             // Pass any observed errors down the promise chain.
             if (chrome.runtime.lastError) {
                 return reject(chrome.runtime.lastError);

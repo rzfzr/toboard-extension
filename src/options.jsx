@@ -6,14 +6,14 @@ function OptionsPage() {
     const [status, setStatus]=useState('');
 
     useEffect(() => {
-        chrome.storage.sync.get(['token'], (result) => {
+        chrome.storage.local.get(['token'], (result) => {
             setTokenValue(result.token)
         })
     }, [])
 
     const onSubmit=(event) => {
         event.preventDefault();
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
             token: tokenValue,
         }, () => {
             setStatus("Token was saved !")
