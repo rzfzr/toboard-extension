@@ -42,6 +42,10 @@
     "stream-http": "^3.2.0",
     "toggl-api": "^1.0.2",
     "url": "^0.11.0",
-    "util": "^0.12.4"
+    "util": "^0.12.4",
+    "@babel/helper-builder-react-jsx": "latest",
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
+    "@mui/material": "latest"
   }
 }

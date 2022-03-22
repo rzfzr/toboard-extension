@@ -1,5 +1,7 @@
 import { render, h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
+import ToggleComponent from './components/ToggleComponent.jsx';
+
 
 function NewPage() {
     const [entries, setEntries]=useState([]);
@@ -10,7 +12,8 @@ function NewPage() {
     }, [])
 
     return <div> {entries.map((entry) =>
-        <div key={entry.id}>{entry.description}</div>)} </div>
+        <ToggleComponent entry={entry} />
+    )} </div>
 }
 
 render(<NewPage />,

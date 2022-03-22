@@ -69,6 +69,8 @@ module.exports = {
     resolve: {
         alias: {
             process: require.resolve('process/browser'),
+            react: 'preact/compat',
+            'react-dom': 'preact/compat',
         },
         fallback: {
             stream: require.resolve("stream-browserify"),
@@ -90,5 +92,5 @@ module.exports = {
     },
     optimization: {
         minimize: false
-    }
+    },
 };
