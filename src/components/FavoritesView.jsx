@@ -25,23 +25,19 @@ export default function FavoritesView() {
     }, [favorites])
 
     function deleteFavorite(favorite) {
-        let testing=favorites.filter(f => !(f.description===favorite.description&&f.project.name===favorite.project.name))
-        console.log(favorite, favorites, testing)
-
-        setFavorites(testing)
+        setFavorites(favorites.filter(f => !(f.description===favorite.description&&f.project.name===favorite.project.name)))
     }
+
     function addFavorite(favorite) {
         setFavorites([...favorites, favorite])
     }
 
-
     return <div> {favorites.map((favorite) =>
         <ListItem entry={favorite} isEditing={isEditing} delete={deleteFavorite} />
     )}
-
         <IconButton aria-label="edit" color="primary" size="large" onClick={() => { setIsEditing(!isEditing) }}>
             <EditIcon />
-        </IconButton>:
+        </IconButton>
 
         {isEditing&&<NewFavorite add={addFavorite} />}
     </div>
