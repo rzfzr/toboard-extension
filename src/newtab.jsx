@@ -1,6 +1,6 @@
 import { render, h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import ToggleComponent from './components/ToggleComponent.jsx';
+import ListView from './components/ListView.jsx';
 
 
 function NewPage() {
@@ -11,9 +11,7 @@ function NewPage() {
         })
     }, [])
 
-    return <div> {entries.map((entry) =>
-        <ToggleComponent entry={entry} />
-    )} </div>
+    return <div> <ListView entries={entries} />  </div>
 }
 
 render(<NewPage />,
