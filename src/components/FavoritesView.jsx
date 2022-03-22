@@ -1,29 +1,40 @@
 import { render, h } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
+
 import ListItem from './ListItem.jsx';
 import NewFavorite from './NewFavorite.jsx';
 
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { useState } from 'preact/hooks';
 
-export default function FavoritesView(props) {
-    let favorites=props.favorites.length>0? props.favorites:[]
+export default function FavoritesView() {
+    const [favorites, setFavorites]=useState([]);
+    const [isEditing, setIsEditing]=useState(false);
 
-    console.log('from view', favorites)
+    useEffect(() => {
+        chrome.storage.local.get(['favorites'], (result) => {
+            setFavorites(result.favorites)
+        })
+    }, [])
 
-    function deleteFavorite(favorite) {
-
-        console.log('old list', favorites)
-        favorites=favorites.filter(f => f.description!==favorite.description&&f.project!==favorite.project)
-        console.log('new list', favorites)
+    useEffect(() => {
         chrome.storage.local.set({
             favorites: favorites,
         })
+    }, [favorites])
+
+    function deleteFavorite(favorite) {
+        let testing=favorites.filter(f => !(f.description===favorite.description&&f.project.name===favorite.project.name))
+        console.log(favorite, favorites, testing)
+
+        setFavorites(testing)
+    }
+    function addFavorite(favorite) {
+        setFavorites([...favorites, favorite])
     }
 
 
-    const [isEditing, setIsEditing]=useState(false);
     return <div> {favorites.map((favorite) =>
         <ListItem entry={favorite} isEditing={isEditing} delete={deleteFavorite} />
     )}
@@ -32,7 +43,7 @@ export default function FavoritesView(props) {
             <EditIcon />
         </IconButton>:
 
-        {isEditing&&<NewFavorite favorites={props.favorites} />}
+        {isEditing&&<NewFavorite add={addFavorite} />}
     </div>
 }
 

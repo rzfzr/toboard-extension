@@ -41,11 +41,7 @@ export default function NewFavorite(props) {
                     <Button
                         style={{ width: '50%' }}
                         onClick={() => {
-                            const fav={ description: description, project: { name: project } }
-
-                            chrome.storage.local.set({
-                                favorites: [...props.favorites, fav],
-                            })
+                            props.add({ description: description, project: { name: project } })
                             setEditing(false)
                         }}>Save</Button>
                     <Button
