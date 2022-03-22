@@ -28,7 +28,8 @@ export default function FavoritesView() {
         setFavorites(favorites.filter(f => !(f.description===favorite.description&&f.project.name===favorite.project.name)))
     }
 
-    function addFavorite(favorite) {
+    function addFavorite(description, project) {
+        const favorite={ description, project: project.name? project:{ name: project } }
         setFavorites([...favorites, favorite])
     }
 

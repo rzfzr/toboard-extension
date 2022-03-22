@@ -1,9 +1,11 @@
 import { render, h } from 'preact';
+import { useState, useEffect } from 'preact/hooks';
 import { Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import ButtonGroup from '@mui/material/ButtonGroup';
+
+import Autocomplete from '@mui/material/Autocomplete'
 
 
 export default function NewFavorite(props) {
@@ -11,7 +13,16 @@ export default function NewFavorite(props) {
     const [description, setDescription]=useState('')
     const [project, setProject]=useState('')
 
+
+    const [projects, setProjects]=useState([])
     const [isEditing, setEditing]=useState(false)
+
+    useEffect(() => {
+        chrome.storage.local.get(['projects'], (result) => {
+            setProjects(result.projects)
+        })
+    }, [])
+
 
     if (isEditing) {
         return (
@@ -24,13 +35,18 @@ export default function NewFavorite(props) {
                         placeholder=""
                         variant="filled"
                         style={{ width: '100%' }} />
-                    <TextField
+
+                    <Autocomplete
                         id="project"
-                        label="Project"
-                        onChange={(event) => setProject(event.target.value)}
-                        placeholder=""
-                        variant="filled"
-                        style={{ width: '100%' }} />
+                        getOptionLabel={(option) => option.name}
+                        disablePortal
+                        options={projects}
+                        style={{ width: '100%' }}
+                        onChange={(event, newValue) => setProject(newValue)}
+                        renderInput={(params) => <TextField {...params} label="Project" variant="filled" />}
+                    />
+
+
                 </form>
                 <ButtonGroup
                     variant="text"
@@ -41,7 +57,7 @@ export default function NewFavorite(props) {
                     <Button
                         style={{ width: '50%' }}
                         onClick={() => {
-                            props.add({ description: description, project: { name: project } })
+                            props.add(description, project)
                             setEditing(false)
                         }}>Save</Button>
                     <Button
