@@ -1,5 +1,6 @@
 import { render, h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
+// import { useContext } from 'react';
 import { Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
@@ -7,10 +8,10 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 
 import Autocomplete from '@mui/material/Autocomplete'
 
-export default function NewFavorite(props) {
-
+export default function NewGoal(props) {
     const [description, setDescription]=useState('')
     const [project, setProject]=useState('')
+    const [target, setTarget]=useState('')
 
     const [projects, setProjects]=useState([])
 
@@ -22,10 +23,9 @@ export default function NewFavorite(props) {
         })
     }, [])
 
-
     if (isEditing) {
         return (
-            <Paper style={{ width: '100%' }}>
+            <Paper style={{ width: '100%s' }}>
                 <form noValidate autoComplete="off">
                     <TextField
                         id="description"
@@ -33,8 +33,8 @@ export default function NewFavorite(props) {
                         onChange={(event) => setDescription(event.target.value)}
                         placeholder=""
                         variant="filled"
-                        style={{ width: '100%' }} />
-
+                        style={{ width: '100%' }}
+                    />
                     <Autocomplete
                         id="project"
                         getOptionLabel={(option) => option.name}
@@ -44,7 +44,13 @@ export default function NewFavorite(props) {
                         onChange={(event, newValue) => setProject(newValue)}
                         renderInput={(params) => <TextField {...params} label="Project" variant="filled" />}
                     />
-
+                    <TextField
+                        id="target"
+                        label="Target in minutes"
+                        onChange={(event) => setTarget(event.target.value)}
+                        variant="filled"
+                        placeholder=""
+                        style={{ width: '100%' }} />
                 </form>
                 <ButtonGroup
                     variant="text"
@@ -55,7 +61,9 @@ export default function NewFavorite(props) {
                     <Button
                         style={{ width: '50%' }}
                         onClick={() => {
-                            props.add(description, project)
+                            const goal={ description: description, project: project, position: goals.length, target: target }
+                            sendGoals([goal])
+                            setGoals([...goals, goal])
                             setEditing(false)
                         }}>Save</Button>
                     <Button
@@ -75,7 +83,7 @@ export default function NewFavorite(props) {
                 variant="contained"
                 color="primary"
             >
-                New Favorite
+                New Weekly Goal
             </Button>
         )
 }

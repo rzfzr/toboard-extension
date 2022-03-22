@@ -2,6 +2,7 @@ import { render, h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import ListView from './components/ListView.jsx';
 import FavoritesView from './components/FavoritesView.jsx';
+import GoalsView from './components/GoalsView.jsx';
 import Box from '@mui/material/Box';
 import css from "../global.css";
 
@@ -19,14 +20,15 @@ function NewPage() {
 
     return <Box sx={{ display: 'flex' }}>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative', border: 'solid grey' }}>
+            <GoalsView />
         </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative', border: 'solid grey' }}>
             <ListView entries={entries} />
         </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative', border: 'solid grey' }}>
             <FavoritesView />
         </Box>
 
