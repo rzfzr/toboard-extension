@@ -16,5 +16,9 @@
     ],
     "chrome_url_overrides": {
         "newtab": "newTab.html"
+    },
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
     }
 }

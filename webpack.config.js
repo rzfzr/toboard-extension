@@ -11,7 +11,7 @@ const entries = {
     popup: './src/popup.jsx',
     newtab: './src/newtab.jsx',
     options: './src/options.jsx',
-    background: './src/options.jsx'
+    background: './src/background.js'
 }
 
 module.exports = {
@@ -54,10 +54,6 @@ module.exports = {
             template: 'template.html',
             filename: 'options.html'
         }),
-        new HtmlWebpackPlugin({
-            chunks: ['background'],
-            template: 'template.html',
-        }),
         new webpack.ProvidePlugin({
             process: require.resolve('process/browser'),
             Buffer: ["buffer", "Buffer"],
@@ -71,7 +67,6 @@ module.exports = {
         ignored: './node_modules/',
     },
     resolve: {
-        // mainFields: ['browser', 'module', 'main'],
         alias: {
             process: require.resolve('process/browser'),
         },
