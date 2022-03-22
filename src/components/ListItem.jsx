@@ -14,16 +14,16 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 
-export default function ToggleComponent(props) {
+export default function ListItem(props) {
     // console.log('receivied props', props.entry)
     const theme=useTheme();
 
     // , backgroundColor: props.entry.project.hex_color
     return (
-        <Card sx={{ display: 'flex' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: '75%' }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5">
+        <Card sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
+                <CardContent sx={{ flex: '1 0 auto', padding: '10px 20px' }}>
+                    <Typography component="div" variant="h6">
                         {props.entry.description}
                     </Typography>
                     <Typography variant="subtitle1" color={props.entry.project.hex_color} component="div" >
@@ -33,32 +33,13 @@ export default function ToggleComponent(props) {
             </Box>
 
             <Box sx={{ display: 'flex' }}>
-                <Typography variant="subtitle1" component="div" style={{ position: 'relative', top: '37%', height: '25%' }}>
+                <Typography variant="subtitle1" component="div" style={{ position: 'relative', top: '33%', height: '25%' }}>
                     {props.entry.time}
                 </Typography>
                 <IconButton aria-label="delete" size="large">
-                    <PauseCircleIcon />
+                    {props.entry.isRunning? <PauseCircleIcon />:<PlayCircleIcon />}
                 </IconButton>
-
             </Box>
-
-
-
-            {/* <Box sx={{ display: 'flex' }}>
-
-                {props.entry.duration}
-
-            </Box> */}
-            {/* <Button
-                size="large"
-                startIcon={props.entry.isRunning? <PauseCircleIcon fontSize="large" />:<PlayCircleIcon fontSize="large" />}
-                variant="contained" color="primary"
-                style={{ height: '20px', width: '20px', padding: '5px' }}
-            >
-            </Button> */}
-
-
-
         </Card>
     );
 }
