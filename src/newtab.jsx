@@ -6,6 +6,7 @@ import GoalsView from './components/GoalsView.jsx';
 import Box from '@mui/material/Box';
 import css from "../global.css";
 
+
 function NewPage() {
     const [entries, setEntries]=useState([]);
 
@@ -20,15 +21,18 @@ function NewPage() {
 
     return <Box sx={{ display: 'flex' }}>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative', border: 'solid grey' }}>
+        <Box className='childBox'>
+            <h2 className='boxLabel'> Goals </h2>
             <GoalsView />
         </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative', border: 'solid grey' }}>
+        <Box className='childBox'>
+            <h2 className='boxLabel'> List </h2>
             <ListView entries={entries} />
         </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative', border: 'solid grey' }}>
+        <Box className='childBox'>
+            <h2 className='boxLabel'> Favorites </h2>
             <FavoritesView />
         </Box>
 
