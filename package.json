@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "assert": "^2.0.0",
+    "babel-polyfill": "^6.26.0",
     "browserify-fs": "^1.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",

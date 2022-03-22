@@ -8,7 +8,13 @@
     },
     "options_page": "options.html",
     "permissions": [
-        "storage"
+        "storage",
+        "declarativeNetRequest",
+        "declarativeNetRequestFeedback"
+    ],
+    "host_permissions": [
+        "<all_urls>",
+        "*://*.api.track.toggl.com/*"
     ],
     "chrome_url_overrides": {
         "newtab": "newTab.html"
