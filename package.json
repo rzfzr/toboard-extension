@@ -24,13 +24,30 @@
     "@babel/core": "^7.17.8",
     "@babel/plugin-transform-react-jsx": "^7.17.3",
     "@babel/preset-env": "^7.16.11",
+    "@types/dotenv-webpack": "^7.0.3",
     "babel-loader": "^8.2.3",
     "copy-webpack-plugin": "^10.2.4",
+    "dotenv-webpack": "^7.1.0",
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "preact": "^10.6.6"
+    "assert": "^2.0.0",
+    "browserify-fs": "^1.0.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "net": "^1.0.2",
+    "path-browserify": "^1.0.1",
+    "preact": "^10.6.6",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "tls-browserify": "^0.2.2",
+    "toggl-api": "^1.0.2",
+    "url": "^0.11.0",
+    "util": "^0.12.4"
   }
 }
