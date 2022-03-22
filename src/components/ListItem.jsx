@@ -2,6 +2,7 @@ import { render, h } from 'preact';
 
 import { useTheme } from '@mui/material/styles';
 
+import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import Card from '@mui/material/Card';
@@ -31,9 +32,17 @@ export default function ListItem(props) {
                 <Typography variant="subtitle1" component="div" style={{ position: 'relative', top: '33%', height: '25%' }}>
                     {props.entry.time}
                 </Typography>
-                <IconButton aria-label="delete" size="large" style={{ color: props.entry.project.hex_color }}  >
-                    {props.entry.isRunning? <PauseCircleIcon />:<PlayCircleIcon />}
-                </IconButton>
+
+                {props.isEditing?
+                    <IconButton aria-label="delete" size="large" style={{ color: props.entry.project.hex_color }} onClick={() => { props.delete(props.entry) }} >
+                        <DeleteIcon />
+                    </IconButton>:
+
+
+                    <IconButton aria-label="toggle" size="large" style={{ color: props.entry.project.hex_color }}  >
+                        {props.entry.isRunning? <PauseCircleIcon />:<PlayCircleIcon />}
+                    </IconButton>
+                }
             </Box>
         </Card>
     );

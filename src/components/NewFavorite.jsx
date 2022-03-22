@@ -15,35 +15,41 @@ export default function NewFavorite(props) {
 
     if (isEditing) {
         return (
-
-            <Paper>
-                <h4>New Favorite</h4>
+            <Paper style={{ width: '100%' }}>
                 <form noValidate autoComplete="off">
                     <TextField
                         id="description"
                         label="Description"
                         onChange={(event) => setDescription(event.target.value)}
                         placeholder=""
-                        variant="outlined" />
+                        variant="filled"
+                        style={{ width: '100%' }} />
                     <TextField
                         id="project"
                         label="Project"
                         onChange={(event) => setProject(event.target.value)}
                         placeholder=""
-                        variant="outlined" />
+                        variant="filled"
+                        style={{ width: '100%' }} />
                 </form>
                 <ButtonGroup
                     variant="text"
                     color="primary"
-                    aria-label="text primary button group">
+                    aria-label="text primary button group"
+                    style={{ width: '100%' }}
+                >
                     <Button
+                        style={{ width: '50%' }}
                         onClick={() => {
-                            const fav={ description: description, project: project, position: favorites.length }
-                            sendFavorites([fav])
-                            setFavorites([...favorites, fav])
+                            const fav={ description: description, project: { name: project } }
+
+                            chrome.storage.local.set({
+                                favorites: [...props.favorites, fav],
+                            })
                             setEditing(false)
                         }}>Save</Button>
                     <Button
+                        style={{ width: '50%' }}
                         onClick={() => setEditing(false)}>Cancel</Button>
                 </ButtonGroup>
             </Paper>
@@ -52,6 +58,7 @@ export default function NewFavorite(props) {
     } else
         return (
             <Button
+                style={{ width: '80%' }}
                 startIcon={<AddIcon fontSize="large" />}
                 onClick={() => setEditing(true)}
                 size="large"

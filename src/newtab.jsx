@@ -7,24 +7,31 @@ import css from "../global.css";
 
 function NewPage() {
     const [entries, setEntries]=useState([]);
-    useEffect(() => {
-        chrome.storage.local.get(['entries', 'projects'], (result) => {
+    const [favorites, setFavorites]=useState([]);
 
+    useEffect(() => {
+        chrome.storage.local.get(['favorites'], (result) => {
+            setFavorites(result.favorites)
+        })
+
+        chrome.storage.local.get(['entries', 'projects'], (result) => {
             result?.entries?.forEach(entry => {
                 entry.project=result.projects.find(p => p.id===entry.pid)
             });
             setEntries(result.entries)
         })
     }, [])
-
     return <Box sx={{ display: 'flex' }}>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative' }}>
+        </Box>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative' }}>
             <ListView entries={entries} />
         </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <FavoritesView favorites={[]} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '265px', position: 'relative' }}>
+            <FavoritesView favorites={favorites} />
         </Box>
 
     </Box>

@@ -11,7 +11,7 @@ const initStorageCache = getAllStorageSyncData().then(items => {
     // Copy the data retrieved from storage into storageCache.
     Object.assign(storageCache, items);
 }).then(() => {
-    console.log('Background')
+    console.log('Background', storageCache)
     client = new TogglClient({
         apiToken: storageCache.token
     })
