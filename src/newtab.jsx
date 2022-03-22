@@ -1,7 +1,7 @@
 import { render, h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import ListView from './components/ListView.jsx';
-
+import css from "../global.css";
 
 function NewPage() {
     const [entries, setEntries]=useState([]);
@@ -19,7 +19,7 @@ function NewPage() {
         })
     }, [])
 
-    return <div> <ListView entries={entries} />  </div>
+    return <div > <ListView entries={entries} />  </div>
 }
 
 render(<NewPage />,
