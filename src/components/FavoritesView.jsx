@@ -14,10 +14,11 @@ export default function FavoritesView(props) {
 
     function deleteFavorite(favorite) {
 
-        favorites=favorites.filter(f => f.name!==favorite.name&&f.project!==favorite.project)
+        console.log('old list', favorites)
+        favorites=favorites.filter(f => f.description!==favorite.description&&f.project!==favorite.project)
         console.log('new list', favorites)
         chrome.storage.local.set({
-            favorites: [favorites],
+            favorites: favorites,
         })
     }
 

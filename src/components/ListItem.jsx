@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 
 export default function ListItem(props) {
     const theme=useTheme();
-
     return (
         <Card sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
@@ -22,8 +21,8 @@ export default function ListItem(props) {
                     <Typography component="div" variant="h6">
                         {props.entry.description}
                     </Typography>
-                    <Typography variant="subtitle1" color={props.entry.project.hex_color} component="div" >
-                        {props.entry.project.name}
+                    <Typography variant="subtitle1" color={props.entry?.project?.hex_color} component="div" >
+                        {props.entry.project?.name}
                     </Typography>
                 </CardContent>
             </Box>
@@ -34,12 +33,12 @@ export default function ListItem(props) {
                 </Typography>
 
                 {props.isEditing?
-                    <IconButton aria-label="delete" size="large" style={{ color: props.entry.project.hex_color }} onClick={() => { props.delete(props.entry) }} >
+                    <IconButton aria-label="delete" size="large" style={{ color: props.entry?.project?.hex_color }} onClick={() => { props.delete(props.entry) }} >
                         <DeleteIcon />
                     </IconButton>:
 
 
-                    <IconButton aria-label="toggle" size="large" style={{ color: props.entry.project.hex_color }}  >
+                    <IconButton aria-label="toggle" size="large" style={{ color: props.entry?.project?.hex_color }}  >
                         {props.entry.isRunning? <PauseCircleIcon />:<PlayCircleIcon />}
                     </IconButton>
                 }
