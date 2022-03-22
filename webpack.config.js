@@ -7,14 +7,16 @@ const {
     options
 } = require('preact');
 
+const entries = {
+    popup: './src/popup.jsx',
+    newtab: './src/newtab.jsx',
+    options: './src/options.jsx',
+    background: './src/options.jsx'
+}
+
 module.exports = {
     mode: 'production',
-    entry: {
-        popup: './src/popup.jsx',
-        newtab: './src/newtab.jsx',
-        options: './src/options.jsx'
-    },
-    // target: 'node',
+    entry: entries,
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
@@ -52,6 +54,10 @@ module.exports = {
             template: 'template.html',
             filename: 'options.html'
         }),
+        new HtmlWebpackPlugin({
+            chunks: ['background'],
+            template: 'template.html',
+        }),
         new webpack.ProvidePlugin({
             process: require.resolve('process/browser'),
             Buffer: ["buffer", "Buffer"],
@@ -65,25 +71,29 @@ module.exports = {
         ignored: './node_modules/',
     },
     resolve: {
+        // mainFields: ['browser', 'module', 'main'],
         alias: {
             process: require.resolve('process/browser'),
         },
         fallback: {
-            child_process: false,
-            toggl: require.resolve("toggl-api"),
-            util: require.resolve("util/"),
-            tls: require.resolve("tls-browserify"),
-            net: require.resolve("net"),
-            fs: require.resolve("browserify-fs"),
-            assert: require.resolve("assert/"),
+            stream: require.resolve("stream-browserify"),
             https: require.resolve("https-browserify"),
             http: require.resolve("stream-http"),
+            util: require.resolve("util/"),
             url: require.resolve("url/"),
-            crypto: require.resolve("crypto-browserify"),
-            stream: require.resolve("stream-browserify"),
             buffer: require.resolve("buffer/"),
-            zlib: require.resolve("browserify-zlib"),
-            path: require.resolve("path-browserify"),
+            child_process: false,
+            zlib: false,
+            path: false,
+            fs: false,
+            tls: false,
+            net: false,
+            assert: false,
+            crypto: false,
+            querystring: false,
         }
+    },
+    optimization: {
+        minimize: false
     }
 };

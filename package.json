@@ -33,20 +33,13 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "assert": "^2.0.0",
     "babel-polyfill": "^6.26.0",
-    "browserify-fs": "^1.0.0",
-    "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
-    "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",
-    "net": "^1.0.2",
-    "path-browserify": "^1.0.1",
     "preact": "^10.6.6",
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "tls-browserify": "^0.2.2",
     "toggl-api": "^1.0.2",
     "url": "^0.11.0",
     "util": "^0.12.4"
