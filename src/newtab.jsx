@@ -2,10 +2,15 @@ import { render, h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 
 function NewPage() {
-    // const [tokenValue, setTokenValue]=useState('');
-    // const [client, setClient]=useState(new TogglClient())
+    const [entries, setEntries]=useState([]);
+    useEffect(() => {
+        chrome.storage.sync.get(['entries'], (result) => {
+            setEntries(result.entries)
+        })
+    }, [])
 
-    return <div>No client</div>
+    return <div> {entries.map((entry) =>
+        <div key={entry.id}>{entry.description}</div>)} </div>
 }
 
 render(<NewPage />,
