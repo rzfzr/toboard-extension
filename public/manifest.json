@@ -9,11 +9,9 @@
     "options_page": "options.html",
     "permissions": [
         "storage",
-        "declarativeNetRequest",
-        "declarativeNetRequestFeedback"
+        "declarativeNetRequest"
     ],
     "host_permissions": [
-        "<all_urls>",
         "*://*.api.track.toggl.com/*"
     ],
     "chrome_url_overrides": {
