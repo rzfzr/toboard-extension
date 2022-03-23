@@ -3,15 +3,17 @@ import { render, h } from 'preact';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+import CustomFab from './CustomFab.jsx'
+import { getTime, colorShade } from '../utils'
 
 export default function ListItem(props) {
-    const time=props.entry.duration<0? 'Running':props.entry.time
+    const time=props.entry.duration<0?
+        getTime(props.entry.duration+Date.now()/1000)
+        :props.entry.time
+
+    const lightColor=colorShade(props.entry?.project?.hex_color, +50)
 
     return (
         <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
@@ -39,21 +41,8 @@ export default function ListItem(props) {
                     {time}
                 </Typography>
 
-                {props.isEditing?
-                    <IconButton
-                        aria-label="delete"
-                        size="large"
-                        style={{ color: props.entry?.project?.hex_color }} onClick={() => { props.delete(props.entry) }} >
-                        <DeleteIcon />
-                    </IconButton>
-                    :
-                    <IconButton
-                        aria-label="toggle"
-                        size="large"
-                        style={{ color: props.entry?.project?.hex_color }}  >
-                        {props.entry.isRunning? <PauseCircleIcon />:<PlayCircleIcon />}
-                    </IconButton>
-                }
+                <CustomFab isRunning={props.entry.isRunning} isEditing={props.isEditing} color={lightColor} />
+
             </Box>
         </Card>
     );

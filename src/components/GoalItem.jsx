@@ -1,4 +1,4 @@
-import { render, h } from 'preact';
+import { render, h, Fragment } from 'preact';
 
 import LinearProgress from '@mui/material/LinearProgress';
 import Card from '@mui/material/Card';
@@ -6,49 +6,8 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import PauseCircleIcon from '@mui/icons-material/PauseCircle';
-import IconButton from '@mui/material/IconButton';
-
-function getTime(seconds, returnSeconds=false) {
-    const d=Number(seconds);
-    const h=Math.floor(d/3600);
-    const m=Math.floor((d%3600)/60);
-    const s=Math.floor((d%3600)%60);
-    const hDisplay=
-        h>0? `${h.toString().length>1? `${h}`:`${0}${h}`}`:"00";
-    const mDisplay=
-        m>0? `${m.toString().length>1? `${m}`:`${0}${m}`}`:"00";
-    const sDisplay=
-        s>0? `${s.toString().length>1? `${s}`:`${0}${s}`}`:"00";
-
-    if (returnSeconds) return `${hDisplay}:${mDisplay}:${sDisplay}`;
-    else return `${hDisplay}:${mDisplay}`;
-}
-function colorShade(col, amt) {
-    if (!col) return;
-    col=col.replace(/^#/, "");
-    if (col.length===3)
-        col=col[0]+col[0]+col[1]+col[1]+col[2]+col[2];
-
-    let [r, g, b]=col.match(/.{2}/g);
-    [r, g, b]=[
-        parseInt(r, 16)+amt,
-        parseInt(g, 16)+amt,
-        parseInt(b, 16)+amt,
-    ];
-
-    r=Math.max(Math.min(255, r), 0).toString(16);
-    g=Math.max(Math.min(255, g), 0).toString(16);
-    b=Math.max(Math.min(255, b), 0).toString(16);
-
-    const rr=(r.length<2? "0":"")+r;
-    const gg=(g.length<2? "0":"")+g;
-    const bb=(b.length<2? "0":"")+b;
-
-    return `#${rr}${gg}${bb}`;
-}
+import CustomFab from './CustomFab.jsx'
+import { colorShade, getTime } from '../utils'
 
 export default function GoalItem(props) {
     const progress=Math.min((100/props.goal.target)*(props.goal.duration/60), 100)
@@ -85,23 +44,7 @@ export default function GoalItem(props) {
                     style={{ position: 'relative', top: '33%', height: '25%' }}>
                     {getTime(props.goal.duration)}/{getTime(props.goal.target*60)}
                 </Typography>
-
-                {props.isEditing?
-                    <IconButton
-                        aria-label="delete"
-                        size="large"
-                        style={{ color: lightColor }}
-                        onClick={() => { props.delete(props.goal) }} >
-                        <DeleteIcon />
-                    </IconButton>:
-
-                    <IconButton
-                        aria-label="toggle"
-                        size="large"
-                        style={{ color: lightColor }}  >
-                        {props.goal.isRunning? <PauseCircleIcon />:<PlayCircleIcon />}
-                    </IconButton>
-                }
+                <CustomFab isRunning={props.goal.isRunning} isEditing={props.isEditing} color={lightColor} />
             </Box>
         </Card>
     )
