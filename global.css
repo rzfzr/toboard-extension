@@ -76,6 +76,6 @@ body {
 .MuiCard-root {
     background-color: #1e1e1e !important;
     border: grey solid 1px;
-    border-radius: 10px;
-    margin: 10px;
+    border-radius: 10px !important;
+    margin: 10px !important;
 }
