@@ -15,9 +15,20 @@ export default function GoalsView() {
         chrome.storage.local.get(['goals', 'entries'], (result) => {
             console.log('result', result)
             result.goals.forEach(goal => {
-                goal.duration=result.entries
+                const goalEntries=result.entries
                     .filter(entry => (entry.pid===goal.project.id&&entry.description===goal.description))
-                    .reduce((p, c) => p+c.duration, 0)
+
+
+                goal.isRunning=!!goalEntries.find(e => e.duration<0)
+
+                goal.duration=goalEntries.reduce((p, c) => {
+                    if (c.duration<0) {
+                        let n=Date.now()/1000
+                        return p+n+c.duration
+                    }
+                    return p+c.duration
+                }, 0)
+
             });
             setGoals(result.goals||[])
         })
@@ -40,7 +51,6 @@ export default function GoalsView() {
         }
         setGoals([...goals, goal])
     }
-
     return <div >
         {goals.map((goal) =>
             <GoalItem goal={goal} isEditing={isEditing} delete={deleteGoal} />
