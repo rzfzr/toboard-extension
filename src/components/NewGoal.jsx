@@ -6,6 +6,9 @@ import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
 import Autocomplete from '@mui/material/Autocomplete'
 
 export default function NewGoal(props) {
@@ -16,6 +19,9 @@ export default function NewGoal(props) {
     const [projects, setProjects]=useState([])
 
     const [isEditing, setEditing]=useState(false)
+
+    const [alignment, setAlignment]=useState('hours');
+
 
     useEffect(() => {
         chrome.storage.local.get(['projects'], (result) => {
@@ -46,12 +52,30 @@ export default function NewGoal(props) {
                     />
                     <TextField
                         id="target"
-                        label="Target in minutes"
+                        label={`Target in ${alignment}`}
                         onChange={(event) => setTarget(event.target.value)}
                         variant="filled"
                         placeholder=""
-                        style={{ width: '100%' }} />
+                        style={{ width: '75%' }}
+                    />
+                    <ToggleButtonGroup
+                        size="small"
+                        orientation="vertical"
+                        color="primary"
+                        value={alignment}
+                        exclusive
+                        onChange={(event, newValue) => { if (newValue!==null) setAlignment(newValue) }}
+                        style={{ width: '25%' }}
+                    >
+                        <ToggleButton
+                            style={{ height: '28px' }}
+                            value="minutes">Minutes</ToggleButton>
+                        <ToggleButton
+                            style={{ height: '28px' }}
+                            value="hours">Hours</ToggleButton>
+                    </ToggleButtonGroup>
                 </form>
+
                 <ButtonGroup
                     variant="text"
                     color="primary"
@@ -61,7 +85,7 @@ export default function NewGoal(props) {
                     <Button
                         style={{ width: '50%' }}
                         onClick={() => {
-                            props.add(description, project, target)
+                            props.add(description, project, alignment=='hours'? target*60:target)
                             setEditing(false)
                         }}>Save</Button>
                     <Button
