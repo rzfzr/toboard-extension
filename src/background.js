@@ -73,8 +73,6 @@ const initStorageCache = getAllStorageSyncData().then(items => {
 //     } catch (e) {
 //         // Handle error that occurred during storage initialization.
 //     }
-
-//     console.log('Testing')
 //     // Normal action handler logic.
 // });
 

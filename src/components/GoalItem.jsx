@@ -13,8 +13,6 @@ export default function GoalItem(props) {
     const progress=Math.min((100/props.goal.target)*(props.goal.duration/60), 100)
     const lightColor=colorShade(props.goal?.project?.hex_color, +50)
 
-
-    if (props.goal.isRunning) console.log('Goal', props.goal, progress)
     return (
         <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
             <LinearProgress
