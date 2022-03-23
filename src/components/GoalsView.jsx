@@ -32,7 +32,6 @@ export default function GoalsView() {
     function deleteGoal(goal) {
         setGoals(goals.filter(f => !(f.description===goal.description&&f.project.name===goal.project.name)))
     }
-
     function addGoal(description, project, target) {
         const goal={
             description: description!==''? description:false,
@@ -41,7 +40,6 @@ export default function GoalsView() {
         }
         setGoals([...goals, goal])
     }
-
 
     return <div >
         {goals.map((goal) =>

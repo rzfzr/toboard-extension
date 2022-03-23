@@ -1,19 +1,15 @@
 import { render, h } from 'preact';
-import { styled } from '@mui/material/styles';
 
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-
+import LinearProgress from '@mui/material/LinearProgress';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Box from '@mui/material/Box';
-
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 
 function getTime(seconds, returnSeconds=false) {
     const d=Number(seconds);
@@ -38,7 +34,7 @@ export default function GoalItem(props) {
         <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
             <LinearProgress
                 className='progress'
-                variant="buffer"
+                variant={props.goal.isRunning? "buffer":"determinate"}
                 value={progress}
                 valueBuffer={progress+5}
                 color='inherit'
@@ -49,7 +45,6 @@ export default function GoalItem(props) {
                     <Typography component="div" variant="h6">
                         {props.goal.description}
                     </Typography>
-
                     <Typography variant="subtitle1" component="div" >
                         {props.goal.project?.name}
                     </Typography>

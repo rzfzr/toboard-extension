@@ -1,19 +1,18 @@
 import { render, h } from 'preact';
 
-import { useTheme } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Box from '@mui/material/Box';
-
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 
 export default function ListItem(props) {
-    const theme=useTheme();
+    const time=props.entry.duration<0? 'Running':props.entry.time
+
     return (
         <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
             <Box className="floating-left" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
@@ -37,7 +36,7 @@ export default function ListItem(props) {
                     component="div"
                     color="white"
                     style={{ position: 'relative', top: '33%', height: '25%' }}>
-                    {props.entry.time}
+                    {time}
                 </Typography>
 
                 {props.isEditing?
