@@ -11,7 +11,8 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 export default function CustomFab(props) {
     return <Fragment>
         {props.isEditing?
-            <Fab sx={{ color: props.color, transform: 'scale(0.5)' }} >
+            <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
+                onClick={() => { props.delete(props.entry) }}>
                 <DeleteIcon sx={{ transform: 'scale(2)' }} />
             </Fab>
             :

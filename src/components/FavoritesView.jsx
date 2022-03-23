@@ -25,7 +25,8 @@ export default function FavoritesView() {
     }, [favorites])
 
     function deleteFavorite(favorite) {
-        setFavorites(favorites.filter(f => !(f.description===favorite.description&&f.project.name===favorite.project.name)))
+        setFavorites(favorites.filter(f =>
+            !(f.description===favorite.description&&f.project.name===favorite.project.name)))
     }
 
     function addFavorite(description, project) {
@@ -33,13 +34,20 @@ export default function FavoritesView() {
         setFavorites([...favorites, favorite])
     }
 
-    return <div> {favorites.map((favorite) =>
-        <ListItem entry={favorite} isEditing={isEditing} delete={deleteFavorite} />
-    )}
-        <IconButton aria-label="edit" color="primary" size="large" onClick={() => { setIsEditing(!isEditing) }}>
+    return <div>
+        {favorites.map((favorite) =>
+            <ListItem
+                entry={favorite}
+                isEditing={isEditing}
+                delete={deleteFavorite} />
+        )}
+        <IconButton
+            aria-label="edit"
+            color="primary"
+            size="large"
+            onClick={() => { setIsEditing(!isEditing) }}>
             <EditIcon />
         </IconButton>
-
         {isEditing&&<NewFavorite add={addFavorite} />}
     </div>
 }

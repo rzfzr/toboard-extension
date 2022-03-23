@@ -41,7 +41,13 @@ export default function ListItem(props) {
                     {time}
                 </Typography>
 
-                <CustomFab isRunning={props.entry.isRunning} isEditing={props.isEditing} color={lightColor} />
+                <CustomFab
+                    isRunning={props.entry.isRunning}
+                    isEditing={props.isEditing}
+                    delete={props.delete}
+                    entry={props.entry}
+                    color={lightColor}
+                />
 
             </Box>
         </Card>

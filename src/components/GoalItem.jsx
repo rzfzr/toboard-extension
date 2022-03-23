@@ -42,7 +42,13 @@ export default function GoalItem(props) {
                     style={{ position: 'relative', top: '33%', height: '25%' }}>
                     {getTime(props.goal.duration)}/{getTime(props.goal.target*60)}
                 </Typography>
-                <CustomFab isRunning={props.goal.isRunning} isEditing={props.isEditing} color={lightColor} />
+                <CustomFab
+                    isRunning={props.goal.isRunning}
+                    isEditing={props.isEditing}
+                    delete={props.delete}
+                    entry={props.goal}
+                    color={lightColor}
+                />
             </Box>
         </Card>
     )
