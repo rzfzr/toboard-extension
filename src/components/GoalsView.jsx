@@ -8,8 +8,16 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
 function updateGoal(goal, entries) {
-    const goalEntries=entries
-        .filter(entry => (entry.pid===goal.project.id&&entry.description===goal.description))
+
+    let goalEntries=[]
+
+    if (goal.description=='') {
+        goalEntries=entries
+            .filter(entry => (entry.pid===goal.project.id))
+    } else {
+        goalEntries=entries
+            .filter(entry => (entry.pid===goal.project.id&&entry.description===goal.description))
+    }
 
     goal.isRunning=!!goalEntries.find(e => e.duration<0)
     goal.duration=goalEntries.reduce((p, c) => {
@@ -21,7 +29,6 @@ function updateGoal(goal, entries) {
     }, 0)
     return goal
 }
-
 
 export default function GoalsView() {
     const [goals, setGoals]=useState([]);
