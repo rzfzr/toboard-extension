@@ -48,7 +48,6 @@ body {
     align-items: center;
 }
 
-
 .MuiLinearProgress-dashed.MuiLinearProgress-dashedColorInherit {
     -webkit-animation: stream-ltr 0.5s linear infinite;
     animation: stream-ltr 0.5s linear infinite;
@@ -64,9 +63,8 @@ body {
     z-index: 0;
 }
 
-
 @keyframes stream-ltr {
     100% {
-        transform: translateX(-10px);
+        transform: translateX(-16px);
     }
 }
