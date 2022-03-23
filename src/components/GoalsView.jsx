@@ -28,7 +28,11 @@ export default function GoalsView() {
     }
 
     function addGoal(description, project, target) {
-        const goal={ description, project: project.name? project:{ name: project }, target }
+        const goal={
+            description: description!==''? description:false,
+            project: project.name? project:{ name: project },
+            target: target,
+        }
         setGoals([...goals, goal])
     }
 

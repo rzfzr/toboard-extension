@@ -29,7 +29,7 @@ export default function NewGoal(props) {
                 <form noValidate autoComplete="off">
                     <TextField
                         id="description"
-                        label="Description"
+                        label="Description (optional)"
                         onChange={(event) => setDescription(event.target.value)}
                         placeholder=""
                         variant="filled"
