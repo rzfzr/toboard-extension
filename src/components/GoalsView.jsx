@@ -23,14 +23,23 @@ export default function GoalsView() {
         })
     }, [goals])
 
+    function deleteGoal(goal) {
+        setGoals(goals.filter(f => !(f.description===goal.description&&f.project.name===goal.project.name)))
+    }
+
+    function addGoal(description, project, target) {
+        const goal={ description, project: project.name? project:{ name: project }, target }
+        setGoals([...goals, goal])
+    }
+
 
     return <div >
         {goals.map((goal) =>
-            <GoalItem goal={goal} />
+            <GoalItem goal={goal} isEditing={isEditing} delete={deleteGoal} />
         )}
         <IconButton aria-label="edit" color="primary" size="large" onClick={() => { setIsEditing(!isEditing) }}>
             <EditIcon />
         </IconButton>
 
-        {isEditing&&<NewGoal />}</div>
+        {isEditing&&<NewGoal add={addGoal} />}</div>
 }

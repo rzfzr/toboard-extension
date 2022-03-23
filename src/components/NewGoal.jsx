@@ -61,9 +61,7 @@ export default function NewGoal(props) {
                     <Button
                         style={{ width: '50%' }}
                         onClick={() => {
-                            const goal={ description: description, project: project, position: goals.length, target: target }
-                            sendGoals([goal])
-                            setGoals([...goals, goal])
+                            props.add(description, project, target)
                             setEditing(false)
                         }}>Save</Button>
                     <Button
