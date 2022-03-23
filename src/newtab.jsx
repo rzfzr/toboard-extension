@@ -6,7 +6,6 @@ import GoalsView from './components/GoalsView.jsx';
 import Box from '@mui/material/Box';
 import css from "../global.css";
 
-
 function NewPage() {
     const [entries, setEntries]=useState([]);
 
@@ -19,7 +18,7 @@ function NewPage() {
         })
     }, [])
 
-    return <Box sx={{ display: 'flex' }}>
+    return <Box className='parentBox' >
 
         <Box className='childBox'>
             <h2 className='boxLabel'> Weekly Goals </h2>

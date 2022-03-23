@@ -2,6 +2,11 @@ body {
     background-color: #111111;
 }
 
+.parentBox {
+    display: flex;
+    justify-content: center;
+}
+
 .childBox {
     display: flex;
     flex-direction: column;
