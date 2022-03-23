@@ -15,8 +15,6 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-
-
 function getTime(seconds, returnSeconds=false) {
     const d=Number(seconds);
     const h=Math.floor(d/3600);
@@ -33,13 +31,11 @@ function getTime(seconds, returnSeconds=false) {
     else return `${hDisplay}:${mDisplay}`;
 }
 
-
 export default function GoalItem(props) {
     const progress=(100/props.goal.target)*(props.goal.duration/60)
     console.log('Goal', props.goal, progress)
     return (
         <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
-
             <LinearProgress
                 className='progress'
                 variant="buffer"

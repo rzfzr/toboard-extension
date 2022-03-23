@@ -15,19 +15,23 @@ import Typography from '@mui/material/Typography';
 export default function ListItem(props) {
     const theme=useTheme();
     return (
-        <Card sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
+        <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
+            <Box className="floating-left" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
                 <CardContent sx={{ flex: '1 0 auto', padding: '10px 20px' }}>
                     <Typography component="div" variant="h6" color="white">
                         {props.entry.description}
                     </Typography>
-                    <Typography variant="subtitle1" color={props.entry?.project?.hex_color} component="div" >
+                    <Typography
+                        variant="subtitle1"
+                        color={props.entry?.project?.hex_color}
+                        component="div"
+                        style={{ textShadow: '1px 1px grey' }}>
                         {props.entry.project?.name}
                     </Typography>
                 </CardContent>
             </Box>
 
-            <Box sx={{ display: 'flex' }}>
+            <Box className="floating-right">
                 <Typography
                     variant="subtitle1"
                     component="div"
