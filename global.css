@@ -1,5 +1,5 @@
 body {
-    background-color: #1B1A17;
+    background-color: #111111;
 }
 
 .childBox {
@@ -8,7 +8,8 @@ body {
     margin: 20px;
     width: 265px;
     position: relative;
-    border: solid grey
+    border: grey solid 1px;
+    border-radius: 10px;
 }
 
 .boxLabel {
@@ -32,12 +33,10 @@ body {
     right: 0;
     color: white;
     font-size: large;
-
     display: flex;
     flex-direction: column;
     width: 75%;
     max-width: 75%;
-
 }
 
 .floating-right {
@@ -67,4 +66,11 @@ body {
     100% {
         transform: translateX(-16px);
     }
+}
+
+.MuiCard-root {
+    background-color: #1e1e1e !important;
+    border: grey solid 1px;
+    border-radius: 10px;
+    margin: 10px;
 }

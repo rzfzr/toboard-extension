@@ -22,17 +22,17 @@ function NewPage() {
     return <Box sx={{ display: 'flex' }}>
 
         <Box className='childBox'>
-            <h2 className='boxLabel'> Goals </h2>
+            <h2 className='boxLabel'> Weekly Goals </h2>
             <GoalsView />
         </Box>
 
         <Box className='childBox'>
-            <h2 className='boxLabel'> List </h2>
+            <h2 className='boxLabel'> Weekly List </h2>
             <ListView entries={entries} />
         </Box>
 
         <Box className='childBox'>
-            <h2 className='boxLabel'> Favorites </h2>
+            <h2 className='boxLabel'> My Favorites </h2>
             <FavoritesView />
         </Box>
 

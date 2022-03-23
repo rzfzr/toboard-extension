@@ -12,7 +12,13 @@ export default function GoalsView() {
     const [isEditing, setIsEditing]=useState(false);
 
     useEffect(() => {
-        chrome.storage.local.get(['goals'], (result) => {
+        chrome.storage.local.get(['goals', 'entries'], (result) => {
+            console.log('result', result)
+            result.goals.forEach(goal => {
+                goal.duration=result.entries
+                    .filter(entry => (entry.pid===goal.project.id&&entry.description===goal.description))
+                    .reduce((p, c) => p+c.duration, 0)
+            });
             setGoals(result.goals||[])
         })
     }, [])

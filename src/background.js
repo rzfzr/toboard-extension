@@ -62,10 +62,6 @@ const initStorageCache = getAllStorageSyncData().then(items => {
             }
         }
     )
-
-
-
-
 })
 
 

@@ -18,7 +18,7 @@ export default function ListItem(props) {
         <Card sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
                 <CardContent sx={{ flex: '1 0 auto', padding: '10px 20px' }}>
-                    <Typography component="div" variant="h6">
+                    <Typography component="div" variant="h6" color="white">
                         {props.entry.description}
                     </Typography>
                     <Typography variant="subtitle1" color={props.entry?.project?.hex_color} component="div" >
@@ -28,17 +28,26 @@ export default function ListItem(props) {
             </Box>
 
             <Box sx={{ display: 'flex' }}>
-                <Typography variant="subtitle1" component="div" style={{ position: 'relative', top: '33%', height: '25%' }}>
+                <Typography
+                    variant="subtitle1"
+                    component="div"
+                    color="white"
+                    style={{ position: 'relative', top: '33%', height: '25%' }}>
                     {props.entry.time}
                 </Typography>
 
                 {props.isEditing?
-                    <IconButton aria-label="delete" size="large" style={{ color: props.entry?.project?.hex_color }} onClick={() => { props.delete(props.entry) }} >
+                    <IconButton
+                        aria-label="delete"
+                        size="large"
+                        style={{ color: props.entry?.project?.hex_color }} onClick={() => { props.delete(props.entry) }} >
                         <DeleteIcon />
-                    </IconButton>:
-
-
-                    <IconButton aria-label="toggle" size="large" style={{ color: props.entry?.project?.hex_color }}  >
+                    </IconButton>
+                    :
+                    <IconButton
+                        aria-label="toggle"
+                        size="large"
+                        style={{ color: props.entry?.project?.hex_color }}  >
                         {props.entry.isRunning? <PauseCircleIcon />:<PlayCircleIcon />}
                     </IconButton>
                 }
