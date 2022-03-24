@@ -16,7 +16,13 @@ export default function CustomFab(props) {
                 <DeleteIcon sx={{ transform: 'scale(2)' }} />
             </Fab>
             :
-            <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}>
+            <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
+                onClick={() => {
+                    console.log('sending this')
+                    chrome.runtime.sendMessage({ entry: props.entry }, function (response) {
+                        console.log(response);
+                    });
+                }}>
                 {props.isRunning?
                     <Fragment>
                         <PauseCircleIcon sx={{ transform: 'scale(2.2)' }} />
@@ -33,6 +39,7 @@ export default function CustomFab(props) {
                     <PlayCircleIcon sx={{ transform: 'scale(2.2)' }} />
 
                 }
-            </Fab>}
+            </Fab>
+        }
     </Fragment>
 }
