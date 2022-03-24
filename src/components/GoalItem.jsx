@@ -13,6 +13,8 @@ export default function GoalItem(props) {
     const progress=Math.min((100/props.goal.target)*(props.goal.duration/60), 100)
     const lightColor=colorShade(props.goal?.project?.hex_color, +50)
 
+    console.log('p', props.goal)
+
     return (
         <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
             <LinearProgress
@@ -22,18 +24,24 @@ export default function GoalItem(props) {
                 valueBuffer={progress+5}
                 color='inherit'
                 style={{ height: '75px', color: props.goal?.project?.hex_color }} />
-
             <Box className="floating-left" >
-                <CardContent sx={{ flex: '1 0 auto', padding: '10px 20px' }}>
-                    <Typography component="div" variant="h6">
-                        {props.goal.description}
+                <CardContent sx={{
+                    flex: '1 0 auto',
+                    padding: '10px 20px',
+                    paddingTop: props.goal.description!=''? '10px':'23px',
+                }}>
+                    <Typography
+                        component="div"
+                        variant="subtitle1">
+                        {props.goal.description!=''? props.goal.description:props.goal.project.name}
                     </Typography>
-                    <Typography variant="subtitle1" component="div" >
-                        {props.goal.project?.name}
+                    <Typography
+                        variant="subtitle2"
+                        component="div" >
+                        {props.goal.description!=''? props.goal.project?.name:''}
                     </Typography>
                 </CardContent>
             </Box>
-
             <Box className="floating-right">
                 <Typography
                     variant="subtitle2"
