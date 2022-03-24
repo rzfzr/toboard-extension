@@ -11,7 +11,8 @@ body {
     display: flex;
     flex-direction: column;
     margin: 15px;
-    width: 300px;
+    min-width: 275px;
+    max-width: 350px;
     position: relative;
     border: grey solid 1px;
     border-radius: 10px;

@@ -36,7 +36,7 @@ export default function GoalItem(props) {
 
             <Box className="floating-right">
                 <Typography
-                    variant="subtitle1"
+                    variant="subtitle2"
                     component="div"
                     color="white"
                     style={{ position: 'relative', top: '33%', height: '25%' }}>
