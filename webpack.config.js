@@ -4,8 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require("dotenv-webpack");
 const webpack = require('webpack')
 
-// import css from "./global.css";
-
 const {
     options
 } = require('preact');
