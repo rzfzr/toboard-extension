@@ -5,7 +5,6 @@ import FavoritesView from './components/FavoritesView.jsx';
 import GoalsView from './components/GoalsView.jsx';
 import Box from '@mui/material/Box';
 import css from "../global.css";
-
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
 const darkTheme=createTheme({
