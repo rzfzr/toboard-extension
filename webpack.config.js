@@ -108,4 +108,9 @@ module.exports = {
         mangleExports: false,
         mergeDuplicateChunks: false,
     },
+    performance: {
+        maxAssetSize: 2800000,
+        maxEntrypointSize: 2800000,
+        hints: "warning"
+    }
 };
