@@ -3,6 +3,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require("dotenv-webpack");
 const webpack = require('webpack')
+var ProgressPlugin = require('progress-webpack-plugin')
 
 const {
     options
@@ -34,6 +35,7 @@ module.exports = {
         }],
     },
     plugins: [
+        new ProgressPlugin(true),
         new Dotenv(),
         new webpack.DefinePlugin({
             'process.env.NODE_DEBUG': JSON.stringify('development'),
