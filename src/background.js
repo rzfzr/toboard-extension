@@ -10,34 +10,6 @@ let client;
 
 console.log('Background')
 
-const initStorageCache = getAllStorageSyncData().then(items => {
-    Object.assign(storageCache, items);
-}).then(() => {
-    console.log('InitStorage', storageCache)
-    client = new TogglClient({
-        apiToken: storageCache.token
-    })
-    getWorkspaces()
-    getTimeEntries()
-})
-
-
-
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        console.log(request)
-
-        const description = request.entry.description
-        const pid = request.entry.project.id
-
-        toggleEntry(description, pid)
-        // sendResponse({
-        //     farewell: "goodbye"
-        // });
-    }
-);
-
-
 function getAllStorageSyncData() {
     return new Promise((resolve, reject) => {
         chrome.storage.local.get(null, (items) => {
@@ -48,6 +20,40 @@ function getAllStorageSyncData() {
         });
     });
 }
+const initStorageCache = getAllStorageSyncData().then(items => {
+    Object.assign(storageCache, items);
+}).then(() => {
+    client = new TogglClient({
+        apiToken: storageCache.token
+    })
+    getWorkspaces()
+    getTimeEntries()
+})
+
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        const message = request.message
+        const entry = request.entry
+        console.log('request:', request, message, entry, sender)
+        switch (message) {
+            case 'update':
+                sendResponse({
+                    time: '123'
+                });
+                break;
+            case 'toggle':
+                const description = entry.description
+                const pid = entry.project.id
+                toggleEntry(description, pid)
+                break;
+            default:
+                console.log('Unknown request')
+                break;
+        }
+    }
+);
+
+
 
 function getWorkspaces() {
     client.getWorkspaces((err, workspaces) => {
