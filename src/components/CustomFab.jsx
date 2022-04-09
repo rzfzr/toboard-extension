@@ -18,7 +18,6 @@ export default function CustomFab(props) {
             :
             <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
                 onClick={() => {
-                    console.log('sending this')
                     chrome.runtime.sendMessage({ entry: props.entry }, function (response) {
                         console.log(response);
                     });
