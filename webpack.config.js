@@ -3,7 +3,8 @@ const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require("dotenv-webpack");
 const webpack = require('webpack')
-var ProgressPlugin = require('progress-webpack-plugin')
+const ProgressPlugin = require('progress-webpack-plugin')
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 
 const {
     options
@@ -35,6 +36,11 @@ module.exports = {
         }],
     },
     plugins: [
+        new WebpackBuildNotifierPlugin({
+            title: "My Webpack Project",
+            logo: path.resolve("./img/favicon.png"),
+            // suppressSuccess: true, 
+        }),
         new ProgressPlugin(true),
         new Dotenv(),
         new webpack.DefinePlugin({
