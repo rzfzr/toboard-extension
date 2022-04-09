@@ -20,7 +20,7 @@ function getAllStorageSyncData() {
     });
 }
 
-async function setupBackground() {
+(async () => {
     console.log('Start Background')
 
     const items = await getAllStorageSyncData()
@@ -40,9 +40,8 @@ async function setupBackground() {
         entries: timeEntries,
     })
 
-    console.log('End Background', workspaces, projects, timeEntries)
-}
-setupBackground()
+    console.log('End Background')
+})()
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
