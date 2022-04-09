@@ -8,7 +8,6 @@ import {
 const storageCache = {};
 let client;
 
-console.log('Background')
 
 function getAllStorageSyncData() {
     return new Promise((resolve, reject) => {
@@ -20,24 +19,40 @@ function getAllStorageSyncData() {
         });
     });
 }
-const initStorageCache = getAllStorageSyncData().then(items => {
+
+async function setupBackground() {
+    console.log('Start Background')
+
+    const items = await getAllStorageSyncData()
+
     Object.assign(storageCache, items);
-}).then(() => {
     client = new TogglClient({
         apiToken: storageCache.token
     })
-    getWorkspaces()
-    getTimeEntries()
-})
+
+    const workspaces = await getWorkspaces()
+    const projects = await getProjects(workspaces)
+    const timeEntries = await getTimeEntries()
+
+    chrome.storage.local.set({
+        workspaces: workspaces,
+        projects: projects,
+        entries: timeEntries,
+    })
+
+    console.log('End Background', workspaces, projects, timeEntries)
+}
+setupBackground()
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         const message = request.message
         const entry = request.entry
         switch (message) {
-            case 'update':
+            case 'getAll':
                 sendResponse({
-                    time: Date.now()
+                    entries: [],
+                    projects: []
                 });
                 break;
             case 'toggle':
@@ -54,55 +69,43 @@ chrome.runtime.onMessage.addListener(
 
 
 
-function getWorkspaces() {
-    client.getWorkspaces((err, workspaces) => {
-        if (err) {
-            console.log("Error getting workspaces: ", err)
-        } else {
-            chrome.storage.local.set({
-                workspaces: workspaces
-            })
-            getProjects(workspaces)
-        }
+async function getWorkspaces() {
+    return await new Promise((resolve, reject) => {
+        client.getWorkspaces((err, workspaces) => {
+            if (err) return reject(error)
+            resolve(workspaces)
+        })
     })
 }
 
-function getProjects(workspaces) {
-    workspaces.forEach(ws => {
-        client.getWorkspaceProjects(ws.id, {
-            active: 'both'
-        }, (err, projects) => {
-            if (err) {
-                console.log("Error getting projects from workspace: ", err)
-            } else {
-                chrome.storage.local.set({
-                    projects: projects
-                })
-            }
-        })
-    });
+async function getProjects(workspaces) {
+    return await new Promise((resolve, reject) => {
+        workspaces.forEach(ws => {
+            client.getWorkspaceProjects(ws.id, {
+                active: 'both'
+            }, (err, projects) => {
+                if (err) return reject(error)
+                resolve(projects)
+            })
+        });
+    })
 }
 
-function getTimeEntries() {
-    client.getTimeEntries(
-        getPreviousMonday(),
-        new Date().toISOString(),
-        (err, timeEntries) => {
-            if (err) {
-                console.log("Error getting timeEntries: ", err);
-            } else {
-
+async function getTimeEntries() {
+    return await new Promise((resolve, reject) => {
+        client.getTimeEntries(
+            getPreviousMonday(),
+            new Date().toISOString(),
+            (err, timeEntries) => {
+                if (err) reject(err)
                 timeEntries.forEach((entry) => {
                     entry.isRunning = entry.duration < 0
                     entry.time = getTime(entry.duration)
                 });
-                console.log('getting entries', timeEntries)
-                chrome.storage.local.set({
-                    entries: timeEntries,
-                })
+                resolve(timeEntries)
             }
-        }
-    )
+        )
+    })
 }
 
 function toggleEntry(entryDescription, projectID) {
