@@ -33,13 +33,13 @@ const updateCache = async () => {
     })
 
     const workspaces = await getWorkspaces()
-    const projects = await getProjects(workspaces)
-    const timeEntries = await getTimeEntries()
+    // const projects = await getProjects(workspaces)
+    // const timeEntries = await getTimeEntries()
 
     chrome.storage.local.set({
         workspaces: workspaces,
-        projects: projects,
-        entries: timeEntries,
+        // projects: projects,
+        // entries: timeEntries,
     })
 
     updateCache()
@@ -48,11 +48,11 @@ const updateCache = async () => {
 })()
 
 chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        const message = request.message
-        const entry = request.entry
-
-        switch (message) {
+    function ({
+        message,
+        entry
+    }, sender, sendResponse) {
+        switch (message) { // all cases should sendResponse, because of return true
             case 'getAll':
                 (async () => {
                     sendResponse({
@@ -60,7 +60,6 @@ chrome.runtime.onMessage.addListener(
                         projects: await getProjects(storageCache.workspaces),
                     });
                 })()
-                return true;
                 break;
             case 'toggle':
                 const description = entry.description
@@ -76,10 +75,9 @@ chrome.runtime.onMessage.addListener(
                 })
                 break;
         }
+        return true;
     }
 );
-
-
 
 async function getWorkspaces() {
     return await new Promise((resolve, reject) => {
@@ -104,7 +102,6 @@ async function getProjects(workspaces) {
 }
 
 async function getTimeEntries() {
-    console.log('will get time entries from ', client)
     return await new Promise((resolve, reject) => {
         client.getTimeEntries(
             getPreviousMonday(),
