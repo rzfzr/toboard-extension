@@ -1,2 +1,2 @@
 # toboard-extension
-Chrome/Edge extension, alternative client for quick switching entries with toggl's API
+Chromium-based browser extension, alternative client for quick switching entries with toggl's API
