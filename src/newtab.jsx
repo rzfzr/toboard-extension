@@ -15,17 +15,14 @@ const darkTheme=createTheme({
 
 function NewPage() {
     const [entries, setEntries]=useState([]);
-
     useEffect(() => {
-        chrome.runtime.sendMessage({ message: 'update' }, function (response) {
-            console.log('got', response);
-        });
-        chrome.storage.local.get(['entries', 'projects'], (result) => {
-            result?.entries?.forEach(entry => {
-                entry.project=result.projects.find(p => p.id===entry.pid)
+        chrome.runtime.sendMessage({ message: 'getAll' }, function ({ entries, projects, error }) {
+            if (error) return
+            entries.forEach(entry => {
+                entry.project=projects.find(p => p.id===entry.pid)
             });
-            setEntries(result.entries)
-        })
+            setEntries(entries)
+        });
     }, [])
 
     return (<ThemeProvider theme={darkTheme}>

@@ -19,13 +19,15 @@ function getAllStorageSyncData() {
         });
     });
 }
+const updateCache = async () => {
+    Object.assign(storageCache, await getAllStorageSyncData());
+}
 
 (async () => {
     console.log('Start Background')
 
-    const items = await getAllStorageSyncData()
+    await updateCache()
 
-    Object.assign(storageCache, items);
     client = new TogglClient({
         apiToken: storageCache.token
     })
@@ -40,6 +42,8 @@ function getAllStorageSyncData() {
         entries: timeEntries,
     })
 
+    updateCache()
+
     console.log('End Background')
 })()
 
@@ -47,20 +51,29 @@ chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         const message = request.message
         const entry = request.entry
+
         switch (message) {
             case 'getAll':
-                sendResponse({
-                    entries: [],
-                    projects: []
-                });
+                (async () => {
+                    sendResponse({
+                        entries: await getTimeEntries(),
+                        projects: await getProjects(storageCache.workspaces),
+                    });
+                })()
+                return true;
                 break;
             case 'toggle':
                 const description = entry.description
                 const pid = entry.project.id
                 toggleEntry(description, pid)
+                sendResponse({
+                    status: 'ok'
+                })
                 break;
             default:
-                console.log('Unknown request')
+                sendResponse({
+                    error: 'Unknown request'
+                })
                 break;
         }
     }
@@ -91,6 +104,7 @@ async function getProjects(workspaces) {
 }
 
 async function getTimeEntries() {
+    console.log('will get time entries from ', client)
     return await new Promise((resolve, reject) => {
         client.getTimeEntries(
             getPreviousMonday(),
