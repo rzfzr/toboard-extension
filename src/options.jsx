@@ -132,6 +132,30 @@ function OptionsPage() {
                                 id="panel2a-header"
                                 onChange={handleExpansion(2)}
                             >
+                                <Typography>Incidents</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <FormControl fullWidth>
+                                    <FormControlLabel disabled control={<Switch />} label='Show "How long since last X" ' />
+                                </FormControl>
+                                <FormControl fullWidth>
+                                    <FormControlLabel disabled control={<Switch />} label="Keep record" />
+                                </FormControl>
+                                <FormControl fullWidth>
+                                    <FormControlLabel disabled control={<Switch />} label="Count incedents in Week" />
+                                </FormControl>
+                                <FormControl fullWidth>
+                                    <FormControlLabel disabled control={<Switch />} label="Show average by day" />
+                                </FormControl>
+                            </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel2a-content"
+                                id="panel2a-header"
+                                onChange={handleExpansion(2)}
+                            >
                                 <Typography>Miscellaneous</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
