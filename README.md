@@ -1,7 +1,12 @@
 # toboard-extension
 Chromium-based browser extension, alternative client for quick switching entries with toggl's API
 
+This is an image of the current non-released state:
+![dashboard](https://github.com/rzfzr/toboard-extension/blob/main/media/newtab.png)
+This is a GIF from a parent project (rzfzr/toboard-legacy):
+![dashboard](https://github.com/rzfzr/toboard-legacy/blob/main/screenshots/toboard.gif)
 
+An additional information to the licence file, don't publish it before I do it, thanks.
 # To-do
 
 - Add licence
