@@ -5,10 +5,6 @@ import {
     getPreviousMonday
 } from './utils'
 
-const storageCache = {};
-let client;
-
-
 function getAllStorageSyncData() {
     return new Promise((resolve, reject) => {
         chrome.storage.local.get(null, (items) => {
@@ -19,30 +15,36 @@ function getAllStorageSyncData() {
         });
     });
 }
-const updateCache = async () => {
+const getCache = async () => {
+    const storageCache = {}
     Object.assign(storageCache, await getAllStorageSyncData());
+    return storageCache
 }
+let client
+
+const updateClient = async () => {
+    client = new TogglClient({
+        apiToken: (await getCache()).token
+    })
+}
+
+const updateWorkspaces = async () => {
+    chrome.storage.local.set({
+        workspaces: await getWorkspaces(),
+    })
+}
+// const projects = await getProjects(workspaces)
+// const timeEntries = await getTimeEntries()
+
+// projects: projects,
+// entries: timeEntries,
+
 
 (async () => {
     console.log('Start Background')
 
-    await updateCache()
-
-    client = new TogglClient({
-        apiToken: storageCache.token
-    })
-
-    const workspaces = await getWorkspaces()
-    // const projects = await getProjects(workspaces)
-    // const timeEntries = await getTimeEntries()
-
-    chrome.storage.local.set({
-        workspaces: workspaces,
-        // projects: projects,
-        // entries: timeEntries,
-    })
-
-    updateCache()
+    await updateClient()
+    updateWorkspaces()
 
     console.log('End Background')
 })()
@@ -55,19 +57,21 @@ chrome.runtime.onMessage.addListener(
         switch (message) { // all cases should sendResponse, because of return true
             case 'getAll':
                 (async () => {
+                    await updateClient()
                     sendResponse({
                         entries: await getTimeEntries(),
-                        projects: await getProjects(storageCache.workspaces),
+                        projects: await getProjects((await getCache()).workspaces),
                     });
                 })()
                 break;
             case 'toggle':
-                const description = entry.description
-                const pid = entry.project.id
-                toggleEntry(description, pid)
-                sendResponse({
-                    status: 'ok'
-                })
+                (async () => {
+                    await updateClient()
+                    toggleEntry(entry.description, entry.project.id)
+                    sendResponse({
+                        status: 'ok'
+                    })
+                })()
                 break;
             default:
                 sendResponse({
@@ -112,6 +116,7 @@ async function getTimeEntries() {
                     entry.isRunning = entry.duration < 0
                     entry.time = getTime(entry.duration)
                 });
+                console.log('getting timeentries', timeEntries)
                 resolve(timeEntries)
             }
         )
