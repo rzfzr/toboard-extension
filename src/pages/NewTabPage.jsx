@@ -1,10 +1,10 @@
-import "../global.css";
+import "../../global.css";
 import { render, h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import ListView from './components/ListView.jsx';
-import Options from './components/Options.jsx';
-import FavoritesView from './components/FavoritesView.jsx';
-import GoalsView from './components/GoalsView.jsx';
+import ListView from '../components/ListView.jsx';
+import Options from '../components/Options.jsx';
+import FavoritesView from '../components/FavoritesView.jsx';
+import GoalsView from '../components/GoalsView.jsx';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 

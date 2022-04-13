@@ -11,9 +11,9 @@ const {
 } = require('preact');
 
 const entries = {
-    popup: './src/popup.jsx',
-    newtab: './src/newtab.jsx',
-    options: './src/options.jsx',
+    popup: './src/pages/PopupPage.jsx',
+    newtab: './src/pages/NewTabPage.jsx',
+    options: './src/pages/OptionsPage.jsx',
     background: './src/background.js'
 }
 
