@@ -22,6 +22,7 @@ export default function NewGoal(props) {
 
     const [timeUnit, setTimeUnit]=useState('hours');
 
+    const [goalType, setGoalType]=useState('total');
 
     useEffect(() => {
         chrome.storage.local.get(['projects'], (result) => {
