@@ -10,16 +10,15 @@ const {
     options
 } = require('preact');
 
-const entries = {
-    popup: './src/pages/PopupPage.jsx',
-    newtab: './src/pages/NewTabPage.jsx',
-    options: './src/pages/OptionsPage.jsx',
-    background: './src/background.js'
-}
 
 module.exports = {
     mode: 'production',
-    entry: entries,
+    entry: {
+        popup: './src/pages/PopupPage.jsx',
+        newtab: './src/pages/NewTabPage.jsx',
+        options: './src/pages/OptionsPage.jsx',
+        background: './src/background.js'
+    },
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
