@@ -20,11 +20,16 @@ const getCache = async () => {
     Object.assign(storageCache, await getAllStorageSyncData());
     return storageCache
 }
-let client
+let client = false
 
 const updateClient = async () => {
+    const token = (await getCache()).token
+    if (!token) {
+        console.log("Toggl's API token was not set")
+        return
+    }
     client = new TogglClient({
-        apiToken: (await getCache()).token
+        apiToken: token
     })
 }
 
@@ -85,6 +90,7 @@ chrome.runtime.onMessage.addListener(
 
 async function getWorkspaces() {
     return await new Promise((resolve, reject) => {
+        if (!client) return reject('No client')
         client.getWorkspaces((err, workspaces) => {
             if (err) return reject(error)
             resolve(workspaces)
@@ -94,6 +100,7 @@ async function getWorkspaces() {
 
 async function getProjects(workspaces) {
     return await new Promise((resolve, reject) => {
+        if (!client) return reject('No client')
         workspaces.forEach(ws => {
             client.getWorkspaceProjects(ws.id, {
                 active: 'both'
@@ -107,6 +114,7 @@ async function getProjects(workspaces) {
 
 async function getTimeEntries() {
     return await new Promise((resolve, reject) => {
+        if (!client) return reject('No client')
         client.getTimeEntries(
             getPreviousMonday(),
             new Date().toISOString(),
