@@ -20,7 +20,7 @@ export default function NewGoal(props) {
 
     const [isEditing, setEditing]=useState(false)
 
-    const [alignment, setAlignment]=useState('hours');
+    const [timeUnit, setTimeUnit]=useState('hours');
 
 
     useEffect(() => {
@@ -52,7 +52,7 @@ export default function NewGoal(props) {
                     />
                     <TextField
                         id="target"
-                        label={`Target in ${alignment}`}
+                        label={`Target in ${timeUnit}`}
                         onChange={(event) => setTarget(event.target.value)}
                         variant="filled"
                         placeholder=""
@@ -62,9 +62,9 @@ export default function NewGoal(props) {
                         size="small"
                         orientation="vertical"
                         color="primary"
-                        value={alignment}
+                        value={timeUnit}
                         exclusive
-                        onChange={(event, newValue) => { if (newValue!==null) setAlignment(newValue) }}
+                        onChange={(event, newValue) => { if (newValue!==null) setTimeUnit(newValue) }}
                         style={{ width: '25%' }}
                     >
                         <ToggleButton
@@ -85,7 +85,7 @@ export default function NewGoal(props) {
                     <Button
                         style={{ width: '50%' }}
                         onClick={() => {
-                            props.add(description, project, alignment=='hours'? target*60:target)
+                            props.add(description, project, timeUnit=='hours'? target*60:target)
                             setEditing(false)
                         }}>Save</Button>
                     <Button
