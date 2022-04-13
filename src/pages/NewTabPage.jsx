@@ -16,11 +16,11 @@ const darkTheme=createTheme({
 
 function NewPage() {
     const [entries, setEntries]=useState([]);
-    const [isNew, setIsNew]=useState(false)
+    const [status, setStatus]=useState('')
 
     useEffect(() => {
         chrome.storage.local.get(['token'], (result) => {
-            setIsNew(!result.token)
+            setStatus(result.token? 'current':'new')
         })
 
         chrome.runtime.sendMessage({ message: 'getAll' }, function ({ entries, projects, error }) {
@@ -34,9 +34,9 @@ function NewPage() {
 
     return (<ThemeProvider theme={darkTheme}>
 
-        {isNew&&<Options />}
+        {status==='new'&&<Options />}
 
-        {!isNew&&
+        {status==='current'&&
             <Box className='parentBox' >
                 <Box className='childBox'>
                     <h2 className='boxLabel'> Weekly Goals </h2>
