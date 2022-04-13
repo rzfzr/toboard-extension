@@ -34,3 +34,4 @@ As additional information to the licence file, don't publish it before I do it, 
     - [ ] Average per {duration0} in {duration1} (0<1)
     - [ ] Average per entry in {duration}
     
+- [ ] Add Option to Export and Import all options as JSON    
