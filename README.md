@@ -11,8 +11,9 @@ As additional information to the licence file, don't publish it before I do it, 
 
 - [x] Add licence
 - [ ] Add icon
+- [ ] Add manual sync settings 
 
-- [ ] Better use background cache
+- [ ] Better use background cache, reducing calls
 - [ ] Handle local -> sync storage
 
 - [ ] Purge unused 
@@ -33,5 +34,8 @@ As additional information to the licence file, don't publish it before I do it, 
     - [ ] Total per {duration} (default per week)
     - [ ] Average per {duration0} in {duration1} (0<1)
     - [ ] Average per entry in {duration}
-    
-- [ ] Add Option to Export and Import all options as JSON    
+
+- [ ] Add popup elements
+- [ ] Add Option to Export and Import all options as JSON
+- [ ] Add responsiveness to layout
+- [ ] Drag and drop elements
