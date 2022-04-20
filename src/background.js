@@ -15,25 +15,25 @@ function getAllStorageSyncData() {
         });
     });
 }
-const getCache = async () => {
-    const storageCache = {}
+const getCache=async () => {
+    const storageCache={}
     Object.assign(storageCache, await getAllStorageSyncData());
     return storageCache
 }
-let client = false
+let client=false
 
-const updateClient = async () => {
-    const token = (await getCache()).token
+const updateClient=async () => {
+    const token=(await getCache()).token
     if (!token) {
         console.log("Toggl's API token was not set")
         return
     }
-    client = new TogglClient({
+    client=new TogglClient({
         apiToken: token
     })
 }
 
-const updateWorkspaces = async () => {
+const updateWorkspaces=async () => {
     chrome.storage.local.set({
         workspaces: await getWorkspaces(),
     })
@@ -121,10 +121,11 @@ async function getTimeEntries() {
             (err, timeEntries) => {
                 if (err) reject(err)
                 timeEntries.forEach((entry) => {
-                    entry.isRunning = entry.duration < 0
-                    entry.time = getTime(entry.duration)
+                    entry.isRunning=entry.duration<0
+                    entry.time=getTime(entry.duration)
                 });
-                console.log('getting timeentries', timeEntries)
+                console.log('getting timeentries')
+                console.table(timeEntries)
                 resolve(timeEntries)
             }
         )
@@ -139,7 +140,7 @@ function toggleEntry(entryDescription, projectID) {
             if (timeEntry) {
                 console.log("Something already running: ", timeEntry.description, timeEntry.pid);
                 console.log("Checking if it is:", entryDescription, projectID);
-                if (timeEntry.pid == projectID && timeEntry.description == entryDescription) {
+                if (timeEntry.pid==projectID&&timeEntry.description==entryDescription) {
                     console.log('Matched! Stopping');
                     stopEntry(timeEntry.id)
                 } else {
@@ -155,11 +156,11 @@ function toggleEntry(entryDescription, projectID) {
 }
 
 function createEntry(entryDescription, projectID) {
-    console.log("Creating: " + entryDescription, projectID);
+    console.log("Creating: "+entryDescription, projectID);
     client.startTimeEntry({
-            description: entryDescription,
-            pid: projectID,
-        },
+        description: entryDescription,
+        pid: projectID,
+    },
         (err, timeEntry) => {
             if (err) console.log(err);
             else {
@@ -172,7 +173,7 @@ function createEntry(entryDescription, projectID) {
 }
 
 function stopEntry(entryID) {
-    console.log("Stopping: " + entryID);
+    console.log("Stopping: "+entryID);
     client.stopTimeEntry(entryID, (err, timeEntry) => {
         if (err) console.log(err);
         else {
