@@ -40,7 +40,7 @@ function NewPage() {
             <Box className='parentBox' >
                 <Box className='childBox'>
                     <h2 className='boxLabel'> Weekly Goals </h2>
-                    <GoalsView />
+                    <GoalsView entries={entries} />
                 </Box>
                 <Box className='childBox'>
                     <h2 className='boxLabel'> Weekly List </h2>

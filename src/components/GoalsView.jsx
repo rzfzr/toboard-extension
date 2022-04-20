@@ -8,16 +8,9 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
 function updateGoal(goal, entries) {
-
-    let goalEntries=[]
-
-    if (goal.description=='') {
-        goalEntries=entries
-            .filter(entry => (entry.pid===goal.project.id))
-    } else {
-        goalEntries=entries
-            .filter(entry => (entry.pid===goal.project.id&&entry.description===goal.description))
-    }
+    const goalEntries=goal.description==''?
+        entries.filter(entry => (entry.pid===goal.project.id)):
+        entries.filter(entry => (entry.pid===goal.project.id&&entry.description===goal.description))
 
     goal.isRunning=!!goalEntries.find(e => e.duration<0)
     goal.duration=goalEntries.reduce((p, c) => {
@@ -30,21 +23,19 @@ function updateGoal(goal, entries) {
     return goal
 }
 
-export default function GoalsView() {
+export default function GoalsView(props) {
     const [goals, setGoals]=useState([]);
-    const [entries, setEntries]=useState([]);
+    const entries=props.entries
     const [isEditing, setIsEditing]=useState(false);
 
     useEffect(() => {
-        chrome.storage.local.get(['goals', 'entries'], (result) => {
+        chrome.storage.local.get(['goals'], (result) => {
             result.goals.forEach(goal => {
-                goal=updateGoal(goal, result.entries)
+                goal=updateGoal(goal, entries)
             });
-
-            setEntries(result.entries||[])
             setGoals(result.goals||[])
         })
-    }, [])
+    }, [entries])
 
     useEffect(() => {
         chrome.storage.local.set({
