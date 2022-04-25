@@ -8,8 +8,7 @@
     },
     "options_page": "options.html",
     "permissions": [
-        "storage",
-        "declarativeNetRequest"
+        "storage"
     ],
     "host_permissions": [
         "*://*.api.track.toggl.com/*"
