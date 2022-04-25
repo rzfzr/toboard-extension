@@ -18,6 +18,7 @@ function getAllStorageSyncData() {
 const getCache=async () => {
     const storageCache={}
     Object.assign(storageCache, await getAllStorageSyncData());
+    console.log('returning ', storageCache)
     return storageCache
 }
 let client=false
@@ -34,9 +35,18 @@ const updateClient=async () => {
 }
 
 const updateWorkspaces=async () => {
+    const newWorkspaces=await getWorkspaces()
     chrome.storage.local.set({
-        workspaces: await getWorkspaces(),
+        workspaces: newWorkspaces,
     })
+    return newWorkspaces
+}
+const updateProjects=async () => {
+    const newProjects=await getProjects((await getCache()).workspaces)
+    chrome.storage.local.set({
+        projects: newProjects,
+    })
+    return newProjects
 }
 // const projects = await getProjects(workspaces)
 // const timeEntries = await getTimeEntries()
@@ -49,7 +59,7 @@ const updateWorkspaces=async () => {
     console.log('Start Background')
 
     await updateClient()
-    updateWorkspaces()
+    await updateProjects(await updateWorkspaces())
 
     console.log('End Background')
 })()
