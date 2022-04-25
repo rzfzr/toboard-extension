@@ -39,3 +39,7 @@ As additional information to the licence file, don't publish it before I do it, 
 - [ ] Add Option to Export and Import all options as JSON
 - [ ] Add responsiveness to layout
 - [ ] Drag and drop elements
+- [ ] Create records for each entries' description+project EVER used, in order to fully auto-complete
+- [ ] Goals should be expandables in order to present grouped entries OR grouped goals
+- [ ] Hide play buttons on goals/favorites, only show on hover (optionable)
+- [ ] Entire goal/favorite should be the toggle button (optionable) 
