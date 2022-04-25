@@ -1,17 +1,17 @@
-const path = require('path');
-const CopyPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Dotenv = require("dotenv-webpack");
-const webpack = require('webpack')
-const ProgressPlugin = require('progress-webpack-plugin')
-const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+const path=require('path');
+const CopyPlugin=require("copy-webpack-plugin");
+const HtmlWebpackPlugin=require('html-webpack-plugin');
+const Dotenv=require("dotenv-webpack");
+const webpack=require('webpack')
+const ProgressPlugin=require('progress-webpack-plugin')
+const WebpackBuildNotifierPlugin=require('webpack-build-notifier');
 
 const {
     options
-} = require('preact');
+}=require('preact');
 
 
-module.exports = {
+module.exports={
     mode: 'production',
     entry: {
         popup: './src/pages/PopupPage.jsx',
@@ -48,7 +48,10 @@ module.exports = {
         new CopyPlugin({
             patterns: [{
                 from: "public"
-            }, ],
+            }, {
+                from: "icons"
+            },
+            ],
         }),
         new HtmlWebpackPlugin({
             chunks: ['newtab'],
