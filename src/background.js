@@ -101,6 +101,7 @@ async function getWorkspaces() {
 async function getProjects(workspaces) {
     return await new Promise((resolve, reject) => {
         if (!client) return reject('No client')
+        if (!workspaces) return reject('No workspaces')
         workspaces.forEach(ws => {
             client.getWorkspaceProjects(ws.id, {
                 active: 'both'
