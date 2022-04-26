@@ -4,6 +4,7 @@
   "description": "Alternative client for quick switching entries with toggl's API",
   "main": "index.js",
   "scripts": {
+    "serve": "webpack --env=watch=true",
     "build": "webpack"
   },
   "repository": {
