@@ -10,18 +10,18 @@ As additional information to the licence file, don't publish it before I do it, 
 # To-do
 
 - [x] Add licence
-- [ ] Add icon
+- [x] Add icon
 - [ ] Add manual sync settings 
 
 - [ ] Better use background cache, reducing calls
 - [ ] Handle local -> sync storage
 
-- [ ] Purge unused 
-    - [ ] permissions
-    - [ ] other manifest options
-    - [ ] webpack plugins
+- [x] Purge unused 
+    - [x] permissions
+    - [X] other manifest options
+    - [x] webpack plugins
 
-- [ ] Publish on chrome store
+- [x] Publish on chrome store
 ---
 - [ ] Add global 'edit' button
 - [ ] Add entry grouping to list view
