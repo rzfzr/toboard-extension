@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="https://github.com/rzfzr/toboard-extension/blob/main/icons/128.png">
+</p>
 # toboard-extension
 Chromium-based browser extension, alternative client for quick switching entries with toggl's API
 
