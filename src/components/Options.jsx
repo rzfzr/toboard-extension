@@ -46,22 +46,34 @@ export default function Options() {
     };
 
     useEffect(() => {
-        chrome.storage.local.get(['apiToken'], (result) => {
-            setApiToken(result.apiToken)
-        })
+        chrome.storage.local.get(null, (items) => {
+            if (chrome.runtime.lastError) {
+                return reject(chrome.runtime.lastError);
+            }
+            console.log('Getting everything in storage', items)
+            setApiToken(items.apiToken)
+        });
     }, [])
 
     const saveForm=(event) => {
         event.preventDefault();
         chrome.storage.local.set({
             apiToken: apiToken,
-        }, () => {
-            setStatus("ok")
-            setTimeout(() => {
-                setStatus('');
-            }, 1*1000);
-        });
+        }, () => { changeStatus('ok') });
     }
+
+    const clearStorage=() => {
+        chrome.storage.local.clear()
+        chrome.storage.sync.clear(() => { changeStatus('clear') })
+    }
+
+    const changeStatus=(status) => {
+        setStatus(status)
+        setTimeout(() => {
+            setStatus('');
+        }, 1*1000);
+    }
+
 
     const onInput=(event) => setApiToken(event.target.value)
 
@@ -173,7 +185,7 @@ export default function Options() {
                     <CardActions>
                         <ButtonGroup fullWidth variant="contained" aria-label="outlined primary button group">
                             <Button type="submit" color={status==='ok'? 'success':'primary'}>Submit</Button>
-                            <Button color="error" disabled>Reset All</Button>
+                            <Button color={status==='clear'? 'success':'error'} onClick={() => { clearStorage() }} >Reset All</Button>
                         </ButtonGroup>
                     </CardActions>
                 </form>
