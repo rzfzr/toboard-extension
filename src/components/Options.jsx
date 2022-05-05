@@ -184,7 +184,8 @@ export default function Options() {
                     </CardContent>
                     <CardActions>
                         <ButtonGroup fullWidth variant="contained" aria-label="outlined primary button group">
-                            <Button type="submit" color={status==='ok'? 'success':'primary'}>Submit</Button>
+                            <Button type="submit" color={status==='ok'? 'success':'primary'}>Save Changes</Button>
+                            <Button color='secondary' onClick={() => { chrome.tabs.update({ url: "edge://newtab" }) }} >Go Home</Button>
                             <Button color={status==='clear'? 'success':'error'} onClick={() => { clearStorage() }} >Reset All</Button>
                         </ButtonGroup>
                     </CardActions>
