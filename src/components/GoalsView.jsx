@@ -30,6 +30,7 @@ export default function GoalsView(props) {
 
     useEffect(() => {
         chrome.storage.local.get(['goals'], (result) => {
+            if (!result.goals) return
             result.goals.forEach(goal => {
                 goal=updateGoal(goal, entries)
             });
