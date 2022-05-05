@@ -65,6 +65,8 @@ export default function Options() {
     const clearStorage=() => {
         chrome.storage.local.clear()
         chrome.storage.sync.clear(() => { changeStatus('clear') })
+
+        setApiToken('')
     }
 
     const changeStatus=(status) => {
