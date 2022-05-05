@@ -24,13 +24,15 @@ const getCache=async () => {
     }
 
     let { apiToken, workspaces, projects, entries }=await getAllStorageSyncData()
-    if (!apiToken) {
-        console.log("Toggl's API token was not set")
-        return
-    }
-    const client=new TogglClient({ apiToken })
 
-    if (workspaces?.legth===0) {//todo these should be parallel
+    let client={}
+    try {
+        client=new TogglClient({ apiToken })
+    } catch (error) {
+        console.log("Toggl's API token was not set")
+    }
+
+    if (!workspaces||workspaces.length===0) {//todo these should be parallel
         console.log('no workspaces, getting them')
         workspaces=await getWorkspaces(client)
         chrome.storage.local.set({
@@ -38,7 +40,7 @@ const getCache=async () => {
         })
     }
 
-    if (projects?.legth===0) {//todo these should be parallel
+    if (!projects||projects.length===0) {//todo these should be parallel
         console.log('no projects, getting them')
         projects=await getProjects(client, workspaces)
         chrome.storage.local.set({
@@ -103,7 +105,9 @@ chrome.runtime.onMessage.addListener(
 );
 
 async function getWorkspaces(client) {
-    return await new Promise(async (resolve, reject) => {
+    return await new Promise((resolve, reject) => {
+        console.log('trying to get workspaces', client)
+        if (!client) reject([])
         client.getWorkspaces((err, workspaces) => {
             if (err) return reject(error)
             resolve(workspaces)
@@ -112,7 +116,17 @@ async function getWorkspaces(client) {
 }
 
 async function getProjects(client, workspaces) {
-    return await new Promise(async (resolve, reject) => {
+    return await new Promise((resolve, reject) => {
+        console.log('will check ', client, workspaces, !!workspaces)
+        if (!client) {
+            console.log('rejecting cause of client')
+            reject([])
+        }
+        if (!workspaces) {
+            console.log('rejecting cause of workspaces')
+            reject([])
+        }
+        console.log('tring to get workspaces', workspaces)
         workspaces.forEach(ws => {
             client.getWorkspaceProjects(ws.id, {
                 active: 'both'
@@ -125,7 +139,7 @@ async function getProjects(client, workspaces) {
 }
 
 async function getTimeEntries(client) {
-    return await new Promise(async (resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         client.getTimeEntries(
             getPreviousMonday(),
             new Date().toISOString(),
