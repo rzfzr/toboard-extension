@@ -46,3 +46,7 @@ As additional information to the licence file, don't publish it before I do it, 
 - [ ] Goals should be expandables in order to present grouped entries OR grouped goals
 - [ ] Hide play buttons on goals/favorites, only show on hover (optionable)
 - [ ] Entire goal/favorite should be the toggle button (optionable) 
+- [ ] Goals order should be = custom | percentage asc/des | time asc/desc 
+- [ ] Active goal moves up (togglable)
+- [ ] Add current task to popup panel
+- [ ] Add option to show goal percentage
