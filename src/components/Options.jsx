@@ -34,7 +34,7 @@ const darkTheme=createTheme({
 });
 
 export default function Options() {
-    const [tokenValue, setTokenValue]=useState('');
+    const [apiToken, setApiToken]=useState('');
     const [status, setStatus]=useState('');
 
     const [expansions, setExpansions]=useState([true, false, false]);
@@ -46,15 +46,15 @@ export default function Options() {
     };
 
     useEffect(() => {
-        chrome.storage.local.get(['token'], (result) => {
-            setTokenValue(result.token)
+        chrome.storage.local.get(['apiToken'], (result) => {
+            setApiToken(result.apiToken)
         })
     }, [])
 
     const saveForm=(event) => {
         event.preventDefault();
         chrome.storage.local.set({
-            token: tokenValue,
+            apiToken: apiToken,
         }, () => {
             setStatus("ok")
             setTimeout(() => {
@@ -63,7 +63,7 @@ export default function Options() {
         });
     }
 
-    const onInput=(event) => setTokenValue(event.target.value)
+    const onInput=(event) => setApiToken(event.target.value)
 
     return <ThemeProvider theme={darkTheme}>
         <Grid
@@ -85,7 +85,7 @@ export default function Options() {
                                 <Typography>Main</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <TextField fullWidth value={tokenValue} onInput={onInput} label="API Token" variant="standard" color='primary' />
+                                <TextField fullWidth value={apiToken} onInput={onInput} label="API Token" variant="standard" color='primary' />
                                 <FormControl fullWidth>
                                     <FormControlLabel disabled control={<Switch defaultChecked />} label="Show Weekly Goals" />
                                 </FormControl>

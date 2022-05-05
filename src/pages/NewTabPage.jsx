@@ -19,8 +19,8 @@ function NewPage() {
     const [status, setStatus]=useState('')
 
     useEffect(() => {
-        chrome.storage.local.get(['token'], (result) => {
-            setStatus(result.token? 'current':'new')
+        chrome.storage.local.get(['apiToken'], (result) => {
+            setStatus(result.apiToken? 'current':'new')
         })
 
         chrome.runtime.sendMessage({ message: 'getAll' }, function ({ entries, projects, error }) {
