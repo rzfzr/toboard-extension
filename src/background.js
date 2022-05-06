@@ -18,7 +18,6 @@ function getAllStorageSyncData() {
 
 let storageCache={}
 
-
 const timers={
     cache: 1000*5,//5 seconds
     workspaces: 1000*60*60*12,//12 houwrs
@@ -26,7 +25,8 @@ const timers={
     entries: 1000*30,//30 seconds 
 }
 const isExpired=(selection) => {
-    //this is only working as inteded for 'cache', everything else is being postponed if cache is refreshed, should have a time value for each 
+    //this is only working as inteded for 'cache', everything else is being postponed if cache is refreshed
+    //there should have a time value for each 
     return Date.now()-storageCache.cacheTime<timers[selection]
 }
 
@@ -36,8 +36,8 @@ const getCache=async () => {
     }
 
     let { apiToken, workspaces, projects, entries }=await getAllStorageSyncData()
-
     let client={}
+
     try {
         client=new TogglClient({ apiToken })
     } catch (error) {
@@ -85,7 +85,7 @@ chrome.runtime.onMessage.addListener(
         message,
         entry
     }, sender, sendResponse) {
-        switch (message) { // all cases should sendResponse, because of return true
+        switch (message) {
             case 'getAll':
                 (async () => {
                     const { entries, projects }=await getCache()
@@ -115,7 +115,6 @@ chrome.runtime.onMessage.addListener(
 
 async function getWorkspaces(client) {
     return await new Promise((resolve, reject) => {
-        console.log('trying to get workspaces', client)
         if (!client) reject([])
         client.getWorkspaces((err, workspaces) => {
             if (err) return reject(error)
