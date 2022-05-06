@@ -27,11 +27,13 @@ const timers={
 const isExpired=(selection) => {
     //this is only working as inteded for 'cache', everything else is being postponed if cache is refreshed
     //there should have a time value for each 
-    return Date.now()-storageCache.cacheTime<timers[selection]
+    return Date.now()-storageCache.cacheTime>timers[selection]
 }
 
 const getCache=async () => {
-    if (!isExpired('cache')) {
+
+    if (!!storageCache.cacheTime&&!isExpired('cache')) {//it has to exist and not have expired
+        console.log('not expired', storageCache,)
         return storageCache
     }
 
@@ -58,7 +60,9 @@ const getCache=async () => {
         })
     }
 
+    console.log('checking')
     if (!entries||entries.length===0||isExpired('entries')) {
+        console.log('not found')
         entries=await getTimeEntries(client)
         chrome.storage.local.set({
             entries
@@ -77,6 +81,7 @@ const getCache=async () => {
 }
 
 (async () => {
+    console.log('start')
     getCache()
 })()
 
@@ -88,7 +93,10 @@ chrome.runtime.onMessage.addListener(
         switch (message) {
             case 'getAll':
                 (async () => {
+                    console.log('getting all')
+
                     const { entries, projects }=await getCache()
+
                     sendResponse({
                         entries,
                         projects,
@@ -147,10 +155,12 @@ async function getProjects(client, workspaces) {
 
 async function getTimeEntries(client) {
     return await new Promise((resolve, reject) => {
+        console.log('getting timeentries', client)
         client.getTimeEntries(
             getPreviousMonday(),
             new Date().toISOString(),
             (err, timeEntries) => {
+                console.log('gott', err, timeEntries)
                 if (err) reject(err)
                 timeEntries.forEach((entry) => {
                     entry.isRunning=entry.duration<0
