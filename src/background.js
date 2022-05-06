@@ -48,6 +48,14 @@ const getCache=async () => {
         })
     }
 
+    if (!entries||entries.length===0) {//todo these should be parallel
+        console.log('no entries, getting them')
+        entries=await getTimeEntries(client)
+        chrome.storage.local.set({
+            entries
+        })
+    }
+
     storageCache={
         cacheTime: Date.now(),
         apiToken,
@@ -58,13 +66,6 @@ const getCache=async () => {
     }
     return storageCache
 }
-
-// const projects = await getProjects(workspaces)
-// const timeEntries = await getTimeEntries()
-
-// projects: projects,
-// entries: timeEntries,
-
 
 (async () => {
     getCache()
@@ -78,11 +79,12 @@ chrome.runtime.onMessage.addListener(
         switch (message) { // all cases should sendResponse, because of return true
             case 'getAll':
                 (async () => {
+                    const { entries, projects }=await getCache()
                     console.log('Asking for everything')
-                    const { client, workspaces }=await getCache()
+                    console.table(entries)
                     sendResponse({
-                        entries: await getTimeEntries(client),
-                        projects: await getProjects(client, workspaces),
+                        entries,
+                        projects,
                     });
                 })()
                 break;
@@ -128,10 +130,9 @@ async function getProjects(client, workspaces) {
         }
         console.log('tring to get workspaces', workspaces)
         workspaces.forEach(ws => {
-            client.getWorkspaceProjects(ws.id, {
-                active: 'both'
-            }, (err, projects) => {
+            client.getWorkspaceProjects(ws.id, (err, projects) => {
                 if (err) return reject(error)
+                console.log('resolving p', projects)
                 resolve(projects)
             })
         });
