@@ -11,7 +11,8 @@ const { options }=require('preact');
 
 module.exports=(env) => {
     return {
-        mode: 'production',
+        mode: env.mode,
+        devtool: env.mode==='development'? "source-map":false,
         entry: {
             popup: './src/pages/PopupPage.jsx',
             newtab: './src/pages/NewTabPage.jsx',
@@ -72,7 +73,7 @@ module.exports=(env) => {
             }),
 
         ],
-        watch: env.watch==='true',
+        watch: env.mode==='development',
         watchOptions: {
             aggregateTimeout: 500,
             ignored: './node_modules/',
@@ -109,8 +110,8 @@ module.exports=(env) => {
             mergeDuplicateChunks: false,
         },
         performance: {
-            maxAssetSize: 2800000,
-            maxEntrypointSize: 2800000,
+            maxAssetSize: 3000000,
+            maxEntrypointSize: 3000000,
             hints: "warning"
         }
     }
