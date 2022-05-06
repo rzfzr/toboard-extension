@@ -18,8 +18,20 @@ function getAllStorageSyncData() {
 
 let storageCache={}
 
+
+const timers={
+    cache: 1000*5,//5 seconds
+    workspaces: 1000*60*60*12,//12 houwrs
+    projects: 1000*60*60*2,//2 hours
+    entries: 1000*30,//30 seconds 
+}
+const isExpired=(selection) => {
+    //this is only working as inteded for 'cache', everything else is being postponed if cache is refreshed, should have a time value for each 
+    return Date.now()-storageCache.cacheTime<timers[selection]
+}
+
 const getCache=async () => {
-    if (Date.now()-storageCache.cacheTime<5*1000) {
+    if (!isExpired('cache')) {
         return storageCache
     }
 
@@ -32,24 +44,21 @@ const getCache=async () => {
         console.log("Toggl's API token was not set")
     }
 
-    if (!workspaces||workspaces.length===0) {//todo these should be parallel
-        console.log('no workspaces, getting them')
+    if (!workspaces||workspaces.length===0||isExpired('workspaces')) {
         workspaces=await getWorkspaces(client)
         chrome.storage.local.set({
             workspaces
         })
     }
 
-    if (!projects||projects.length===0) {//todo these should be parallel
-        console.log('no projects, getting them')
+    if (!projects||projects.length===0||isExpired('projects')) {
         projects=await getProjects(client, workspaces)
         chrome.storage.local.set({
             projects
         })
     }
 
-    if (!entries||entries.length===0) {//todo these should be parallel
-        console.log('no entries, getting them')
+    if (!entries||entries.length===0||isExpired('entries')) {
         entries=await getTimeEntries(client)
         chrome.storage.local.set({
             entries
@@ -80,8 +89,6 @@ chrome.runtime.onMessage.addListener(
             case 'getAll':
                 (async () => {
                     const { entries, projects }=await getCache()
-                    console.log('Asking for everything')
-                    console.table(entries)
                     sendResponse({
                         entries,
                         projects,
