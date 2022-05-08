@@ -50,3 +50,8 @@ As additional information to the licence file, don't publish it before I do it, 
 - [ ] Active goal moves up (togglable)
 - [ ] Add current task to popup panel
 - [ ] Add option to show goal percentage
+- [ ] Add "for toggl" in the subtitle
+- [ ] Add "working hours"
+- [ ] Add welcome/on boarding process
+    - [ ] Info about setting and completing realistic goals
+    - [ ] Info about work-life balance
