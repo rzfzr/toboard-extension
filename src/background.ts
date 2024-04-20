@@ -1,6 +1,7 @@
 //@ts-nocheck
 import TogglClient from 'toggl-api';
-import * as jose from 'jose'
+import 'babel-polyfill'
+
 import {
     getTime,
     getPreviousMonday
@@ -38,47 +39,47 @@ const getCache = async () => {
         return storageCache
     }
 
-    // let { apiToken, workspaces, projects, entries } = await getAllStorageSyncData()
-    // let client = {}
-    // console.log('getting cache', apiToken, workspaces, projects, entries)
-    // try {
-    //     client = new TogglClient({ apiToken })
-    // } catch (error) {
-    //     console.log("Toggl's API token was not set")
-    // }
+    let { apiToken, workspaces, projects, entries } = await getAllStorageSyncData()
+    let client = {}
+    console.log('getting cache', apiToken, workspaces, projects, entries)
+    try {
+        client = new TogglClient({ apiToken })
+    } catch (error) {
+        console.log("Toggl's API token was not set")
+    }
 
-    // if (!workspaces || workspaces.length === 0 || isExpired('workspaces')) {
-    //     workspaces = await getWorkspaces(client)
-    //     chrome.storage.local.set({
-    //         workspaces
-    //     })
-    // }
+    if (!workspaces || workspaces.length === 0 || isExpired('workspaces')) {
+        workspaces = await getWorkspaces(client)
+        chrome.storage.local.set({
+            workspaces
+        })
+    }
 
-    // if (!projects || projects.length === 0 || isExpired('projects')) {
-    //     projects = await getProjects(client, workspaces)
-    //     chrome.storage.local.set({
-    //         projects
-    //     })
-    // }
+    if (!projects || projects.length === 0 || isExpired('projects')) {
+        projects = await getProjects(client, workspaces)
+        chrome.storage.local.set({
+            projects
+        })
+    }
 
-    // console.log('checking')
-    // if (!entries || entries.length === 0 || isExpired('entries')) {
-    //     console.log('not found')
-    //     entries = await getTimeEntries(client)
-    //     chrome.storage.local.set({
-    //         entries
-    //     })
-    // }
+    console.log('checking')
+    if (!entries || entries.length === 0 || isExpired('entries')) {
+        console.log('not found')
+        entries = await getTimeEntries(client)
+        chrome.storage.local.set({
+            entries
+        })
+    }
 
-    // storageCache = {
-    //     cacheTime: Date.now(),
-    //     apiToken,
-    //     client,
-    //     workspaces,
-    //     projects,
-    //     entries
-    // }
-    // return storageCache
+    storageCache = {
+        cacheTime: Date.now(),
+        apiToken,
+        client,
+        workspaces,
+        projects,
+        entries
+    }
+    return storageCache
 }
 
 (async () => {
