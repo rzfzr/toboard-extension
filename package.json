@@ -1,5 +1,5 @@
 {
-  "name": "toboard-extension",
+  "name": "toboard",
   "description": "Alternative client for quick switching entries with toggl's API",
   "private": false,
   "version": "0.0.1001",
