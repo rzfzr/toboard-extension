@@ -7,6 +7,21 @@ import {
     getPreviousMonday
 } from './utils'
 
+let togglClientInstance = null;
+
+async function getTogglClient() {
+    const { apiToken } = await getAllStorageSyncData();
+    if (!togglClientInstance) {
+        try {
+            togglClientInstance = new TogglClient({ apiToken });
+        } catch (error) {
+            console.log("Error initializing TogglClient:", error);
+        }
+    }
+    return togglClientInstance;
+}
+
+
 function getAllStorageSyncData() {
     return new Promise((resolve, reject) => {
         chrome.storage.local.get(null, (items) => {
@@ -84,7 +99,7 @@ const getCache = async () => {
 
 (async () => {
     console.log('start', getTime(new Date().getTime()))
-    // getCache()
+    console.log(await getTogglClient())
 })()
 
 chrome.runtime.onMessage.addListener(
