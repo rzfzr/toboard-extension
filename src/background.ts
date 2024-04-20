@@ -70,15 +70,15 @@ const getCache = async () => {
     //     })
     // }
 
-    storageCache = {
-        cacheTime: Date.now(),
-        apiToken,
-        client,
-        workspaces,
-        projects,
-        entries
-    }
-    return storageCache
+    // storageCache = {
+    //     cacheTime: Date.now(),
+    //     apiToken,
+    //     client,
+    //     workspaces,
+    //     projects,
+    //     entries
+    // }
+    // return storageCache
 }
 
 (async () => {
