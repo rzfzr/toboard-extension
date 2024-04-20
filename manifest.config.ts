@@ -13,7 +13,7 @@ export default defineManifest(async (env) => ({
     version: `${major}.${minor}.${patch}.${label}`,
     version_name: version,
     action: {
-        default_popup: 'index.html'
+        default_popup: 'popup.html'
     },
     description: "Dashboard for quick switching entries with toggl's API",
     options_page: "options.html",
@@ -24,12 +24,12 @@ export default defineManifest(async (env) => ({
         "*://*.api.track.toggl.com/*"
     ],
     chrome_url_overrides: {
-        "newtab": "newTab.html"
+        "newtab": "index.html"
     },
-    // background: {
-    //     "service_worker": "background.js",
-    //     "type": "module"
-    // },
+    background: {
+        "service_worker": "src/background.ts",
+        "type": "module"
+    },
     icons: {
         "16": "icons/16.png",
         "48": "icons/48.png",
