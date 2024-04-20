@@ -6,20 +6,18 @@ import manifest from './manifest.config'
 
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
-
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(),
   crx({ manifest }),
   nodePolyfills({
-    // protocolImports: true,
+    exclude: ['net'],
     overrides: {
-      // stream: 'stream-browserify',
+      stream: 'stream-browserify',
       https: "https-browserify",
       http: "stream-http",
-      // util: "util/",
-      // url: "url/",
-      // buffer: "buffer/",
+      util: "util/",
+      url: "url/",
+      buffer: "buffer/",
     },
   })]
 })
