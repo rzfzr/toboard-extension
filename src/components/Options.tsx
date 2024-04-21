@@ -1,5 +1,6 @@
-import { render, h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+//@ts-nocheck
+
+import { useState, useEffect } from 'react';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -27,21 +28,21 @@ import {
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const darkTheme=createTheme({
+const darkTheme = createTheme({
     palette: {
         mode: 'dark',
     },
 });
 
 export default function Options() {
-    const [apiToken, setApiToken]=useState('');
-    const [status, setStatus]=useState('');
+    const [apiToken, setApiToken] = useState('');
+    const [status, setStatus] = useState('');
 
-    const [expansions, setExpansions]=useState([true, false, false]);
+    const [expansions, setExpansions] = useState([true, false, false]);
 
-    const handleExpansion=sel => (event) => {
-        let temp=[...expansions]
-        temp[sel]=!temp[sel]
+    const handleExpansion = sel => (event) => {
+        let temp = [...expansions]
+        temp[sel] = !temp[sel]
         setExpansions(temp);
     };
 
@@ -55,29 +56,29 @@ export default function Options() {
         });
     }, [])
 
-    const saveForm=(event) => {
+    const saveForm = (event) => {
         event.preventDefault();
         chrome.storage.local.set({
             apiToken: apiToken,
         }, () => { changeStatus('ok') });
     }
 
-    const clearStorage=() => {
+    const clearStorage = () => {
         chrome.storage.local.clear()
         chrome.storage.sync.clear(() => { changeStatus('clear') })
 
         setApiToken('')
     }
 
-    const changeStatus=(status) => {
+    const changeStatus = (status) => {
         setStatus(status)
         setTimeout(() => {
             setStatus('');
-        }, 1*1000);
+        }, 1 * 1000);
     }
 
 
-    const onInput=(event) => setApiToken(event.target.value)
+    const onInput = (event) => setApiToken(event.target.value)
 
     return <ThemeProvider theme={darkTheme}>
         <Grid
@@ -186,9 +187,9 @@ export default function Options() {
                     </CardContent>
                     <CardActions>
                         <ButtonGroup fullWidth variant="contained" aria-label="outlined primary button group">
-                            <Button type="submit" color={status==='ok'? 'success':'primary'}>Save Changes</Button>
+                            <Button type="submit" color={status === 'ok' ? 'success' : 'primary'}>Save Changes</Button>
                             <Button color='secondary' onClick={() => { chrome.tabs.update({ url: "edge://newtab" }) }} >Go Home</Button>
-                            <Button color={status==='clear'? 'success':'error'} onClick={() => { clearStorage() }} >Reset All</Button>
+                            <Button color={status === 'clear' ? 'success' : 'error'} onClick={() => { clearStorage() }} >Reset All</Button>
                         </ButtonGroup>
                     </CardActions>
                 </form>

@@ -1,5 +1,5 @@
-import { render, h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { render, h } from 'react';
+import { useState, useEffect } from 'react';
 
 import ListItem from './ListItem.jsx';
 import NewFavorite from './NewFavorite.jsx';
@@ -9,8 +9,8 @@ import EditIcon from '@mui/icons-material/Edit';
 
 
 export default function FavoritesView() {
-    const [favorites, setFavorites]=useState([]);
-    const [isEditing, setIsEditing]=useState(false);
+    const [favorites, setFavorites] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         chrome.storage.local.get(['favorites'], (result) => {
@@ -26,11 +26,11 @@ export default function FavoritesView() {
 
     function deleteFavorite(favorite) {
         setFavorites(favorites.filter(f =>
-            !(f.description===favorite.description&&f.project.name===favorite.project.name)))
+            !(f.description === favorite.description && f.project.name === favorite.project.name)))
     }
 
     function addFavorite(description, project) {
-        const favorite={ description, project: project.name? project:{ name: project } }
+        const favorite = { description, project: project.name ? project : { name: project } }
         setFavorites([...favorites, favorite])
     }
 
@@ -48,7 +48,7 @@ export default function FavoritesView() {
             onClick={() => { setIsEditing(!isEditing) }}>
             <EditIcon />
         </IconButton>
-        {isEditing&&<NewFavorite add={addFavorite} />}
+        {isEditing && <NewFavorite add={addFavorite} />}
     </div>
 }
 

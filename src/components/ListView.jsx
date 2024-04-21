@@ -1,4 +1,4 @@
-import { render, h, Fragment } from 'preact';
+import { render, h, Fragment } from 'react';
 import ListItem from './ListItem.jsx';
 
 import Accordion from '@mui/material/Accordion';
@@ -12,17 +12,17 @@ import {
 } from '../utils'
 
 export default function ListView(props) {
-    const entries=props.entries? props.entries.reverse():[]
-    let days=[]
+    const entries = props.entries ? props.entries.reverse() : []
+    let days = []
 
     entries.forEach((entry) => {
-        let entryDate=formatDate(new Date(entry.start));
-        let day=days.find((d) => d.label==entryDate);
+        let entryDate = formatDate(new Date(entry.start));
+        let day = days.find((d) => d.label == entryDate);
         if (!day) {
             days.push({ label: entryDate });
-            day=days.find((d) => d.label==entryDate);
+            day = days.find((d) => d.label == entryDate);
         }
-        if (!day.entries) day.entries=[];
+        if (!day.entries) day.entries = [];
         day.entries.push(entry);
     });
 

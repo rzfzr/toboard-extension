@@ -1,5 +1,5 @@
-import { render, h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { render, h } from 'react';
+import { useState, useEffect } from 'react';
 // import { useContext } from 'react';
 import { Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,17 +12,17 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Autocomplete from '@mui/material/Autocomplete'
 
 export default function NewGoal(props) {
-    const [description, setDescription]=useState('')
-    const [project, setProject]=useState('')
-    const [target, setTarget]=useState('')
+    const [description, setDescription] = useState('')
+    const [project, setProject] = useState('')
+    const [target, setTarget] = useState('')
 
-    const [projects, setProjects]=useState([])
+    const [projects, setProjects] = useState([])
 
-    const [isEditing, setEditing]=useState(false)
+    const [isEditing, setEditing] = useState(false)
 
-    const [timeUnit, setTimeUnit]=useState('hours');
+    const [timeUnit, setTimeUnit] = useState('hours');
 
-    const [goalType, setGoalType]=useState('total');//total per week, average per day, average per entry
+    const [goalType, setGoalType] = useState('total');//total per week, average per day, average per entry
 
     useEffect(() => {
         chrome.storage.local.get(['projects'], (result) => {
@@ -65,7 +65,7 @@ export default function NewGoal(props) {
                         color="primary"
                         value={timeUnit}
                         exclusive
-                        onChange={(event, newValue) => { if (newValue!==null) setTimeUnit(newValue) }}
+                        onChange={(event, newValue) => { if (newValue !== null) setTimeUnit(newValue) }}
                         style={{ width: '25%' }}
                     >
                         <ToggleButton
@@ -86,7 +86,7 @@ export default function NewGoal(props) {
                     <Button
                         style={{ width: '50%' }}
                         onClick={() => {
-                            props.add(description, project, timeUnit=='hours'? target*60:target)
+                            props.add(description, project, timeUnit == 'hours' ? target * 60 : target)
                             setEditing(false)
                         }}>Save</Button>
                     <Button

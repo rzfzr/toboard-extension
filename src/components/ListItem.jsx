@@ -1,4 +1,4 @@
-import { render, h } from 'preact';
+import { render, h } from 'react';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -9,11 +9,11 @@ import CustomFab from './CustomFab.jsx'
 import { getTime, colorShade } from '../utils'
 
 export default function ListItem(props) {
-    const time=props.entry.duration<0?
-        getTime(props.entry.duration+Date.now()/1000)
-        :props.entry.time
+    const time = props.entry.duration < 0 ?
+        getTime(props.entry.duration + Date.now() / 1000)
+        : props.entry.time
 
-    const lightColor=colorShade(props.entry?.project?.hex_color, +50)
+    const lightColor = colorShade(props.entry?.project?.hex_color, +50)
 
     return (<Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
         <Box className="floating-left" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>

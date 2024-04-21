@@ -1,5 +1,5 @@
-import { render, h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { render, h } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
@@ -9,12 +9,12 @@ import Autocomplete from '@mui/material/Autocomplete'
 
 export default function NewFavorite(props) {
 
-    const [description, setDescription]=useState('')
-    const [project, setProject]=useState('')
+    const [description, setDescription] = useState('')
+    const [project, setProject] = useState('')
 
-    const [projects, setProjects]=useState([])
+    const [projects, setProjects] = useState([])
 
-    const [isEditing, setEditing]=useState(false)
+    const [isEditing, setEditing] = useState(false)
 
     useEffect(() => {
         chrome.storage.local.get(['projects'], (result) => {

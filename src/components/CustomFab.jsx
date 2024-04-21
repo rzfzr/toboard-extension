@@ -1,4 +1,4 @@
-import { render, h, Fragment } from 'preact';
+import { render, h, Fragment } from 'react';
 
 import Fab from '@mui/material/Fab';
 
@@ -10,7 +10,7 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
 export default function CustomFab(props) {
     return <Fragment>
-        {props.isEditing?
+        {props.isEditing ?
             <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
                 onClick={() => { props.delete(props.entry) }}>
                 <DeleteIcon sx={{ transform: 'scale(2)' }} />
@@ -22,7 +22,7 @@ export default function CustomFab(props) {
                         console.log(response);
                     });
                 }}>
-                {props.isRunning?
+                {props.isRunning ?
                     <Fragment>
                         <PauseCircleIcon sx={{ transform: 'scale(2.2)' }} />
                         <CircularProgress

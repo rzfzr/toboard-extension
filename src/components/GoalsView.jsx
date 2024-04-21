@@ -1,5 +1,5 @@
-import { render, h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { render, h } from 'react';
+import { useState, useEffect } from 'react';
 
 import GoalItem from './GoalItem.jsx';
 import NewGoal from './NewGoal.jsx';
@@ -8,33 +8,33 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
 function updateGoal(goal, entries) {
-    const goalEntries=goal.description==''?
-        entries.filter(entry => (entry.pid===goal.project.id)):
-        entries.filter(entry => (entry.pid===goal.project.id&&entry.description===goal.description))
+    const goalEntries = goal.description == '' ?
+        entries.filter(entry => (entry.pid === goal.project.id)) :
+        entries.filter(entry => (entry.pid === goal.project.id && entry.description === goal.description))
 
-    goal.isRunning=!!goalEntries.find(e => e.duration<0)
-    goal.duration=goalEntries.reduce((p, c) => {
-        if (c.duration<0) {
-            let n=Date.now()/1000
-            return p+n+c.duration
+    goal.isRunning = !!goalEntries.find(e => e.duration < 0)
+    goal.duration = goalEntries.reduce((p, c) => {
+        if (c.duration < 0) {
+            let n = Date.now() / 1000
+            return p + n + c.duration
         }
-        return p+c.duration
+        return p + c.duration
     }, 0)
     return goal
 }
 
 export default function GoalsView(props) {
-    const [goals, setGoals]=useState([]);
-    const entries=props.entries
-    const [isEditing, setIsEditing]=useState(false);
+    const [goals, setGoals] = useState([]);
+    const entries = props.entries
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         chrome.storage.local.get(['goals'], (result) => {
             if (!result.goals) return
             result.goals.forEach(goal => {
-                goal=updateGoal(goal, entries)
+                goal = updateGoal(goal, entries)
             });
-            setGoals(result.goals||[])
+            setGoals(result.goals || [])
         })
     }, [entries])
 
@@ -45,12 +45,12 @@ export default function GoalsView(props) {
     }, [goals])
 
     function deleteGoal(goal) {
-        setGoals(goals.filter(f => !(f.description===goal.description&&f.project.name===goal.project.name)))
+        setGoals(goals.filter(f => !(f.description === goal.description && f.project.name === goal.project.name)))
     }
     function addGoal(description, project, target) {
-        const goal=updateGoal({
-            description: description!==''? description:false,
-            project: project.name? project:{ name: project },
+        const goal = updateGoal({
+            description: description !== '' ? description : false,
+            project: project.name ? project : { name: project },
             target: target,
         }, entries)
         setGoals([...goals, goal])
@@ -63,5 +63,5 @@ export default function GoalsView(props) {
             <EditIcon />
         </IconButton>
 
-        {isEditing&&<NewGoal add={addGoal} />}</div>
+        {isEditing && <NewGoal add={addGoal} />}</div>
 }
