@@ -1,5 +1,5 @@
 import { render, h, Fragment } from 'react';
-import ListItem from './ListItem.jsx';
+import ListItem from './ListItem.js';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import {
     formatDate
-} from '../utils'
+} from '../utils.js'
 
 export default function ListView(props) {
     const entries = props.entries ? props.entries.reverse() : []

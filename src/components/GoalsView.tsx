@@ -1,7 +1,7 @@
 import { render, h } from 'react';
 import { useState, useEffect } from 'react';
 
-import GoalItem from './GoalItem.jsx';
+import GoalItem from './GoalItem.js';
 import NewGoal from './NewGoal.jsx';
 
 import IconButton from '@mui/material/IconButton';

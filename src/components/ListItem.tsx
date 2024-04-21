@@ -5,8 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import CustomFab from './CustomFab.jsx'
-import { getTime, colorShade } from '../utils'
+import CustomFab from './CustomFab.js'
+import { getTime, colorShade } from '../utils.js'
 
 export default function ListItem(props) {
     const time = props.entry.duration < 0 ?

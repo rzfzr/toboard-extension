@@ -6,8 +6,8 @@ import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import CustomFab from './CustomFab.jsx'
-import { colorShade, getTime } from '../utils'
+import CustomFab from './CustomFab.js'
+import { colorShade, getTime } from '../utils.js'
 
 export default function GoalItem(props) {
     const progress = Math.min((100 / props.goal.target) * (props.goal.duration / 60), 100)
