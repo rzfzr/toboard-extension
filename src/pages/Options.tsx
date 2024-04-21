@@ -1,9 +1,8 @@
-// import "../../global.css";
-import Options from '../components/Options';
-// import bootstrap from '../../main.js'
-
-export default function OptionsPage() {
-    return <Options />
+import bootstrap from '../main'
+export default function Options() {
+    console.log('-> Options')
+    return <h1>Options</h1>
 }
 
-// bootstrap(OptionsPage)
+Options.displayName = 'Options'
+bootstrap(Options)
