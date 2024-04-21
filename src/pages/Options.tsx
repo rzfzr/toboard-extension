@@ -1,7 +1,8 @@
 import bootstrap from '../main'
+import OptionList from '../components/OptionList'
 export default function Options() {
     console.log('-> Options')
-    return <h1>Options</h1>
+    return (<OptionList />)
 }
 
 Options.displayName = 'Options'

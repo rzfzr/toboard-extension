@@ -2,7 +2,7 @@ import bootstrap from "../main"
 //@ts-nocheck
 import { useState, useEffect } from 'react';
 import ListView from '../components/ListView';
-import Options from '../components/Options';
+import OptionList from '../components/OptionList';
 import FavoritesView from '../components/FavoritesView';
 import GoalsView from '../components/GoalsView';
 import Box from '@mui/material/Box';
@@ -15,6 +15,7 @@ const darkTheme = createTheme({
 });
 
 function NewTab() {
+    console.log('-> NewTab')
     const [entries, setEntries] = useState([]);
     const [status, setStatus] = useState('')
 
@@ -34,7 +35,7 @@ function NewTab() {
 
     return (<ThemeProvider theme={darkTheme}>
 
-        {status === 'new' && <Options />}
+        {status === 'new' && <OptionList />}
 
         {status === 'current' &&
             <Box className='parentBox' >

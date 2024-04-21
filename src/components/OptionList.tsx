@@ -34,7 +34,7 @@ const darkTheme = createTheme({
     },
 });
 
-export default function Options() {
+export default function OptionList() {
     const [apiToken, setApiToken] = useState('');
     const [status, setStatus] = useState('');
 

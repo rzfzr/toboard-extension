@@ -1,6 +1,6 @@
 import bootstrap from "../main"
 function Popup() {
-    console.log('Popup')
+    console.log('-> Popup')
     return (<h1>Popup</h1>)
 }
 
