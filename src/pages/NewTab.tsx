@@ -1,4 +1,5 @@
 import bootstrap from "../main"
+import "../global.css";
 //@ts-nocheck
 import { useState, useEffect } from 'react';
 import ListView from '../components/ListView';
