@@ -26,10 +26,10 @@ export default defineManifest(async (env) => ({
     chrome_url_overrides: {
         "newtab": "index.html"
     },
-    background: {
-        "service_worker": "src/background.ts",
-        "type": "module"
-    },
+    // background: {
+    //     "service_worker": "src/background.ts",
+    //     "type": "module"
+    // },
     icons: {
         "16": "icons/16.png",
         "48": "icons/48.png",
