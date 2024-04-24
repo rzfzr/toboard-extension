@@ -1,5 +1,3 @@
-import { render, h, Fragment } from 'react';
-
 import LinearProgress from '@mui/material/LinearProgress';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -9,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import CustomFab from './CustomFab.js'
 import { colorShade, getTime } from '../utils.js'
 
-export default function GoalItem(props) {
+export default function GoalItem(props: any) {
     const progress = Math.min((100 / props.goal.target) * (props.goal.duration / 60), 100)
     const lightColor = colorShade(props.goal?.project?.hex_color, +50)
 

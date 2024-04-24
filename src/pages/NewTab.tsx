@@ -18,17 +18,17 @@ const darkTheme = createTheme({
 function NewTab() {
     console.log('-> NewTab')
     const [entries, setEntries] = useState([]);
-    const [status, setStatus] = useState('')
+    const [apiStatus, setApiStatus] = useState(null as null | 'new' | 'current')
 
     useEffect(() => {
         chrome.storage.local.get(['apiToken'], (result: any) => {
-            setStatus(result.apiToken ? 'current' : 'new')
+            setApiStatus(result.apiToken ? 'current' : 'new')
         })
 
-        chrome.runtime.sendMessage({ message: 'getAll' }, function ({ entries, projects, error }) {
+        chrome.runtime.sendMessage({ message: 'getAll' }, function ({ entries, projects, error }: any) {
             if (error) return
             entries.forEach((entry: any) => {
-                entry.project = projects.find(p => p.id === entry.pid)
+                entry.project = projects.find((p: any) => p.id === entry.pid)
             });
             setEntries(entries)
         });
@@ -36,9 +36,9 @@ function NewTab() {
 
     return (<ThemeProvider theme={darkTheme}>
 
-        {status === 'new' && <OptionList />}
+        {apiStatus === 'new' && <OptionList />}
 
-        {status === 'current' &&
+        {apiStatus === 'current' &&
             <Box className='parentBox' >
                 <Box className='childBox'>
                     <h2 className='boxLabel'> Weekly Goals </h2>

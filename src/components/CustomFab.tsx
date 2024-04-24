@@ -1,5 +1,3 @@
-import { render, h, Fragment } from 'react';
-
 import Fab from '@mui/material/Fab';
 
 import CircularProgress from '@mui/material/CircularProgress';
@@ -8,8 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
-export default function CustomFab(props) {
-    return <Fragment>
+export default function CustomFab(props: any) {
+    return <>
         {props.isEditing ?
             <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
                 onClick={() => { props.delete(props.entry) }}>
@@ -23,7 +21,7 @@ export default function CustomFab(props) {
                     });
                 }}>
                 {props.isRunning ?
-                    <Fragment>
+                    <>
                         <PauseCircleIcon sx={{ transform: 'scale(2.2)' }} />
                         <CircularProgress
                             size={55}
@@ -33,12 +31,12 @@ export default function CustomFab(props) {
                                 zIndex: 0,
                             }}
                         />
-                    </Fragment>
+                    </>
                     :
                     <PlayCircleIcon sx={{ transform: 'scale(2.2)' }} />
 
                 }
             </Fab>
         }
-    </Fragment>
+    </>
 }

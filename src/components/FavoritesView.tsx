@@ -1,4 +1,3 @@
-import { render, h } from 'react';
 import { useState, useEffect } from 'react';
 
 import ListItem from './ListItem.jsx';
@@ -9,11 +8,11 @@ import EditIcon from '@mui/icons-material/Edit';
 
 
 export default function FavoritesView() {
-    const [favorites, setFavorites] = useState([]);
+    const [favorites, setFavorites] = useState([] as any[]);
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        chrome.storage.local.get(['favorites'], (result) => {
+        chrome.storage.local.get(['favorites'], (result: any) => {
             setFavorites(result.favorites)
         })
     }, [])
@@ -24,12 +23,12 @@ export default function FavoritesView() {
         })
     }, [favorites])
 
-    function deleteFavorite(favorite) {
-        setFavorites(favorites.filter(f =>
+    function deleteFavorite(favorite: any) {
+        setFavorites(favorites.filter((f: any) =>
             !(f.description === favorite.description && f.project.name === favorite.project.name)))
     }
 
-    function addFavorite(description, project) {
+    function addFavorite(description: any, project: any) {
         const favorite = { description, project: project.name ? project : { name: project } }
         setFavorites([...favorites, favorite])
     }
