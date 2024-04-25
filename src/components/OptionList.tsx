@@ -52,6 +52,7 @@ export default function OptionList() {
                 return reject(chrome.runtime.lastError);
             }
             console.log('Getting everything in storage', items)
+            if (!items.apiToken) return
             setApiToken(items.apiToken)
         });
     }, [])

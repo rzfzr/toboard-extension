@@ -98,8 +98,11 @@ const getCache = async () => {
 }
 
 (async () => {
-    console.log('start', getTime(new Date().getTime()))
-    console.log(await getTogglClient())
+    console.log('Starting service worker at', getTime(new Date().getTime()))
+    const cache = await getCache()
+    console.log('cache', cache)
+
+
 })()
 
 chrome.runtime.onMessage.addListener(
@@ -108,18 +111,6 @@ chrome.runtime.onMessage.addListener(
         entry
     }, sender, sendResponse) {
         switch (message) {
-            case 'getAll':
-                (async () => {
-                    console.log('getting all')
-
-                    const { entries, projects } = await getCache()
-
-                    sendResponse({
-                        entries,
-                        projects,
-                    });
-                })()
-                break;
             case 'toggle':
                 (async () => {
                     toggleEntry(entry.description, entry.project.id)

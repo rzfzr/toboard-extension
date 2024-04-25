@@ -22,25 +22,22 @@ function NewTab() {
 
     useEffect(() => {
         (async () => {
-            const { apiToken } = await chrome.storage.sync.get(['apiToken'])
-            setHasApiKey(!!apiToken)
+            const { apiToken, entries, projects } = await chrome.storage.sync.get()
 
+            setHasApiKey(!!apiToken)
             if (!apiToken) {
                 return
             }
 
+            if (!entries || entries.length === 0) {
+                return
+            }
 
-
-        })()
-
-
-        chrome.runtime.sendMessage({ message: 'getAll' }, function ({ entries, projects, error }: any) {
-            if (error) return
             entries.forEach((entry: any) => {
                 entry.project = projects.find((p: any) => p.id === entry.pid)
             });
             setEntries(entries)
-        });
+        })()
     }, [])
 
     return (<ThemeProvider theme={darkTheme}>
