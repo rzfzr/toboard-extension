@@ -18,12 +18,21 @@ const darkTheme = createTheme({
 function NewTab() {
     console.log('-> NewTab')
     const [entries, setEntries] = useState([]);
-    const [apiStatus, setApiStatus] = useState(null as null | 'new' | 'current')
+    const [hasApiKey, setHasApiKey] = useState(false)
 
     useEffect(() => {
-        chrome.storage.local.get(['apiToken'], (result: any) => {
-            setApiStatus(result.apiToken ? 'current' : 'new')
-        })
+        (async () => {
+            const { apiToken } = await chrome.storage.sync.get(['apiToken'])
+            setHasApiKey(!!apiToken)
+
+            if (!apiToken) {
+                return
+            }
+
+
+
+        })()
+
 
         chrome.runtime.sendMessage({ message: 'getAll' }, function ({ entries, projects, error }: any) {
             if (error) return
@@ -36,9 +45,9 @@ function NewTab() {
 
     return (<ThemeProvider theme={darkTheme}>
 
-        {apiStatus === 'new' && <OptionList />}
+        {!hasApiKey && <OptionList />}
 
-        {apiStatus === 'current' &&
+        {hasApiKey &&
             <Box className='parentBox' >
                 <Box className='childBox'>
                     <h2 className='boxLabel'> Weekly Goals </h2>

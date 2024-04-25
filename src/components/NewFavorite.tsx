@@ -17,7 +17,7 @@ export default function NewFavorite(props) {
     const [isEditing, setEditing] = useState(false)
 
     useEffect(() => {
-        chrome.storage.local.get(['projects'], (result) => {
+        chrome.storage.sync.get(['projects'], (result) => {
             setProjects(result.projects)
         })
     }, [])

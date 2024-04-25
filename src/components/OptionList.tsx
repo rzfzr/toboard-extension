@@ -47,7 +47,7 @@ export default function OptionList() {
     };
 
     useEffect(() => {
-        chrome.storage.local.get(null, (items) => {
+        chrome.storage.sync.get(null, (items) => {
             if (chrome.runtime.lastError) {
                 return reject(chrome.runtime.lastError);
             }
@@ -58,13 +58,13 @@ export default function OptionList() {
 
     const saveForm = (event) => {
         event.preventDefault();
-        chrome.storage.local.set({
+        chrome.storage.sync.set({
             apiToken: apiToken,
         }, () => { changeStatus('ok') });
     }
 
     const clearStorage = () => {
-        chrome.storage.local.clear()
+        chrome.storage.sync.clear()
         chrome.storage.sync.clear(() => { changeStatus('clear') })
 
         setApiToken('')

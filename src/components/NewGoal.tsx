@@ -25,7 +25,7 @@ export default function NewGoal(props) {
     const [goalType, setGoalType] = useState('total');//total per week, average per day, average per entry
 
     useEffect(() => {
-        chrome.storage.local.get(['projects'], (result) => {
+        chrome.storage.sync.get(['projects'], (result) => {
             setProjects(result.projects)
         })
     }, [])

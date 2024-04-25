@@ -12,13 +12,13 @@ export default function FavoritesView() {
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        chrome.storage.local.get(['favorites'], (result: any) => {
+        chrome.storage.sync.get(['favorites'], (result: any) => {
             setFavorites(result.favorites)
         })
     }, [])
 
     useEffect(() => {
-        chrome.storage.local.set({
+        chrome.storage.sync.set({
             favorites: favorites,
         })
     }, [favorites])

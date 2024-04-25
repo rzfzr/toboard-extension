@@ -28,7 +28,7 @@ export default function GoalsView(props: any) {
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        chrome.storage.local.get(['goals'], (result: any) => {
+        chrome.storage.sync.get(['goals'], (result: any) => {
             if (!result.goals) return
             result.goals.forEach((goal: any) => {
                 goal = updateGoal(goal, entries)
@@ -38,7 +38,7 @@ export default function GoalsView(props: any) {
     }, [entries])
 
     useEffect(() => {
-        chrome.storage.local.set({
+        chrome.storage.sync.set({
             goals: goals,
         })
     }, [goals])
