@@ -56,7 +56,7 @@ export function getCalendarFormat(date: any) {
     let m = date.getMinutes();
     return String((yyyy) + '-' + (mm) + '-' + dd + ' ' + h + ':' + m);
 }
-export function formatDate(date: any, returnYear: any) {
+export function formatDate(date: any, returnYear = false) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
