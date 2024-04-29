@@ -1,4 +1,3 @@
-import { render, h } from 'react';
 import { useState, useEffect } from 'react';
 // import { useContext } from 'react';
 import { Button, TextField } from '@mui/material';
@@ -10,19 +9,18 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import Autocomplete from '@mui/material/Autocomplete'
+import { Project } from '../toboard';
 
-export default function NewGoal(props: any) {
+export default function NewGoal(props: { add: (description: string, project: Project, target: number) => void }) {
     const [description, setDescription] = useState('')
-    const [project, setProject] = useState('')
-    const [target, setTarget] = useState('')
+    const [project, setProject] = useState(null as Project | null)
+    const [target, setTarget] = useState(0 as number)
 
-    const [projects, setProjects] = useState([])
+    const [projects, setProjects] = useState([] as Project[])
 
     const [isEditing, setEditing] = useState(false)
 
     const [timeUnit, setTimeUnit] = useState('hours');
-
-    const [goalType, setGoalType] = useState('total');//total per week, average per day, average per entry
 
     useEffect(() => {
         chrome.storage.sync.get(['projects'], (result) => {
@@ -54,12 +52,12 @@ export default function NewGoal(props: any) {
                     <TextField
                         id="target"
                         label={`Target in ${timeUnit}`}
-                        onChange={(event) => setTarget(event.target.value)}
+                        onChange={(event) => setTarget(Number(event.target.value))}
                         variant="filled"
                         placeholder=""
-                        style={{ width: '75%' }}
+                        style={{ width: '100%' }}
                     />
-                    <ToggleButtonGroup
+                    {/* <ToggleButtonGroup
                         size="small"
                         orientation="vertical"
                         color="primary"
@@ -74,7 +72,7 @@ export default function NewGoal(props: any) {
                         <ToggleButton
                             style={{ height: '28px' }}
                             value="hours">Hours</ToggleButton>
-                    </ToggleButtonGroup>
+                    </ToggleButtonGroup> */}
                 </form>
 
                 <ButtonGroup
@@ -84,8 +82,11 @@ export default function NewGoal(props: any) {
                     style={{ width: '100%' }}
                 >
                     <Button
+                        disabled={!project}
                         style={{ width: '50%' }}
                         onClick={() => {
+                            if (!project) return
+
                             props.add(description, project, timeUnit == 'hours' ? target * 60 : target)
                             setEditing(false)
                         }}>Save</Button>

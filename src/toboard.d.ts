@@ -19,4 +19,6 @@ export type Goal = {
     target: number
     isRunning?: boolean,
     duration: number,
+    period: 'day' | 'week' | 'month' | 'year',
+    type: 'total' | 'average'
 }
