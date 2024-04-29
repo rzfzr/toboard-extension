@@ -4,6 +4,14 @@ export type Project = {
     name: string
 }
 
+export type Entry = {
+    id: number,
+    start: number,
+    end: number,
+    pid: number,
+    description: string
+}
+
 export type Goal = {
     id: number,
     description: string,
