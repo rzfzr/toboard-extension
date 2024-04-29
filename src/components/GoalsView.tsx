@@ -50,7 +50,11 @@ export default function GoalsView(props: any) {
     }
     return <div >
         {goals.map((goal) =>
-            <GoalItem key={goal.id} goal={goal} isEditing={isEditing} delete={deleteGoal} />
+            <GoalItem
+                key={goal.id}
+                goal={goal}
+                isEditing={isEditing}
+                delete={deleteGoal} />
         )}
         <IconButton aria-label="edit" color="primary" size="large" onClick={() => { setIsEditing(!isEditing) }}>
             <EditIcon />

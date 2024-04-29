@@ -21,7 +21,7 @@ export function colorShade(col: any, amt: any) {
 
     return `#${rr}${gg}${bb}`;
 }
-export function getTime(seconds: bigint, returnSeconds = false) {
+export function getTime(seconds: number, returnSeconds = false) {
     const d = Number(seconds);
     const h = Math.floor(d / 3600);
     const m = Math.floor((d % 3600) / 60);

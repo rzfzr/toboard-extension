@@ -7,9 +7,9 @@ import Typography from '@mui/material/Typography';
 import CustomFab from './CustomFab.js'
 import { colorShade, getTime } from '../utils.js'
 
-export default function GoalItem(props: any) {
+export default function GoalItem(props: { goal: any, isEditing: boolean, delete: (goal: any) => void }) {
     const progress = Math.min((100 / props.goal.target) * (props.goal.duration / 60), 100)
-    const lightColor = colorShade(props.goal?.project?.hex_color, +50)
+    const lightColor = colorShade(props.goal?.project?.hex_color, +50) || '#B2BEB5'
 
     return (
         <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>

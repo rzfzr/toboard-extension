@@ -6,7 +6,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
-export default function CustomFab(props: any) {
+export default function CustomFab(props:
+    {
+        isEditing: boolean,
+        isRunning: boolean,
+        color: string,
+        entry: any,
+        delete: (entry: any) => void
+    }) {
     return <>
         {props.isEditing ?
             <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
