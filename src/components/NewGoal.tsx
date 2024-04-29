@@ -11,7 +11,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import Autocomplete from '@mui/material/Autocomplete'
 
-export default function NewGoal(props) {
+export default function NewGoal(props: any) {
     const [description, setDescription] = useState('')
     const [project, setProject] = useState('')
     const [target, setTarget] = useState('')

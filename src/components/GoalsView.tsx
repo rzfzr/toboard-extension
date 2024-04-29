@@ -5,8 +5,9 @@ import NewGoal from './NewGoal.jsx';
 
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
+import { Goal } from '../toboard.js';
 
-function updateGoal(goal: any, entries: any) {
+function updateGoal(goal: Goal, entries: any) {
     const goalEntries = goal.description == '' ?
         entries.filter((entry: any) => (entry.pid === goal.project.id)) :
         entries.filter((entry: any) => (entry.pid === goal.project.id && entry.description === goal.description))
@@ -48,15 +49,17 @@ export default function GoalsView(props: any) {
     }
     function addGoal(description: any, project: any, target: any) {
         const goal = updateGoal({
-            description: description !== '' ? description : false,
+            id: Date.now(),
+            description: description || '',
             project: project.name ? project : { name: project },
             target: target,
+            duration: 0
         }, entries)
         setGoals([...goals, goal])
     }
     return <div >
         {goals.map((goal) =>
-            <GoalItem goal={goal} isEditing={isEditing} delete={deleteGoal} />
+            <GoalItem key={goal.id} goal={goal} isEditing={isEditing} delete={deleteGoal} />
         )}
         <IconButton aria-label="edit" color="primary" size="large" onClick={() => { setIsEditing(!isEditing) }}>
             <EditIcon />
