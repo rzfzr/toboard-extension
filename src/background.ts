@@ -10,13 +10,16 @@ import {
 let togglClientInstance = null;
 
 async function getTogglClient() {
+
+    if (togglClientInstance) {
+        return togglClientInstance
+    }
+
     const { apiToken } = await getAllStorageSyncData();
-    if (!togglClientInstance) {
-        try {
-            togglClientInstance = new TogglClient({ apiToken });
-        } catch (error) {
-            console.log("Error initializing TogglClient:", error);
-        }
+    try {
+        togglClientInstance = new TogglClient({ apiToken });
+    } catch (error) {
+        console.log("Error initializing TogglClient:", error);
     }
     return togglClientInstance;
 }
@@ -48,6 +51,7 @@ const isExpired = (selection) => {
 }
 
 const getCache = async () => {
+
 
     if (!!storageCache.cacheTime && !isExpired('cache')) {//it has to exist and not have expired
         console.log('not expired', storageCache,)
@@ -113,7 +117,7 @@ chrome.runtime.onMessage.addListener(
         switch (message) {
             case 'toggle':
                 (async () => {
-                    toggleEntry(entry.description, entry.project.id)
+                    toggleEntry(entry.description, entry?.project?.id)
                     sendResponse({
                         status: 'ok'
                     })
@@ -162,7 +166,7 @@ async function getProjects(client, workspaces) {
 }
 
 async function getTimeEntries(client) {
-    return await new Promise((resolve, reject) => {
+    return await new Promise(async (resolve, reject) => {
         console.log('getting timeentries', client)
         client.getTimeEntries(
             getPreviousMonday(),
@@ -180,53 +184,41 @@ async function getTimeEntries(client) {
     })
 }
 
-function toggleEntry(entryDescription, projectID) {
-    console.log('Togglying: ', entryDescription, projectID);
-    client.getCurrentTimeEntry((err, timeEntry) => {
-        if (err) console.log(err);
-        else {
-            if (timeEntry) {
-                console.log("Something already running: ", timeEntry.description, timeEntry.pid);
-                console.log("Checking if it is:", entryDescription, projectID);
-                if (timeEntry.pid == projectID && timeEntry.description == entryDescription) {
-                    console.log('Matched! Stopping');
-                    stopEntry(timeEntry.id)
-                } else {
-                    console.log('Not Matched! Starting new');
-                    createEntry(entryDescription, projectID);
-                }
-            } else {
-                console.log("Nothing running! Starting new");
-                createEntry(entryDescription, projectID);
-            }
-        }
-    });
+async function toggleEntry(entryDescription, projectID) {
+    console.log('-> Toggling: ', entryDescription, projectID)
+    const client = await getTogglClient();
+    const timeEntry = await client.getCurrentTimeEntry((err, timeEntry))
+
+    console.log("-> Current entry: ", timeEntry?.description, timeEntry?.pid);
+
+    if (timeEntry?.pid == projectID &&
+        timeEntry?.description == entryDescription) {
+        stopEntry(timeEntry)
+
+    } else {
+        startEntry(entryDescription, projectID);
+    }
 }
 
-function createEntry(entryDescription, projectID) {
-    console.log("Creating: " + entryDescription, projectID);
-    client.startTimeEntry({
-        description: entryDescription,
-        pid: projectID,
-    },
-        (err, timeEntry) => {
-            if (err) console.log(err);
-            else {
-                console.log("succefully started: ", timeEntry);
-                // this.$store.state.timeEntries.push(timeEntry);
-                // this.$store.commit("setRunningEntry", timeEntry);
-            }
-        }
-    );
+async function startEntry(description, pid) {
+    console.log("-> Creating: " + description, pid)
+    const client = await getTogglClient()
+    const { workspaces } = await getCache()
+
+    const startedEntry = await client.startTimeEntry({
+        workspace_id: workspaces[0].id,
+        duration: -1,
+        description: description,
+        pid: pid,
+        start: new Date().toISOString()
+    })
+
+    console.log('-> Created:', startedEntry.id)
 }
 
-function stopEntry(entryID) {
-    console.log("Stopping: " + entryID);
-    client.stopTimeEntry(entryID, (err, timeEntry) => {
-        if (err) console.log(err);
-        else {
-            console.log("succefully stopped ", timeEntry);
-            // this.$store.commit("setRunningEntry", {});
-        }
-    });
+async function stopEntry(entry) {
+    console.log("-> Stopping:", entry.id)
+    const client = await getTogglClient()
+    const stoppedEntry = await client.stopTimeEntry(entry.wid, entry.id)
+    console.log('-> Stopped:', stoppedEntry.id)
 }
