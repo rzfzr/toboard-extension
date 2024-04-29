@@ -81,9 +81,7 @@ const getCache = async () => {
         })
     }
 
-    console.log('checking')
     if (!entries || entries.length === 0 || isExpired('entries')) {
-        console.log('not found')
         entries = await getTimeEntries(client)
         chrome.storage.sync.set({
             entries
@@ -187,7 +185,7 @@ async function getTimeEntries(client) {
 async function toggleEntry(entryDescription, projectID) {
     console.log('-> Toggling: ', entryDescription, projectID)
     const client = await getTogglClient();
-    const timeEntry = await client.getCurrentTimeEntry((err, timeEntry))
+    const timeEntry = await client.getCurrentTimeEntry()
 
     console.log("-> Current entry: ", timeEntry?.description, timeEntry?.pid);
 
