@@ -1,4 +1,3 @@
-import { render, h, Fragment } from 'react';
 import ListItem from './ListItem.js';
 
 import Accordion from '@mui/material/Accordion';
@@ -11,26 +10,26 @@ import {
     formatDate
 } from '../utils.js'
 
-export default function ListView(props) {
+export default function ListView(props: any) {
     const entries = props.entries ? props.entries.reverse() : []
-    let days = []
+    let days: any[] = []
 
-    entries.forEach((entry) => {
+    entries.forEach((entry: any) => {
         let entryDate = formatDate(new Date(entry.start));
-        let day = days.find((d) => d.label == entryDate);
+        let day = days.find((d: any) => d.label == entryDate);
         if (!day) {
             days.push({ label: entryDate });
             day = days.find((d) => d.label == entryDate);
         }
-        if (!day.entries) day.entries = [];
+        if (!day?.entries) day.entries = [];
         day.entries.push(entry);
     });
 
     days.sort();
-
-    return <Fragment >
+    return < >
         {days.map(day =>
-            <Accordion >
+            <Accordion
+                key={day.label}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -39,11 +38,14 @@ export default function ListView(props) {
                     <Typography>{day.label}</Typography>
                 </AccordionSummary>
                 <AccordionDetails style={{ padding: 0 }}>
-                    {day.entries.map((entry) =>
-                        <ListItem entry={entry} />
+                    {day.entries.map((entry: any) =>
+                        <ListItem
+                            key={entry.id}
+                            entry={entry}
+                        />
                     )}
                 </AccordionDetails>
             </Accordion>
         )}
-    </Fragment>
+    </>
 }
