@@ -28,7 +28,7 @@ export type Workspace = {
 }
 
 export type StoreObjects = {
-    apiToken: string,
+    apiToken: string | null,
     entries: Entry[],
     goals: Goal[],
     projects: Project[],

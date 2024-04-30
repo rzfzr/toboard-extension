@@ -7,15 +7,17 @@ const useStore = create<StoreState>()(
     devtools(
         includeChromeStore(
             (set) => ({
+                apiToken: null,
                 entries: [],
+                goals: [],
+                projects: [],
+                workspaces: [],
                 setEntries: (entries: Entry[]) => set({ entries }),
                 addEntry: (entry: Entry) => set((state) => ({ entries: [...state.entries, entry] })),
-                goals: [],
                 setGoals: (goals: Goal[]) => set({ goals }),
-                projects: [],
                 setProjects: (projects: Project[]) => set({ projects }),
-                workspaces: [],
                 setWorkspaces: (workspaces: Workspace[]) => set({ workspaces }),
+                setApiToken: (apiToken: string) => set({ apiToken }),
             }),
         ),
     ),
