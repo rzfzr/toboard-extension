@@ -28,6 +28,7 @@ export type Workspace = {
 }
 
 export type StoreObjects = {
+    apiToken: string,
     entries: Entry[],
     goals: Goal[],
     projects: Project[],
@@ -35,6 +36,7 @@ export type StoreObjects = {
 }
 
 export type StoreActions = {
+    setApiToken: (apiToken: string) => void,
     setEntries: (entries: Entry[]) => void,
     addEntry: (entry: Entry) => void,
     setGoals: (goals: Goal[]) => void,
