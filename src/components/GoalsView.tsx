@@ -14,14 +14,14 @@ export default function GoalsView(props: any) {
 
     const setAndSaveGoals = (goals: Goal[]) => {
         setGoals(goals || [])
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
             goals: goals,
         })
     }
 
     useEffect(() => {
         console.log('-> entries changed, updating goals')
-        chrome.storage.sync.get(['goals'], (result: any) => {
+        chrome.storage.local.get(['goals'], (result: any) => {
             if (!result.goals || result.goals.length === 0) {
                 return
             }

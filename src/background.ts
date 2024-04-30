@@ -27,7 +27,7 @@ async function getTogglClient() {
 
 function getAllStorageSyncData() {
     return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(null, (items) => {
+        chrome.storage.local.get(null, (items) => {
             if (chrome.runtime.lastError) {
                 return reject(chrome.runtime.lastError)
             }
@@ -69,21 +69,21 @@ const getCache = async () => {
 
     if (!workspaces || workspaces.length === 0 || isExpired('workspaces')) {
         workspaces = await getWorkspaces(client)
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
             workspaces
         })
     }
 
     if (!projects || projects.length === 0 || isExpired('projects')) {
         projects = await getProjects(client, workspaces)
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
             projects
         })
     }
 
     if (!entries || entries.length === 0 || isExpired('entries')) {
         entries = await getTimeEntries(client)
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
             entries
         })
     }

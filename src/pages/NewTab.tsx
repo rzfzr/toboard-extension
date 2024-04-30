@@ -22,7 +22,7 @@ function NewTab() {
 
     useEffect(() => {
         (async () => {
-            const { apiToken, entries, projects } = await chrome.storage.sync.get()
+            const { apiToken, entries, projects } = await chrome.storage.local.get()
 
             setHasApiKey(!!apiToken)
             if (!apiToken) {

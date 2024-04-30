@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist, devtools, createJSONStorage } from 'zustand/middleware'
+import { includeChromeStore } from "zustand-chrome-local-storage"
 
 import { Entry, Project, Workspace } from './toboard'
 

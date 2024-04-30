@@ -23,7 +23,7 @@ export default function NewGoal(props: { add: (description: string, project: Pro
     const [timeUnit, setTimeUnit] = useState('hours')
 
     useEffect(() => {
-        chrome.storage.sync.get(['projects'], (result) => {
+        chrome.storage.local.get(['projects'], (result) => {
             setProjects(result.projects)
         })
     }, [])
