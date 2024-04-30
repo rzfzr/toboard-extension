@@ -22,3 +22,7 @@ export type Goal = {
     period: 'day' | 'week' | 'month' | 'year',
     type: 'total' | 'average'
 }
+
+export type Workspace = {
+
+}   

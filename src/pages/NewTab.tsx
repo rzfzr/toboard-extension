@@ -52,7 +52,7 @@ function NewTab() {
                 </Box>
                 <Box className='childBox'>
                     <h2 className='boxLabel'> Weekly List </h2>
-                    <ListView entries={entries} />
+                    <ListView />
                 </Box>
                 <Box className='childBox'>
                     <h2 className='boxLabel'> My Favorites </h2>
