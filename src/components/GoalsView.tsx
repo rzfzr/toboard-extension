@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
-import GoalItem from './GoalItem.js';
-import NewGoal from './NewGoal.jsx';
+import GoalItem from './GoalItem.js'
+import NewGoal from './NewGoal.jsx'
 
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import { Goal, Entry, Project } from '../toboard.js';
+import IconButton from '@mui/material/IconButton'
+import EditIcon from '@mui/icons-material/Edit'
+import { Goal, Entry, Project } from '../toboard.js'
 
 export default function GoalsView(props: any) {
-    const [goals, setGoals] = useState([] as any[]);
+    const [goals, setGoals] = useState([] as any[])
     const entries = props.entries
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(false)
 
     const setAndSaveGoals = (goals: Goal[]) => {
         setGoals(goals || [])
@@ -28,7 +28,7 @@ export default function GoalsView(props: any) {
 
             result.goals.forEach((goal: Goal) => {
                 goal = getUpdatedGoal(goal, entries)
-            });
+            })
             setAndSaveGoals(result.goals)
         })
     }, [entries])

@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
-import ListItem from './ListItem.jsx';
-import NewFavorite from './NewFavorite.jsx';
+import ListItem from './ListItem.jsx'
+import NewFavorite from './NewFavorite.jsx'
 
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton'
+import EditIcon from '@mui/icons-material/Edit'
 
 
 export default function FavoritesView() {
-    const [favorites, setFavorites] = useState([] as any[]);
-    const [isEditing, setIsEditing] = useState(false);
+    const [favorites, setFavorites] = useState([] as any[])
+    const [isEditing, setIsEditing] = useState(false)
 
     useEffect(() => {
         chrome.storage.sync.get(['favorites'], (result: any) => {

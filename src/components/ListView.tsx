@@ -1,10 +1,10 @@
-import ListItem from './ListItem.js';
+import ListItem from './ListItem.js'
 
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import Typography from '@mui/material/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import {
     formatDate
@@ -15,17 +15,17 @@ export default function ListView(props: any) {
     let days: any[] = []
 
     entries.forEach((entry: any) => {
-        let entryDate = formatDate(new Date(entry.start));
-        let day = days.find((d: any) => d.label == entryDate);
+        let entryDate = formatDate(new Date(entry.start))
+        let day = days.find((d: any) => d.label == entryDate)
         if (!day) {
-            days.push({ label: entryDate });
-            day = days.find((d) => d.label == entryDate);
+            days.push({ label: entryDate })
+            day = days.find((d) => d.label == entryDate)
         }
-        if (!day?.entries) day.entries = [];
-        day.entries.push(entry);
-    });
+        if (!day?.entries) day.entries = []
+        day.entries.push(entry)
+    })
 
-    days.sort();
+    days.sort()
     return < >
         {days.map(day =>
             <Accordion

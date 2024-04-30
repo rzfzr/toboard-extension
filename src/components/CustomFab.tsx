@@ -1,10 +1,10 @@
-import Fab from '@mui/material/Fab';
+import Fab from '@mui/material/Fab'
 
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress'
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+import DeleteIcon from '@mui/icons-material/Delete'
+import PlayCircleIcon from '@mui/icons-material/PlayCircle'
+import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 
 export default function CustomFab(props:
     {
@@ -24,8 +24,8 @@ export default function CustomFab(props:
             <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
                 onClick={() => {
                     chrome.runtime.sendMessage({ message: 'toggle', entry: props.entry }, function (response) {
-                        console.log(response);
-                    });
+                        console.log(response)
+                    })
                 }}>
                 {props.isRunning ?
                     <>

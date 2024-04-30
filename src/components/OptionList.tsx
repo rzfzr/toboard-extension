@@ -1,8 +1,8 @@
 //@ts-nocheck
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import {
     TextField,
@@ -24,44 +24,44 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails
-} from '@mui/material';
+} from '@mui/material'
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
     },
-});
+})
 
 export default function OptionList() {
-    const [apiToken, setApiToken] = useState('');
-    const [status, setStatus] = useState('');
+    const [apiToken, setApiToken] = useState('')
+    const [status, setStatus] = useState('')
 
-    const [expansions, setExpansions] = useState([true, false, false]);
+    const [expansions, setExpansions] = useState([true, false, false])
 
     const handleExpansion = sel => (event) => {
         let temp = [...expansions]
         temp[sel] = !temp[sel]
-        setExpansions(temp);
-    };
+        setExpansions(temp)
+    }
 
     useEffect(() => {
         chrome.storage.sync.get(null, (items) => {
             if (chrome.runtime.lastError) {
-                return reject(chrome.runtime.lastError);
+                return reject(chrome.runtime.lastError)
             }
             console.log('Getting everything in storage', items)
             if (!items.apiToken) return
             setApiToken(items.apiToken)
-        });
+        })
     }, [])
 
     const saveForm = (event) => {
-        event.preventDefault();
+        event.preventDefault()
         chrome.storage.sync.set({
             apiToken: apiToken,
-        }, () => { changeStatus('ok') });
+        }, () => { changeStatus('ok') })
     }
 
     const clearStorage = () => {
@@ -74,8 +74,8 @@ export default function OptionList() {
     const changeStatus = (status) => {
         setStatus(status)
         setTimeout(() => {
-            setStatus('');
-        }, 1 * 1000);
+            setStatus('')
+        }, 1 * 1000)
     }
 
 

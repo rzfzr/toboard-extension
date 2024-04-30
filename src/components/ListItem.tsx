@@ -1,9 +1,9 @@
-import { render, h } from 'react';
+import { render, h } from 'react'
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 
 import CustomFab from './CustomFab.js'
 import { getTime, colorShade } from '../utils.js'
@@ -50,5 +50,5 @@ export default function ListItem(props) {
             />
         </Box>
     </Card>
-    );
+    )
 }

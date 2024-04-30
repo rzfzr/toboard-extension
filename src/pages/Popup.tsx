@@ -1,5 +1,5 @@
 import bootstrap from "../main"
-import "../global.css";
+import "../global.css"
 
 function Popup() {
     console.log('-> Popup')

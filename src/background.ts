@@ -1,5 +1,5 @@
 //@ts-nocheck
-import TogglClient from 'toggl-api';
+import TogglClient from 'toggl-api'
 import 'babel-polyfill'
 
 import {
@@ -7,7 +7,7 @@ import {
     getPreviousMonday
 } from './utils'
 
-let togglClientInstance = null;
+let togglClientInstance = null
 
 async function getTogglClient() {
 
@@ -15,13 +15,13 @@ async function getTogglClient() {
         return togglClientInstance
     }
 
-    const { apiToken } = await getAllStorageSyncData();
+    const { apiToken } = await getAllStorageSyncData()
     try {
-        togglClientInstance = new TogglClient({ apiToken });
+        togglClientInstance = new TogglClient({ apiToken })
     } catch (error) {
-        console.log("Error initializing TogglClient:", error);
+        console.log("Error initializing TogglClient:", error)
     }
-    return togglClientInstance;
+    return togglClientInstance
 }
 
 
@@ -29,11 +29,11 @@ function getAllStorageSyncData() {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get(null, (items) => {
             if (chrome.runtime.lastError) {
-                return reject(chrome.runtime.lastError);
+                return reject(chrome.runtime.lastError)
             }
-            resolve(items);
-        });
-    });
+            resolve(items)
+        })
+    })
 }
 
 let storageCache = {}
@@ -120,16 +120,16 @@ chrome.runtime.onMessage.addListener(
                         status: 'ok'
                     })
                 })()
-                break;
+                break
             default:
                 sendResponse({
                     error: 'Unknown request'
                 })
-                break;
+                break
         }
-        return true;
+        return true
     }
-);
+)
 
 async function getWorkspaces(client) {
     return await new Promise((resolve, reject) => {
@@ -159,7 +159,7 @@ async function getProjects(client, workspaces) {
                 console.log('resolving p', projects)
                 resolve(projects)
             })
-        });
+        })
     })
 }
 
@@ -175,7 +175,7 @@ async function getTimeEntries(client) {
                 timeEntries.forEach((entry) => {
                     entry.isRunning = entry.duration < 0
                     entry.time = getTime(entry.duration)
-                });
+                })
                 resolve(timeEntries)
             }
         )
@@ -184,17 +184,17 @@ async function getTimeEntries(client) {
 
 async function toggleEntry(entryDescription, projectID) {
     console.log('-> Toggling: ', entryDescription, projectID)
-    const client = await getTogglClient();
+    const client = await getTogglClient()
     const timeEntry = await client.getCurrentTimeEntry()
 
-    console.log("-> Current entry: ", timeEntry?.description, timeEntry?.pid);
+    console.log("-> Current entry: ", timeEntry?.description, timeEntry?.pid)
 
     if (timeEntry?.pid == projectID &&
         timeEntry?.description == entryDescription) {
         stopEntry(timeEntry)
 
     } else {
-        startEntry(entryDescription, projectID);
+        startEntry(entryDescription, projectID)
     }
 }
 

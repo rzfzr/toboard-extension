@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 // import { useContext } from 'react';
-import { Button, TextField } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import Paper from '@mui/material/Paper';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import { Button, TextField } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import Paper from '@mui/material/Paper'
+import ButtonGroup from '@mui/material/ButtonGroup'
 
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
 import Autocomplete from '@mui/material/Autocomplete'
-import { Project } from '../toboard';
+import { Project } from '../toboard'
 
 export default function NewGoal(props: { add: (description: string, project: Project, target: number) => void }) {
     const [description, setDescription] = useState('')
@@ -20,7 +20,7 @@ export default function NewGoal(props: { add: (description: string, project: Pro
 
     const [isEditing, setEditing] = useState(false)
 
-    const [timeUnit, setTimeUnit] = useState('hours');
+    const [timeUnit, setTimeUnit] = useState('hours')
 
     useEffect(() => {
         chrome.storage.sync.get(['projects'], (result) => {
