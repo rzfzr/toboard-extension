@@ -12,14 +12,8 @@ import {
 } from '../utils.js'
 
 export default function ListView() {
+    const entries = useStore((state) => state.entries.reverse())
 
-    const entries = useStore((state) => state.entries)
-
-
-
-    console.log('got from store', entries.length)
-
-    //    const entries = props.entries ? props.entries.reverse() : []
     let days: any[] = []
 
     entries.forEach((entry: any) => {

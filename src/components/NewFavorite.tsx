@@ -6,21 +6,15 @@ import Paper from '@mui/material/Paper'
 import ButtonGroup from '@mui/material/ButtonGroup'
 
 import Autocomplete from '@mui/material/Autocomplete'
+import useStore from '../useStore'
 
-export default function NewFavorite(props) {
-
+export default function NewFavorite(props: any) {
     const [description, setDescription] = useState('')
     const [project, setProject] = useState('')
 
-    const [projects, setProjects] = useState([])
+    const projects = useStore((state) => state.projects)
 
     const [isEditing, setEditing] = useState(false)
-
-    useEffect(() => {
-        chrome.storage.local.get(['projects'], (result) => {
-            setProjects(result.projects)
-        })
-    }, [])
 
 
     if (isEditing) {

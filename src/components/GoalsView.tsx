@@ -6,31 +6,32 @@ import NewGoal from './NewGoal.jsx'
 import IconButton from '@mui/material/IconButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { Goal, Entry, Project } from '../toboard.js'
+import useStore from '../useStore.js'
 
-export default function GoalsView(props: any) {
-    const [goals, setGoals] = useState([] as any[])
-    const entries = props.entries
+
+export default function GoalsView() {
+    const { goals, setGoals } = useStore((state) => ({
+        goals: state.goals,
+        setGoals: state.setGoals
+    }))
+
+    const entries = useStore((state) => state.entries)
+
     const [isEditing, setIsEditing] = useState(false)
 
     const setAndSaveGoals = (goals: Goal[]) => {
         setGoals(goals || [])
-        chrome.storage.local.set({
-            goals: goals,
-        })
     }
 
     useEffect(() => {
-        console.log('-> entries changed, updating goals')
-        chrome.storage.local.get(['goals'], (result: any) => {
-            if (!result.goals || result.goals.length === 0) {
-                return
-            }
-
-            result.goals.forEach((goal: Goal) => {
-                goal = getUpdatedGoal(goal, entries)
-            })
-            setAndSaveGoals(result.goals)
+        console.log('-> entries changed, updating goals', entries.length)
+        if (!goals || goals.length === 0) {
+            return
+        }
+        goals.forEach((goal: Goal) => {
+            goal = getUpdatedGoal(goal, entries)
         })
+        setAndSaveGoals(goals)
     }, [entries])
 
     function deleteGoal(goal: any) {

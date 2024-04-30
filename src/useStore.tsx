@@ -1,14 +1,11 @@
 import { create } from 'zustand'
-import { persist, devtools, createJSONStorage } from 'zustand/middleware'
+import { devtools } from 'zustand/middleware'
 import { includeChromeStore } from "zustand-chrome-local-storage"
-
 import { Entry, Goal, Project, StoreState, Workspace } from './toboard'
-
-
 
 const useStore = create<StoreState>()(
     devtools(
-        persist(
+        includeChromeStore(
             (set) => ({
                 entries: [],
                 setEntries: (entries: Entry[]) => set({ entries }),
@@ -20,7 +17,6 @@ const useStore = create<StoreState>()(
                 workspaces: [],
                 setWorkspaces: (workspaces: Workspace[]) => set({ workspaces }),
             }),
-            { name: 'toboard-store' },
         ),
     ),
 )
