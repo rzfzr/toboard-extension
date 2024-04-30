@@ -25,4 +25,20 @@ export type Goal = {
 
 export type Workspace = {
 
-}   
+}
+
+export type StoreObjects = {
+    entries: Entry[],
+    goals: Goal[],
+    projects: Project[],
+    workspaces: Workspace[],
+}
+
+export type StoreActions = {
+    setEntries: (entries: Entry[]) => void,
+    addEntry: (entry: Entry) => void,
+    setGoals: (goals: Goal[]) => void,
+    setProjects: (projects: Project[]) => void,
+    setWorkspaces: (workspaces: Workspace[]) => void,
+}
+export type StoreState = StoreObjects & StoreActions

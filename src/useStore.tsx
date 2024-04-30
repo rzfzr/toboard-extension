@@ -2,17 +2,9 @@ import { create } from 'zustand'
 import { persist, devtools, createJSONStorage } from 'zustand/middleware'
 import { includeChromeStore } from "zustand-chrome-local-storage"
 
-import { Entry, Project, Workspace } from './toboard'
+import { Entry, Goal, Project, StoreState, Workspace } from './toboard'
 
-type StoreState = {
-    entries: Entry[],
-    setEntries: (entries: Entry[]) => void,
-    addEntry: (entry: Entry) => void,
-    projects: Project[],
-    setProjects: (projects: Project[]) => void,
-    workspaces: Workspace[],
-    setWorkspaces: (workspaces: Workspace[]) => void,
-}
+
 
 const useStore = create<StoreState>()(
     devtools(
@@ -21,6 +13,8 @@ const useStore = create<StoreState>()(
                 entries: [],
                 setEntries: (entries: Entry[]) => set({ entries }),
                 addEntry: (entry: Entry) => set((state) => ({ entries: [...state.entries, entry] })),
+                goals: [],
+                setGoals: (goals: Goal[]) => set({ goals }),
                 projects: [],
                 setProjects: (projects: Project[]) => set({ projects }),
                 workspaces: [],
