@@ -75,7 +75,7 @@ const getCache = async () => {
     }
 
     if (!projects || projects.length === 0 || isExpired('projects')) {
-        projects = await getProjects(client, workspaces)
+        projects = await getProjects(client, workspaces[0])
         chrome.storage.local.set({
             projects
         })
@@ -96,6 +96,7 @@ const getCache = async () => {
         projects,
         entries
     }
+    console.log('setting cache', storageCache)
     return storageCache
 }
 
@@ -141,24 +142,11 @@ async function getWorkspaces(client) {
     })
 }
 
-async function getProjects(client, workspaces) {
+async function getProjects(client, workspace) {
     return await new Promise((resolve, reject) => {
-        console.log('will check ', client, workspaces, !!workspaces)
-        if (!client) {
-            console.log('rejecting cause of client')
-            reject([])
-        }
-        if (!workspaces) {
-            console.log('rejecting cause of workspaces')
-            reject([])
-        }
-        console.log('tring to get workspaces', workspaces)
-        workspaces.forEach(ws => {
-            client.getWorkspaceProjects(ws.id, (err, projects) => {
-                if (err) return reject(error)
-                console.log('resolving p', projects)
-                resolve(projects)
-            })
+        client.getWorkspaceProjects(workspace.id, (err, projects) => {
+            if (err) return reject(error)
+            resolve(projects)
         })
     })
 }
