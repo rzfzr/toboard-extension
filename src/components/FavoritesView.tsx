@@ -36,6 +36,7 @@ export default function FavoritesView() {
     return <div>
         {favorites.map((favorite) =>
             <ListItem
+                key={favorite.description + favorite.project.name}
                 entry={favorite}
                 isEditing={isEditing}
                 delete={deleteFavorite} />
