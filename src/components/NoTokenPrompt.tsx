@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react'
-
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import {
@@ -13,6 +11,7 @@ import {
 } from '@mui/material'
 
 import useStore from '../useStore'
+import { useState } from 'react'
 
 const darkTheme = createTheme({
     palette: {
@@ -22,6 +21,7 @@ const darkTheme = createTheme({
 
 export default function OptionList() {
     const setApiToken = useStore((state) => state.setApiToken)
+    const [error, setError] = useState('')
 
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +30,9 @@ export default function OptionList() {
         const apiToken = data.get('apiToken') as string
 
         if (apiToken?.length == 32) {
-            setApiToken(data.get('apiToken') as string)
+            setApiToken(apiToken)
+        } else {
+            setError('Please provide a valid API key.')
         }
     }
 
@@ -58,6 +60,8 @@ export default function OptionList() {
                         label="API Key"
                         name="apiToken"
                         autoFocus
+                        error={!!error}
+                        helperText={error}
                     />
                     <Button
                         type="submit"
