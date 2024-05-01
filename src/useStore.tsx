@@ -18,11 +18,21 @@ const useStore = create<StoreState>()(
                 setGoals: (goals: Goal[]) => set({ goals }),
                 setProjects: (projects: Project[]) => set({ projects }),
                 setWorkspaces: (workspaces: Workspace[]) => set({ workspaces }),
-                setApiToken: (apiToken: string) => set({ apiToken }),
+                setApiToken: (apiToken: string) => {
+                    set({ apiToken })
+                    chrome.runtime.sendMessage({ message: 'refresh' })
+                },
                 setFavorites: (favorites: Favorite[]) => set({ favorites }),
                 addFavorite: (favorite: Favorite) => set(state => ({ favorites: [...state.favorites, favorite] })),
                 delFavorite: (favorite: Favorite) => set(state => ({ favorites: state.favorites.filter(f => f !== favorite) })),
-                clearStorage: () => set({ apiToken: null, entries: [], goals: [], projects: [], workspaces: [], favorites: [] }),
+                clearStorage: () => set({
+                    apiToken: null,
+                    entries: [],
+                    goals: [],
+                    projects: [],
+                    workspaces: [],
+                    favorites: []
+                }),
             }),
         ),
     ),
