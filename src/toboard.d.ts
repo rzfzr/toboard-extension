@@ -22,6 +22,10 @@ export type Goal = {
     period: 'day' | 'week' | 'month' | 'year',
     type: 'total' | 'average'
 }
+export type Favorite = {
+    description: string,
+    project: Project
+}
 
 export type Workspace = {
 
@@ -33,6 +37,7 @@ export type StoreObjects = {
     goals: Goal[],
     projects: Project[],
     workspaces: Workspace[],
+    favorites: Favorite[]
 }
 
 export type StoreActions = {
@@ -42,5 +47,9 @@ export type StoreActions = {
     setGoals: (goals: Goal[]) => void,
     setProjects: (projects: Project[]) => void,
     setWorkspaces: (workspaces: Workspace[]) => void,
+    setFavorites: (favorites: Favorite[]) => void,
+    addFavorite: (favorite: Favorite) => void,
+    delFavorite: (favorite: Favorite) => void,
+    clearStorage: () => void
 }
 export type StoreState = StoreObjects & StoreActions

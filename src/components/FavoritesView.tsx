@@ -5,23 +5,16 @@ import NewFavorite from './NewFavorite.jsx'
 
 import IconButton from '@mui/material/IconButton'
 import EditIcon from '@mui/icons-material/Edit'
+import useStore from '../useStore.js'
 
 
 export default function FavoritesView() {
-    const [favorites, setFavorites] = useState([] as any[])
     const [isEditing, setIsEditing] = useState(false)
 
-    useEffect(() => {
-        chrome.storage.local.get(['favorites'], (result: any) => {
-            setFavorites(result.favorites)
-        })
-    }, [])
-
-    useEffect(() => {
-        chrome.storage.local.set({
-            favorites: favorites,
-        })
-    }, [favorites])
+    const { favorites, setFavorites } = useStore((state) => ({
+        favorites: state.favorites,
+        setFavorites: state.setFavorites
+    }))
 
     function deleteFavorite(favorite: any) {
         setFavorites(favorites.filter((f: any) =>
