@@ -10,23 +10,19 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
 import Autocomplete from '@mui/material/Autocomplete'
 import { Project } from '../toboard'
+import useStore from '../useStore'
 
 export default function NewGoal(props: { add: (description: string, project: Project, target: number) => void }) {
     const [description, setDescription] = useState('')
     const [project, setProject] = useState(null as Project | null)
     const [target, setTarget] = useState(0 as number)
 
-    const [projects, setProjects] = useState([] as Project[])
+    const projects = useStore((state) => state.projects)
 
     const [isEditing, setEditing] = useState(false)
 
     const [timeUnit, setTimeUnit] = useState('hours')
 
-    useEffect(() => {
-        chrome.storage.local.get(['projects'], (result) => {
-            setProjects(result.projects)
-        })
-    }, [])
 
     if (isEditing) {
         return (

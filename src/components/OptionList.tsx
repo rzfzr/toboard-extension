@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 import { useState, useEffect } from 'react'
 
 import { createTheme, ThemeProvider } from '@mui/material/styles'
@@ -27,6 +25,7 @@ import {
 } from '@mui/material'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import useStore from '../useStore'
 
 const darkTheme = createTheme({
     palette: {
@@ -35,7 +34,14 @@ const darkTheme = createTheme({
 })
 
 export default function OptionList() {
-    const [apiToken, setApiToken] = useState('')
+    const { apiToken, setApiToken, clearStorage } = useStore((state) => {
+        return {
+            apiToken: state.apiToken,
+            setApiToken: state.setApiToken,
+            clearStorage: state.clearStorage
+        }
+    })
+
     const [status, setStatus] = useState('')
 
     const [expansions, setExpansions] = useState([true, false, false])
@@ -46,29 +52,9 @@ export default function OptionList() {
         setExpansions(temp)
     }
 
-    useEffect(() => {
-        chrome.storage.local.get(null, (items) => {
-            if (chrome.runtime.lastError) {
-                return reject(chrome.runtime.lastError)
-            }
-            console.log('Getting everything in storage', items)
-            if (!items.apiToken) return
-            setApiToken(items.apiToken)
-        })
-    }, [])
-
     const saveForm = (event) => {
         event.preventDefault()
-        chrome.storage.local.set({
-            apiToken: apiToken,
-        }, () => { changeStatus('ok') })
-    }
-
-    const clearStorage = () => {
-        chrome.storage.local.clear()
-        chrome.storage.local.clear(() => { changeStatus('clear') })
-
-        setApiToken('')
+        setApiToken(apiToken)
     }
 
     const changeStatus = (status) => {
