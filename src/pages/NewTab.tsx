@@ -6,10 +6,15 @@ import GoalsView from '../components/GoalsView'
 import Box from '@mui/material/Box'
 import useStore from "../useStore"
 import NoTokenPrompt from "../components/NoTokenPrompt"
+import { useEffect } from "react"
 
 
 function NewTab() {
     const apiToken = useStore((state) => (state.apiToken))
+    useEffect(() => {
+        chrome.runtime.sendMessage({ message: 'refresh' })
+    }, [])
+
     return (<>
         {!apiToken && <NoTokenPrompt />}
         {apiToken &&
