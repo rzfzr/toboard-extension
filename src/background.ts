@@ -58,7 +58,7 @@ const isExpired = (selection: any) => {
     return Date.now() - storageCache.cacheTime > timers[selection]
 }
 
-const refreshStorage = async () => {
+const syncStorage = async () => {
     try {
         await chrome.runtime.sendMessage({ action: "syncStorage" })
     } catch (error) {
@@ -66,12 +66,23 @@ const refreshStorage = async () => {
     }
 }
 
+// chrome.storage.onChanged.addListener(function(changes, namespace) {
+//     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+//       console.log(
+//         `Storage key "${key}" in namespace "${namespace}" changed.`,
+//         `Old value was "${oldValue}", new value is "${newValue}".`
+//       );
+//     }
+//     chrome.runtime.sendMessage({ action: "syncStorage" });
+//   });
+
+
 const getCache = async () => {
-    if (!!storageCache.cacheTime && !isExpired('cache')) {//it has to exist and not have expired
-        console.log('not expired', storageCache,)
-        refreshStorage()
-        return storageCache
-    }
+    // if (!!storageCache.cacheTime && !isExpired('cache')) {//it has to exist and not have expired
+    //     console.log('not expired', storageCache,)
+    //     syncStorage()
+    //     return storageCache
+    // }
 
     let { apiToken, workspaces, projects, entries } = await getAllStorageSyncData()
 
@@ -102,7 +113,7 @@ const getCache = async () => {
             entries
         })
     }
-    refreshStorage()
+    syncStorage()
     storageCache = {
         cacheTime: Date.now(),
         apiToken,
@@ -115,11 +126,8 @@ const getCache = async () => {
 }
 
 (async () => {
-    console.log('---------------- Starting service worker at', getTime(new Date().getTime()))
-    const cache = await getCache()
-    console.log('Got cache', cache)
-
-
+    console.log('-> Starting service worker at', getTime(new Date().getTime()))
+    getCache()
 })()
 
 chrome.runtime.onMessage.addListener(
@@ -189,11 +197,8 @@ async function getTimeEntries(client) {
 }
 
 async function toggleEntry(entryDescription, projectID) {
-    console.log('-> Toggling: ', entryDescription, projectID)
     const client = await getTogglClient()
     const timeEntry = await client.getCurrentTimeEntry()
-
-    console.log("-> Current entry: ", timeEntry?.description, timeEntry?.pid)
 
     if (timeEntry?.pid == projectID &&
         timeEntry?.description == entryDescription) {
@@ -205,7 +210,6 @@ async function toggleEntry(entryDescription, projectID) {
 }
 
 async function startEntry(description, pid) {
-    console.log("-> Creating: " + description, pid)
     const client = await getTogglClient()
     const { workspaces } = await getCache()
 
@@ -218,11 +222,12 @@ async function startEntry(description, pid) {
     })
 
     console.log('-> Created:', startedEntry.id)
+    syncStorage()
 }
 
 async function stopEntry(entry) {
-    console.log("-> Stopping:", entry.id)
     const client = await getTogglClient()
     const stoppedEntry = await client.stopTimeEntry(entry.wid, entry.id)
     console.log('-> Stopped:', stoppedEntry.id)
+    syncStorage()
 }
