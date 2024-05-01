@@ -1,12 +1,12 @@
 import bootstrap from "../main"
 import "../global.css"
 import ListView from '../components/ListView'
-import OptionList from '../components/OptionList'
 import FavoritesView from '../components/FavoritesView'
 import GoalsView from '../components/GoalsView'
 import Box from '@mui/material/Box'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import useStore from "../useStore"
+import NoTokenPrompt from "../components/NoTokenPrompt"
 
 const darkTheme = createTheme({
     palette: {
@@ -19,7 +19,7 @@ function NewTab() {
     console.log('-> NewTab, hasApiToken', !!apiToken)
 
     return (<ThemeProvider theme={darkTheme}>
-        {!apiToken && <OptionList />}
+        {!apiToken && <NoTokenPrompt />}
         {apiToken &&
             <Box className='parentBox' >
                 <Box className='childBox'>
