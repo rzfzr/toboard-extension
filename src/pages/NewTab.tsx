@@ -10,8 +10,6 @@ import NoTokenPrompt from "../components/NoTokenPrompt"
 
 function NewTab() {
     const apiToken = useStore((state) => (state.apiToken))
-    console.log('-> NewTab, hasApiToken', !!apiToken)
-
     return (<>
         {!apiToken && <NoTokenPrompt />}
         {apiToken &&
