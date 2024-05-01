@@ -1,17 +1,13 @@
-import { useState, useEffect } from 'react'
-
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { useState } from 'react'
 
 import {
     TextField,
-    Paper,
     Card,
     CardActions,
     CardContent,
     Grid,
     Button,
     ButtonGroup,
-    Box,
     Typography,
     FormControl,
     FormControlLabel,
@@ -27,11 +23,6 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import useStore from '../useStore'
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-})
 
 export default function OptionList() {
     const { apiToken, setApiToken, clearStorage } = useStore((state) => {
@@ -67,7 +58,7 @@ export default function OptionList() {
 
     const onInput = (event) => setApiToken(event.target.value)
 
-    return <ThemeProvider theme={darkTheme}>
+    return <>
         <Grid
             container
             direction="row"
@@ -185,5 +176,5 @@ export default function OptionList() {
                 </form>
             </Card>
         </Grid>
-    </ThemeProvider>
+    </>
 }

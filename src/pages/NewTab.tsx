@@ -4,21 +4,15 @@ import ListView from '../components/ListView'
 import FavoritesView from '../components/FavoritesView'
 import GoalsView from '../components/GoalsView'
 import Box from '@mui/material/Box'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
 import useStore from "../useStore"
 import NoTokenPrompt from "../components/NoTokenPrompt"
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-})
 
 function NewTab() {
     const apiToken = useStore((state) => (state.apiToken))
     console.log('-> NewTab, hasApiToken', !!apiToken)
 
-    return (<ThemeProvider theme={darkTheme}>
+    return (<>
         {!apiToken && <NoTokenPrompt />}
         {apiToken &&
             <Box className='parentBox' >
@@ -35,7 +29,8 @@ function NewTab() {
                     <FavoritesView />
                 </Box>
             </Box>}
-    </ThemeProvider>)
+    </>
+    )
 }
 
 NewTab.displayName = 'NewTab'
