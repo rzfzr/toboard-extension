@@ -1,4 +1,3 @@
-
 export type Project = {
     id: number,
     name: string
@@ -50,6 +49,7 @@ export type StoreActions = {
     setFavorites: (favorites: Favorite[]) => void,
     addFavorite: (favorite: Favorite) => void,
     delFavorite: (favorite: Favorite) => void,
-    clearStorage: () => void
+    clearStorage: () => void,
+    syncFromChromeStorage: () => void
 }
 export type StoreState = StoreObjects & StoreActions

@@ -33,6 +33,17 @@ const useStore = create<StoreState>()(
                     workspaces: [],
                     favorites: []
                 }),
+                syncFromChromeStorage: async () => {
+                    const data = await chrome.storage.local.get(null)
+                    set({
+                        apiToken: data.apiToken || null,
+                        entries: data.entries || [],
+                        goals: data.goals || [],
+                        projects: data.projects || [],
+                        workspaces: data.workspaces || [],
+                        favorites: data.favorites || []
+                    })
+                }
             }),
         ),
     ),

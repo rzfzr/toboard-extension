@@ -7,7 +7,7 @@ import {
     getPreviousMonday
 } from './utils'
 
-let togglClientInstance = null
+let togglClientInstance: any = null
 
 async function getTogglClient() {
 
@@ -16,11 +16,19 @@ async function getTogglClient() {
     }
 
     const { apiToken } = await getAllStorageSyncData()
+
+    if (!apiToken) {
+        return null
+    }
+
     try {
         togglClientInstance = new TogglClient({ apiToken })
     } catch (error) {
         console.log("Error initializing TogglClient:", error)
     }
+
+    console.log('returning client', togglClientInstance)
+
     return togglClientInstance
 }
 
@@ -44,28 +52,35 @@ const timers = {
     projects: 1000 * 60 * 60 * 2,//2 hours
     entries: 1000 * 30,//30 seconds
 }
-const isExpired = (selection) => {
+const isExpired = (selection: any) => {
     //this is only working as inteded for 'cache', everything else is being postponed if cache is refreshed
     //there should have a time value for each
     return Date.now() - storageCache.cacheTime > timers[selection]
 }
 
+const refreshStorage = async () => {
+    try {
+        await chrome.runtime.sendMessage({ action: "syncStorage" })
+    } catch (error) {
+        console.log('Error refreshing storage', error)
+    }
+}
+
 const getCache = async () => {
-
-
     if (!!storageCache.cacheTime && !isExpired('cache')) {//it has to exist and not have expired
         console.log('not expired', storageCache,)
+        refreshStorage()
         return storageCache
     }
 
     let { apiToken, workspaces, projects, entries } = await getAllStorageSyncData()
-    let client = {}
-    console.log('getting cache', apiToken, workspaces, projects, entries)
-    try {
-        client = new TogglClient({ apiToken })
-    } catch (error) {
-        console.log("Toggl's API token was not set")
+
+    if (!apiToken) {
+        console.log('no api token')
+        return
     }
+
+    const client = await getTogglClient()
 
     if (!workspaces || workspaces.length === 0 || isExpired('workspaces')) {
         workspaces = await getWorkspaces(client)
@@ -87,11 +102,10 @@ const getCache = async () => {
             entries
         })
     }
-
+    refreshStorage()
     storageCache = {
         cacheTime: Date.now(),
         apiToken,
-        client,
         workspaces,
         projects,
         entries
@@ -101,9 +115,9 @@ const getCache = async () => {
 }
 
 (async () => {
-    console.log('Starting service worker at', getTime(new Date().getTime()))
+    console.log('---------------- Starting service worker at', getTime(new Date().getTime()))
     const cache = await getCache()
-    console.log('cache', cache)
+    console.log('Got cache', cache)
 
 
 })()
@@ -114,6 +128,12 @@ chrome.runtime.onMessage.addListener(
         entry
     }, sender, sendResponse) {
         switch (message) {
+            case 'refresh':
+                getCache()
+                sendResponse({
+                    status: 'ok'
+                })
+                break
             case 'toggle':
                 (async () => {
                     toggleEntry(entry.description, entry?.project?.id)
@@ -136,7 +156,7 @@ async function getWorkspaces(client) {
     return await new Promise((resolve, reject) => {
         if (!client) reject([])
         client.getWorkspaces((err, workspaces) => {
-            if (err) return reject(error)
+            if (err) return reject(err)
             resolve(workspaces)
         })
     })
@@ -145,7 +165,7 @@ async function getWorkspaces(client) {
 async function getProjects(client, workspace) {
     return await new Promise((resolve, reject) => {
         client.getWorkspaceProjects(workspace.id, (err, projects) => {
-            if (err) return reject(error)
+            if (err) return reject(err)
             resolve(projects)
         })
     })
@@ -153,12 +173,10 @@ async function getProjects(client, workspace) {
 
 async function getTimeEntries(client) {
     return await new Promise(async (resolve, reject) => {
-        console.log('getting timeentries', client)
         client.getTimeEntries(
             getPreviousMonday(),
             new Date().toISOString(),
             (err, timeEntries) => {
-                console.log('gott', err, timeEntries)
                 if (err) reject(err)
                 timeEntries.forEach((entry) => {
                     entry.isRunning = entry.duration < 0
