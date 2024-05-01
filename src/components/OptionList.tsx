@@ -2,27 +2,16 @@ import { useState } from 'react'
 
 import {
     TextField,
-    Card,
-    CardActions,
-    CardContent,
-    Grid,
     Button,
     ButtonGroup,
+    Box,
+    Container,
+    CssBaseline,
+    Link,
     Typography,
-    FormControl,
-    FormControlLabel,
-    InputLabel,
-    Switch,
-    Select,
-    MenuItem,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails
 } from '@mui/material'
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import useStore from '../useStore'
-
 
 export default function OptionList() {
     const { apiToken, setApiToken, clearStorage } = useStore((state) => {
@@ -33,148 +22,90 @@ export default function OptionList() {
         }
     })
 
-    const [status, setStatus] = useState('')
+    const [tempApiToken, setTempApiToken] = useState(apiToken)
 
-    const [expansions, setExpansions] = useState([true, false, false])
-
-    const handleExpansion = sel => (event) => {
-        let temp = [...expansions]
-        temp[sel] = !temp[sel]
-        setExpansions(temp)
+    const handleReset = () => {
+        clearStorage()
+        setTempApiToken('')
     }
 
-    const saveForm = (event) => {
+    const [error, setError] = useState('')
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        setApiToken(apiToken)
+        const data = new FormData(event.currentTarget)
+        const apiToken = data.get('apiToken') as string
+
+        if (apiToken?.length == 32) {
+            setApiToken(apiToken)
+        } else {
+            setError('Please provide a valid API key.')
+        }
     }
 
-    const changeStatus = (status) => {
-        setStatus(status)
-        setTimeout(() => {
-            setStatus('')
-        }, 1 * 1000)
-    }
-
-
-    const onInput = (event) => setApiToken(event.target.value)
-
-    return <>
-        <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            style={{ height: '80vh' }}
+    return <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+            sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}
         >
-            <Card elevation={10} style={{ width: '30%' }}>
-                <form onSubmit={saveForm} >
-                    <CardContent>
-                        <Accordion expanded={expansions[0]} onChange={handleExpansion(0)}>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                            >
-                                <Typography>Main</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <TextField fullWidth value={apiToken} onInput={onInput} label="API Token" variant="standard" color='primary' />
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch defaultChecked />} label="Show Weekly Goals" />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch defaultChecked />} label="Show Weekly List" />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch defaultChecked />} label="Show My Favorites" />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label="Show Timeline" />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label="Show Calendar" />
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion expanded={expansions[1]} onChange={handleExpansion(1)}>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel2a-content"
-                                id="panel2a-header"
-                            >
-                                <Typography>Weekly Goals</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label="Rolling Start" />
-                                </FormControl>
+            <Typography component="h1" variant="h5">
+                Customizations in the way, source-code available <Link href="https://github.com/rzfzr/toboard-extension">here</Link>.
+            </Typography>
 
-                                <FormControl fullWidth>
-                                    <InputLabel >Week starts on</InputLabel>
-                                    <Select disabled value='monday'>
-                                        <MenuItem value={'monday'}>Monday</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel2a-content"
-                                id="panel2a-header"
-                                onChange={handleExpansion(2)}
-                            >
-                                <Typography>Incidents</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label='Show "How long since last X" ' />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label="Keep record" />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label="Count incedents in Week" />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label="Show average by day" />
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel2a-content"
-                                id="panel2a-header"
-                                onChange={handleExpansion(2)}
-                            >
-                                <Typography>Miscellaneous</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label="Show Bookmarks" />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label="Show GitHub link" />
-                                </FormControl>
-                                <FormControl fullWidth>
-                                    <FormControlLabel disabled control={<Switch />} label="Enable Sounds" />
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-                    </CardContent>
-                    <CardActions>
-                        <ButtonGroup fullWidth variant="contained" aria-label="outlined primary button group">
-                            <Button type="submit" color={status === 'ok' ? 'success' : 'primary'}>Save Changes</Button>
-                            <Button color='secondary' onClick={() => {
-                                chrome.tabs.update({ url: "chrome://newtab" })
-                            }} >Go Home
-                            </Button>
-                            <Button color={status === 'clear' ? 'success' : 'error'} onClick={() => { clearStorage() }} >Reset All</Button>
-                        </ButtonGroup>
-                    </CardActions>
-                </form>
-            </Card>
-        </Grid>
-    </>
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                onReset={handleReset}
+
+                noValidate sx={{ mt: 1 }}>
+                <TextField
+                    value={tempApiToken}
+                    onChange={(event) => { setTempApiToken(event.target.value) }}
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="apiToken"
+                    label="API Key"
+                    name="apiToken"
+                    autoFocus
+                    error={!!error}
+                    helperText={error}
+                />
+
+                <ButtonGroup
+                    fullWidth
+                    variant="contained"
+                    aria-label="outlined primary button group">
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Save
+                    </Button>
+                    <Button
+                        color='secondary'
+                        sx={{ mt: 3, mb: 2 }}
+                        onClick={() => {
+                            chrome.tabs.update({ url: "chrome://newtab" })
+                        }} >
+                        Go Home
+                    </Button>
+                    <Button
+                        type='reset'
+                        color={status === 'clear' ? 'success' : 'error'}
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Reset All
+                    </Button>
+                </ButtonGroup>
+            </Box>
+        </Box>
+    </Container>
 }
