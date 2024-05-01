@@ -1,6 +1,7 @@
 export type Project = {
     id: number,
-    name: string
+    name: string,
+    hex_color: string
 }
 
 export type Entry = {
