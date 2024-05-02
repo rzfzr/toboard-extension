@@ -12,7 +12,7 @@ import {
 } from '../utils.js'
 
 export default function ListView() {
-    const entries = useStore((state) => state.entries.reverse())
+    const entries = useStore((state) => state.entries)
 
     let days: any[] = []
 
