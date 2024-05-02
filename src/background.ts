@@ -47,10 +47,8 @@ function getAllStorageSyncData() {
 let storageCache = {}
 
 const timers = {
-    cache: 1000 * 5,//5 seconds
-    workspaces: 1000 * 60 * 60 * 12,//12 houwrs
+    workspaces: 1000 * 60 * 60 * 12,//12 hours
     projects: 1000 * 60 * 60 * 2,//2 hours
-    entries: 1000 * 30,//30 seconds
 }
 const isExpired = (selection: any) => {
     //this is only working as inteded for 'cache', everything else is being postponed if cache is refreshed
@@ -58,13 +56,6 @@ const isExpired = (selection: any) => {
     return Date.now() - storageCache.cacheTime > timers[selection]
 }
 
-const syncStorage = async () => {
-    try {
-        await chrome.runtime.sendMessage({ action: "syncStorage" })
-    } catch (error) {
-        console.log('Error refreshing storage', error)
-    }
-}
 
 // chrome.storage.onChanged.addListener(function(changes, namespace) {
 //     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
@@ -78,6 +69,13 @@ const syncStorage = async () => {
 
 
 const getCache = async () => {
+    const syncStorage = async () => {
+        try {
+            await chrome.runtime.sendMessage({ action: "syncStorage" })
+        } catch (error) {
+            console.log('Error refreshing storage', error)
+        }
+    }
     // if (!!storageCache.cacheTime && !isExpired('cache')) {//it has to exist and not have expired
     //     console.log('not expired', storageCache,)
     //     syncStorage()
@@ -107,13 +105,12 @@ const getCache = async () => {
         })
     }
 
-    if (!entries || entries.length === 0 || isExpired('entries')) {
-        entries = await getTimeEntries(client)
-        chrome.storage.local.set({
-            entries
-        })
-    }
-    syncStorage()
+    entries = await getTimeEntries(client)
+    console.log('local.set.entries', entries.length)
+    chrome.storage.local.set({
+        entries
+    })
+
     storageCache = {
         cacheTime: Date.now(),
         apiToken,
@@ -121,7 +118,8 @@ const getCache = async () => {
         projects,
         entries
     }
-    console.log('setting cache', storageCache)
+    console.log('syncStorage cache', storageCache)
+    syncStorage()
     return storageCache
 }
 
@@ -222,12 +220,12 @@ async function startEntry(description, pid) {
     })
 
     console.log('-> Created:', startedEntry.id)
-    syncStorage()
+    getCache()
 }
 
 async function stopEntry(entry) {
     const client = await getTogglClient()
     const stoppedEntry = await client.stopTimeEntry(entry.wid, entry.id)
     console.log('-> Stopped:', stoppedEntry.id)
-    syncStorage()
+    getCache()
 }
