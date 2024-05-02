@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { Goal, Entry, Project } from '../toboard.js'
 import useStore from '../useStore.js'
-import { getDurationSum, getEntryDuration } from '../utils.js'
+import { getDurationSum } from '../utils.js'
 
 export default function GoalsView() {
     const { goals, setGoals } = useStore((state) => ({
@@ -41,7 +41,7 @@ export default function GoalsView() {
             id: Date.now(),
             duration: 0,
             description: description,
-            project: project,
+            pid: project.id,
             target: target,
             period: 'week',
             type: 'total',
@@ -64,8 +64,8 @@ export default function GoalsView() {
 
 function getUpdatedGoal(goal: Goal, entries: Entry[]) {
     const goalEntries = goal.description == '' ?
-        entries.filter((entry: Entry) => (entry.pid === goal.project.id)) :
-        entries.filter((entry: Entry) => (entry.pid === goal.project.id && entry.description === goal.description))
+        entries.filter((entry: Entry) => (entry.pid === goal.pid)) :
+        entries.filter((entry: Entry) => (entry.pid === goal.pid && entry.description === goal.description))
 
     goal.isRunning = !!goalEntries.find((e: any) => e.duration < 0)
     goal.duration = getDurationSum(goalEntries)

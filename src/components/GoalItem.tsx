@@ -7,10 +7,12 @@ import Typography from '@mui/material/Typography'
 import CustomFab from './CustomFab.js'
 import { colorShade, getTime } from '../utils.js'
 import { Goal } from '../toboard.js'
+import useStore from '../useStore.js'
 
 export default function GoalItem(props: { goal: Goal, isEditing: boolean, delete: (goal: any) => void }) {
+    const project = useStore((state) => state.projects.find((p) => p.id === props.goal.pid))
     const progress = Math.min((100 / props.goal.target) * (props.goal.duration / 60), 100)
-    const lightColor = colorShade(props.goal?.project?.color, +50) || '#B2BEB5'
+    const lightColor = colorShade(project?.color, +50) || '#B2BEB5'
 
     return (
         <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
@@ -20,7 +22,7 @@ export default function GoalItem(props: { goal: Goal, isEditing: boolean, delete
                 value={progress}
                 valueBuffer={progress + 5}
                 color='inherit'
-                style={{ height: '75px', color: props.goal?.project?.color }} />
+                style={{ height: '75px', color: project?.color }} />
             <Box className="floating-left" >
                 <CardContent sx={{
                     flex: '1 0 auto',
@@ -30,12 +32,12 @@ export default function GoalItem(props: { goal: Goal, isEditing: boolean, delete
                     <Typography
                         component="div"
                         variant="subtitle1">
-                        {props.goal.description != '' ? props.goal.description : props.goal.project.name}
+                        {props.goal.description != '' ? props.goal.description : project?.name}
                     </Typography>
                     <Typography
                         variant="subtitle2"
                         component="div" >
-                        {props.goal.description != '' ? props.goal.project?.name : ''}
+                        {props.goal.description != '' ? project?.name : ''}
                     </Typography>
                 </CardContent>
             </Box>

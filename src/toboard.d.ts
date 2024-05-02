@@ -6,10 +6,10 @@ export type Project = {
 
 export type Entry = {
     id: number,
+    description: string,
+    pid: number,
     start: string,
     end: string,
-    pid: number,
-    description: string,
     duration: number,
     time: string
 }
@@ -17,7 +17,7 @@ export type Entry = {
 export type Goal = {
     id: number,
     description: string,
-    project: Project,
+    pid: number,
     target: number
     isRunning?: boolean,
     duration: number,
