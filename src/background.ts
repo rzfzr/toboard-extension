@@ -27,8 +27,6 @@ async function getTogglClient() {
         console.log("Error initializing TogglClient:", error)
     }
 
-    console.log('returning client', togglClientInstance)
-
     return togglClientInstance
 }
 
@@ -55,18 +53,6 @@ const isExpired = (selection: any) => {
     //there should have a time value for each
     return Date.now() - storageCache.cacheTime > timers[selection]
 }
-
-
-// chrome.storage.onChanged.addListener(function(changes, namespace) {
-//     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-//       console.log(
-//         `Storage key "${key}" in namespace "${namespace}" changed.`,
-//         `Old value was "${oldValue}", new value is "${newValue}".`
-//       );
-//     }
-//     chrome.runtime.sendMessage({ action: "syncStorage" });
-//   });
-
 
 const getCache = async () => {
     const syncStorage = async () => {
@@ -106,7 +92,6 @@ const getCache = async () => {
     }
 
     entries = await getTimeEntries(client)
-    console.log('local.set.entries', entries.length)
     chrome.storage.local.set({
         entries
     })
@@ -118,7 +103,6 @@ const getCache = async () => {
         projects,
         entries
     }
-    console.log('syncStorage cache', storageCache)
     syncStorage()
     return storageCache
 }
@@ -126,6 +110,9 @@ const getCache = async () => {
 (async () => {
     console.log('-> Starting service worker at', getTime(new Date().getTime()))
     getCache()
+    setInterval(() => {
+        getCache()
+    }, 1000 * 60 * 1)
 })()
 
 chrome.runtime.onMessage.addListener(
