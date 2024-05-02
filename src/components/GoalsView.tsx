@@ -8,7 +8,6 @@ import EditIcon from '@mui/icons-material/Edit'
 import { Goal, Entry, Project } from '../toboard.js'
 import useStore from '../useStore.js'
 
-
 export default function GoalsView() {
     const { goals, setGoals } = useStore((state) => ({
         goals: state.goals,
@@ -24,7 +23,6 @@ export default function GoalsView() {
     }
 
     useEffect(() => {
-        console.log('-> entries changed, updating goals', entries.length)
         if (!goals || goals.length === 0) {
             return
         }
@@ -69,12 +67,15 @@ function getUpdatedGoal(goal: Goal, entries: Entry[]) {
         entries.filter((entry: Entry) => (entry.pid === goal.project.id && entry.description === goal.description))
 
     goal.isRunning = !!goalEntries.find((e: any) => e.duration < 0)
-    goal.duration = goalEntries.reduce((p: any, c: any) => {
-        if (c.duration < 0) {
-            let n = Date.now() / 1000
-            return p + n + c.duration
+    goal.duration = goalEntries.reduce((sum: any, entry: any) => {
+        if (entry.duration < 0) {
+            const nowMilli = Date.now()
+            const startMilli = new Date(entry.start).getTime()
+            const currentDuration = (nowMilli - startMilli) / 1000
+
+            return sum + currentDuration + entry.duration
         }
-        return p + c.duration
+        return sum + entry.duration
     }, 0)
     return goal
 }

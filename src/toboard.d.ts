@@ -6,8 +6,8 @@ export type Project = {
 
 export type Entry = {
     id: number,
-    start: number,
-    end: number,
+    start: string,
+    end: string,
     pid: number,
     description: string,
     duration: number,
@@ -25,8 +25,9 @@ export type Goal = {
     type: 'total' | 'average'
 }
 export type Favorite = {
-    description: string,
-    project: Project
+    id: number,
+    description?: string,
+    project?: Project// being used for quick lookup for color, name and id, can be reduced
 }
 
 export type Workspace = {
