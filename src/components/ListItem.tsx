@@ -5,11 +5,14 @@ import Typography from '@mui/material/Typography'
 
 import CustomFab from './CustomFab.js'
 import { getTime, colorShade, getEntryDuration } from '../utils.js'
-import { Entry, Favorite } from '../toboard.js'
+import { Entry } from '../toboard.js'
+import useStore from '../useStore.js'
 
 export default function ListItem(props: { entry: Entry, isEditing?: boolean }) {
+    const project = useStore((state) => state.projects.find((p) => p.id === props.entry.pid))
+    const lightColor = colorShade(project?.color, +50) || '#B2BEB5'
+
     const time = getTime(getEntryDuration(props.entry), true)
-    const lightColor = colorShade(props.entry?.project?.color, +50) || '#B2BEB5'
 
     return (<Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
         <Box className="floating-left" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
@@ -22,10 +25,10 @@ export default function ListItem(props: { entry: Entry, isEditing?: boolean }) {
                 </Typography>
                 <Typography
                     variant="subtitle2"
-                    color={props.entry?.project?.color}
+                    color={project?.color}
                     component="div"
                     style={{ textShadow: '1px 1px grey' }}>
-                    {props.entry.project?.name}
+                    {project?.name}
                 </Typography>
             </CardContent>
         </Box>
@@ -38,7 +41,7 @@ export default function ListItem(props: { entry: Entry, isEditing?: boolean }) {
                 {time}
             </Typography>
             <CustomFab
-                // isRunning={props.entry.isRunning}
+                isRunning={props.entry.duration < 0}
                 entry={props.entry}
                 color={lightColor}
             />
