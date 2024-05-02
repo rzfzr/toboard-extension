@@ -1,5 +1,4 @@
-import { render, h } from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button, TextField } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Paper from '@mui/material/Paper'
@@ -7,10 +6,13 @@ import ButtonGroup from '@mui/material/ButtonGroup'
 
 import Autocomplete from '@mui/material/Autocomplete'
 import useStore from '../useStore'
+import { Project } from '../toboard'
 
-export default function NewFavorite(props: any) {
+export default function NewFavorite() {
     const [description, setDescription] = useState('')
-    const [project, setProject] = useState('')
+    const [project, setProject] = useState(null as Project | null)
+
+    const addFavorite = useStore((state) => state.addFavorite)
 
     const projects = useStore((state) => state.projects)
 
@@ -48,8 +50,16 @@ export default function NewFavorite(props: any) {
                 >
                     <Button
                         style={{ width: '50%' }}
+                        disabled={project == null && description == ''}
                         onClick={() => {
-                            props.add(description, project)
+                            addFavorite({
+                                id: Date.now(),
+                                description: description != '' ? description : undefined,
+                                project: project || undefined
+                            })
+
+                            setProject(null)
+                            setDescription('')
                             setEditing(false)
                         }}>Save</Button>
                     <Button
