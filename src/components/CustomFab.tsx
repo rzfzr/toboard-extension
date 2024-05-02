@@ -23,7 +23,12 @@ export default function CustomFab(props:
             :
             <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
                 onClick={() => {
-                    chrome.runtime.sendMessage({ message: 'toggle', entry: props.entry }, function (response) {
+                    console.log('trying', props.entry)
+                    chrome.runtime.sendMessage({
+                        message: 'toggle',
+                        description: props.entry.description,
+                        projectId: props.entry.pid
+                    }, function (response) {
                         console.log(response)
                     })
                 }}>

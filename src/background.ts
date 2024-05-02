@@ -131,7 +131,8 @@ const getCache = async () => {
 chrome.runtime.onMessage.addListener(
     function ({
         message,
-        entry
+        description,
+        projectId
     }, sender, sendResponse) {
         switch (message) {
             case 'refresh':
@@ -142,7 +143,7 @@ chrome.runtime.onMessage.addListener(
                 break
             case 'toggle':
                 (async () => {
-                    toggleEntry(entry.description, entry?.project?.id)
+                    toggleEntry(description, projectId)
                     sendResponse({
                         status: 'ok'
                     })
