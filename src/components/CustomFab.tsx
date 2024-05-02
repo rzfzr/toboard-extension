@@ -8,11 +8,11 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 
 export default function CustomFab(props:
     {
-        isEditing: boolean,
-        isRunning: boolean,
+        isEditing?: boolean,
+        isRunning?: boolean,
         color: string,
-        entry: any,
-        delete: (entry: any) => void
+        entry?: any,
+        delete?: (entry: any) => void
     }) {
     return <>
         {props.isEditing ?

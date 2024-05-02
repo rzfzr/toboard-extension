@@ -18,14 +18,11 @@ function bootstrap(Component: React.ElementType) {
 
     useEffect(() => {
       const handleMessage = (request: any, sender: any, sendResponse: any) => {
-        console.log('Got message', request)
         if (request.action === "syncStorage") {
           syncFromChromeStorage()
         }
       }
-
       chrome.runtime.onMessage.addListener(handleMessage)
-
       return () => chrome.runtime.onMessage.removeListener(handleMessage)
     }, [])
 
