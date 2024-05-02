@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import EntryComponent from './EntryComponent.js'
+import FavoriteComponent from './FavoriteComponent.js'
 import NewFavorite from './NewFavorite.js'
 
 import IconButton from '@mui/material/IconButton'
@@ -13,9 +13,9 @@ export default function FavoriteList() {
     const favorites = useStore((state) => (state.favorites))
 
     return <div>
-        {favorites.map((favorite) => <EntryComponent
+        {favorites.map((favorite) => <FavoriteComponent
             key={favorite.id}
-            entry={favorite}
+            favorite={favorite}
             isEditing={isEditing} />
         )}
         <IconButton
