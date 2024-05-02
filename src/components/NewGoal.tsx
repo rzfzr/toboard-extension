@@ -1,34 +1,25 @@
-import { render, h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect } from 'react'
 // import { useContext } from 'react';
-import { Button, TextField } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import Paper from '@mui/material/Paper';
-import ButtonGroup from '@mui/material/ButtonGroup';
-
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Button, TextField } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import Paper from '@mui/material/Paper'
+import ButtonGroup from '@mui/material/ButtonGroup'
 
 import Autocomplete from '@mui/material/Autocomplete'
+import { Project } from '../toboard'
+import useStore from '../useStore'
 
-export default function NewGoal(props) {
-    const [description, setDescription]=useState('')
-    const [project, setProject]=useState('')
-    const [target, setTarget]=useState('')
+export default function NewGoal(props: { add: (description: string, project: Project, target: number) => void }) {
+    const [description, setDescription] = useState('')
+    const [project, setProject] = useState(null as Project | null)
+    const [target, setTarget] = useState(0 as number)
 
-    const [projects, setProjects]=useState([])
+    const projects = useStore((state) => state.projects)
 
-    const [isEditing, setEditing]=useState(false)
+    const [isEditing, setEditing] = useState(false)
 
-    const [timeUnit, setTimeUnit]=useState('hours');
+    const [timeUnit, setTimeUnit] = useState('hours')
 
-    const [goalType, setGoalType]=useState('total');//total per week, average per day, average per entry
-
-    useEffect(() => {
-        chrome.storage.local.get(['projects'], (result) => {
-            setProjects(result.projects)
-        })
-    }, [])
 
     if (isEditing) {
         return (
@@ -54,27 +45,11 @@ export default function NewGoal(props) {
                     <TextField
                         id="target"
                         label={`Target in ${timeUnit}`}
-                        onChange={(event) => setTarget(event.target.value)}
+                        onChange={(event) => setTarget(Number(event.target.value))}
                         variant="filled"
                         placeholder=""
-                        style={{ width: '75%' }}
+                        style={{ width: '100%' }}
                     />
-                    <ToggleButtonGroup
-                        size="small"
-                        orientation="vertical"
-                        color="primary"
-                        value={timeUnit}
-                        exclusive
-                        onChange={(event, newValue) => { if (newValue!==null) setTimeUnit(newValue) }}
-                        style={{ width: '25%' }}
-                    >
-                        <ToggleButton
-                            style={{ height: '28px' }}
-                            value="minutes">Minutes</ToggleButton>
-                        <ToggleButton
-                            style={{ height: '28px' }}
-                            value="hours">Hours</ToggleButton>
-                    </ToggleButtonGroup>
                 </form>
 
                 <ButtonGroup
@@ -84,9 +59,12 @@ export default function NewGoal(props) {
                     style={{ width: '100%' }}
                 >
                     <Button
+                        disabled={!project}
                         style={{ width: '50%' }}
                         onClick={() => {
-                            props.add(description, project, timeUnit=='hours'? target*60:target)
+                            if (!project) return
+
+                            props.add(description, project, timeUnit == 'hours' ? target * 60 : target)
                             setEditing(false)
                         }}>Save</Button>
                     <Button

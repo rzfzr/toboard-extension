@@ -1,26 +1,22 @@
-import { render, h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
-import { Button, TextField } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import Paper from '@mui/material/Paper';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import { useState } from 'react'
+import { Button, TextField } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import Paper from '@mui/material/Paper'
+import ButtonGroup from '@mui/material/ButtonGroup'
 
 import Autocomplete from '@mui/material/Autocomplete'
+import useStore from '../useStore'
+import { Project } from '../toboard'
 
-export default function NewFavorite(props) {
+export default function NewFavorite() {
+    const [description, setDescription] = useState('')
+    const [project, setProject] = useState(null as Project | null)
 
-    const [description, setDescription]=useState('')
-    const [project, setProject]=useState('')
+    const addFavorite = useStore((state) => state.addFavorite)
 
-    const [projects, setProjects]=useState([])
+    const projects = useStore((state) => state.projects)
 
-    const [isEditing, setEditing]=useState(false)
-
-    useEffect(() => {
-        chrome.storage.local.get(['projects'], (result) => {
-            setProjects(result.projects)
-        })
-    }, [])
+    const [isEditing, setEditing] = useState(false)
 
 
     if (isEditing) {
@@ -54,8 +50,16 @@ export default function NewFavorite(props) {
                 >
                     <Button
                         style={{ width: '50%' }}
+                        disabled={project == null && description == ''}
                         onClick={() => {
-                            props.add(description, project)
+                            addFavorite({
+                                id: Date.now(),
+                                description: description != '' ? description : undefined,
+                                pid: project?.id || undefined
+                            })
+
+                            setProject(null)
+                            setDescription('')
                             setEditing(false)
                         }}>Save</Button>
                     <Button
