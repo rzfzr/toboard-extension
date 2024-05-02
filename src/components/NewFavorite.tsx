@@ -55,7 +55,7 @@ export default function NewFavorite() {
                             addFavorite({
                                 id: Date.now(),
                                 description: description != '' ? description : undefined,
-                                project: project || undefined
+                                pid: project?.id || undefined
                             })
 
                             setProject(null)

@@ -27,7 +27,7 @@ export type Goal = {
 export type Favorite = {
     id: number,
     description?: string,
-    project?: Project// being used for quick lookup for color, name and id, can be reduced
+    pid?: number
 }
 
 export type Workspace = {

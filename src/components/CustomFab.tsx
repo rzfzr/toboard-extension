@@ -11,13 +11,13 @@ export default function CustomFab(props:
         isEditing?: boolean,
         isRunning?: boolean,
         color: string,
-        entry?: any,
+        entry: any,
         delete?: (entry: any) => void
     }) {
     return <>
         {props.isEditing ?
             <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
-                onClick={() => { props.delete(props.entry) }}>
+                onClick={() => { props.delete && props.delete(props.entry) }}>
                 <DeleteIcon sx={{ transform: 'scale(2)' }} />
             </Fab>
             :
