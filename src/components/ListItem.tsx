@@ -4,14 +4,11 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
 import CustomFab from './CustomFab.js'
-import { getTime, colorShade } from '../utils.js'
+import { getTime, colorShade, getEntryDuration } from '../utils.js'
 import { Entry, Favorite } from '../toboard.js'
 
-export default function ListItem(props: { entry: Entry | Favorite, isEditing?: boolean }) {
-    const time = props.entry.duration < 0 ?
-        getTime(props.entry.duration + Date.now() / 1000)
-        : props.entry.time
-
+export default function ListItem(props: { entry: Entry, isEditing?: boolean }) {
+    const time = getTime(getEntryDuration(props.entry), true)
     const lightColor = colorShade(props.entry?.project?.color, +50) || '#B2BEB5'
 
     return (<Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
