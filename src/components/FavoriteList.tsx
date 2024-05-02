@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react'
 
-import ListItem from './ListItem.jsx'
-import NewFavorite from './NewFavorite.jsx'
+import EntryComponent from './EntryComponent.js'
+import NewFavorite from './NewFavorite.js'
 
 import IconButton from '@mui/material/IconButton'
 import EditIcon from '@mui/icons-material/Edit'
 import useStore from '../useStore.js'
 
 
-export default function FavoritesView() {
+export default function FavoriteList() {
     const [isEditing, setIsEditing] = useState(false)
     const favorites = useStore((state) => (state.favorites))
 
     return <div>
-        {favorites.map((favorite) => <ListItem
+        {favorites.map((favorite) => <EntryComponent
             key={favorite.id}
             entry={favorite}
             isEditing={isEditing} />

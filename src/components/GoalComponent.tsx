@@ -9,7 +9,7 @@ import { colorShade, getTime } from '../utils.js'
 import { Goal } from '../toboard.js'
 import useStore from '../useStore.js'
 
-export default function GoalItem(props: { goal: Goal, isEditing: boolean, delete: (goal: any) => void }) {
+export default function GoalComponent(props: { goal: Goal, isEditing: boolean, delete: (goal: any) => void }) {
     const project = useStore((state) => state.projects.find((p) => p.id === props.goal.pid))
     const progress = Math.min((100 / props.goal.target) * (props.goal.duration / 60), 100)
     const lightColor = colorShade(project?.color, +50) || '#B2BEB5'

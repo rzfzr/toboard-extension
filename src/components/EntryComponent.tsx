@@ -8,7 +8,7 @@ import { getTime, colorShade, getEntryDuration } from '../utils.js'
 import { Entry } from '../toboard.js'
 import useStore from '../useStore.js'
 
-export default function ListItem(props: { entry: Entry, isEditing?: boolean }) {
+export default function EntryComponent(props: { entry: Entry, isEditing?: boolean }) {
     const project = useStore((state) => state.projects.find((p) => p.id === props.entry.pid))
     const lightColor = colorShade(project?.color, +50) || '#B2BEB5'
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
-import GoalItem from './GoalItem.js'
-import NewGoal from './NewGoal.jsx'
+import GoalComponent from './GoalComponent.js'
+import NewGoal from './NewGoal.js'
 
 import IconButton from '@mui/material/IconButton'
 import EditIcon from '@mui/icons-material/Edit'
@@ -9,7 +9,7 @@ import { Goal, Entry, Project } from '../toboard.js'
 import useStore from '../useStore.js'
 import { getDurationSum } from '../utils.js'
 
-export default function GoalsView() {
+export default function GoalList() {
     const { goals, setGoals } = useStore((state) => ({
         goals: state.goals,
         setGoals: state.setGoals
@@ -50,7 +50,7 @@ export default function GoalsView() {
     }
     return <div >
         {goals.map((goal) =>
-            <GoalItem
+            <GoalComponent
                 key={goal.id}
                 goal={goal}
                 isEditing={isEditing}

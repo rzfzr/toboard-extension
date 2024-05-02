@@ -1,17 +1,17 @@
-import ListItem from './ListItem.js'
+import EntryComponent from './EntryComponent.js'
 
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import useStore from '../useStore'
+import useStore from '../useStore.js'
 
 import {
     formatDate
 } from '../utils.js'
 
-export default function ListView() {
+export default function EntryList() {
     const entries = useStore((state) => state.entries)
 
     let days: any[] = []
@@ -41,7 +41,7 @@ export default function ListView() {
                 </AccordionSummary>
                 <AccordionDetails style={{ padding: 0 }}>
                     {day.entries.map((entry: any) =>
-                        <ListItem
+                        <EntryComponent
                             key={entry.id}
                             entry={entry}
                         />
