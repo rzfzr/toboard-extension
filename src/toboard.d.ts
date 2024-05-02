@@ -1,7 +1,7 @@
 export type Project = {
     id: number,
     name: string,
-    hex_color: string
+    color: string
 }
 
 export type Entry = {
@@ -9,7 +9,9 @@ export type Entry = {
     start: number,
     end: number,
     pid: number,
-    description: string
+    description: string,
+    duration: number,
+    time: string
 }
 
 export type Goal = {

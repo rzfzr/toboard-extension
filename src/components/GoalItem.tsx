@@ -10,7 +10,7 @@ import { Goal } from '../toboard.js'
 
 export default function GoalItem(props: { goal: Goal, isEditing: boolean, delete: (goal: any) => void }) {
     const progress = Math.min((100 / props.goal.target) * (props.goal.duration / 60), 100)
-    const lightColor = colorShade(props.goal?.project?.hex_color, +50) || '#B2BEB5'
+    const lightColor = colorShade(props.goal?.project?.color, +50) || '#B2BEB5'
 
     return (
         <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
@@ -20,7 +20,7 @@ export default function GoalItem(props: { goal: Goal, isEditing: boolean, delete
                 value={progress}
                 valueBuffer={progress + 5}
                 color='inherit'
-                style={{ height: '75px', color: props.goal?.project?.hex_color }} />
+                style={{ height: '75px', color: props.goal?.project?.color }} />
             <Box className="floating-left" >
                 <CardContent sx={{
                     flex: '1 0 auto',

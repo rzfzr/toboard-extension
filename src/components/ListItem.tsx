@@ -1,5 +1,3 @@
-import { render, h } from 'react'
-
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box'
@@ -7,13 +5,14 @@ import Typography from '@mui/material/Typography'
 
 import CustomFab from './CustomFab.js'
 import { getTime, colorShade } from '../utils.js'
+import { Entry } from '../toboard.js'
 
-export default function ListItem(props) {
+export default function ListItem(props: { entry: Entry, isEditing?: boolean }) {
     const time = props.entry.duration < 0 ?
         getTime(props.entry.duration + Date.now() / 1000)
         : props.entry.time
 
-    const lightColor = colorShade(props.entry?.project?.hex_color, +50)
+    const lightColor = colorShade(props.entry?.project?.color, +50) || '#B2BEB5'
 
     return (<Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
         <Box className="floating-left" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
@@ -26,7 +25,7 @@ export default function ListItem(props) {
                 </Typography>
                 <Typography
                     variant="subtitle2"
-                    color={props.entry?.project?.hex_color}
+                    color={props.entry?.project?.color}
                     component="div"
                     style={{ textShadow: '1px 1px grey' }}>
                     {props.entry.project?.name}
@@ -42,9 +41,7 @@ export default function ListItem(props) {
                 {time}
             </Typography>
             <CustomFab
-                isRunning={props.entry.isRunning}
-                isEditing={props.isEditing}
-                delete={props.delete}
+                // isRunning={props.entry.isRunning}
                 entry={props.entry}
                 color={lightColor}
             />
