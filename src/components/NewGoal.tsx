@@ -5,9 +5,6 @@ import AddIcon from '@mui/icons-material/Add'
 import Paper from '@mui/material/Paper'
 import ButtonGroup from '@mui/material/ButtonGroup'
 
-import ToggleButton from '@mui/material/ToggleButton'
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-
 import Autocomplete from '@mui/material/Autocomplete'
 import { Project } from '../toboard'
 import useStore from '../useStore'
@@ -53,22 +50,6 @@ export default function NewGoal(props: { add: (description: string, project: Pro
                         placeholder=""
                         style={{ width: '100%' }}
                     />
-                    {/* <ToggleButtonGroup
-                        size="small"
-                        orientation="vertical"
-                        color="primary"
-                        value={timeUnit}
-                        exclusive
-                        onChange={(event, newValue) => { if (newValue !== null) setTimeUnit(newValue) }}
-                        style={{ width: '25%' }}
-                    >
-                        <ToggleButton
-                            style={{ height: '28px' }}
-                            value="minutes">Minutes</ToggleButton>
-                        <ToggleButton
-                            style={{ height: '28px' }}
-                            value="hours">Hours</ToggleButton>
-                    </ToggleButtonGroup> */}
                 </form>
 
                 <ButtonGroup
