@@ -1,3 +1,5 @@
+import { Entry } from "./toboard"
+
 export function colorShade(col: any, amt: any) {
     if (!col) return
     col = col.replace(/^#/, "")
@@ -69,4 +71,19 @@ export function formatDate(date: any, returnYear = false) {
     if (returnYear)
         return [day, month, year].join('/')
     else return [day, month].join('/')
+}
+export function getEntryDuration(entry: Entry) {
+    if (entry.duration < 0) {
+        const nowMilli = Date.now()
+        const startMilli = new Date(entry.start).getTime()
+        const currentDuration = (nowMilli - startMilli) / 1000
+
+        return currentDuration
+    }
+    return entry.duration
+}
+export function getDurationSum(entries: Entry[]) {
+    return entries.reduce((acc, entry) => {
+        return acc + getEntryDuration(entry)
+    }, 0)
 }

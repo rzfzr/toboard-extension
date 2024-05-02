@@ -5,9 +5,9 @@ import Typography from '@mui/material/Typography'
 
 import CustomFab from './CustomFab.js'
 import { getTime, colorShade } from '../utils.js'
-import { Entry } from '../toboard.js'
+import { Entry, Favorite } from '../toboard.js'
 
-export default function ListItem(props: { entry: Entry, isEditing?: boolean }) {
+export default function ListItem(props: { entry: Entry | Favorite, isEditing?: boolean }) {
     const time = props.entry.duration < 0 ?
         getTime(props.entry.duration + Date.now() / 1000)
         : props.entry.time
