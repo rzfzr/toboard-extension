@@ -14,7 +14,7 @@ export default function FavoriteComponent(props: { favorite: Favorite, isEditing
 
 
     return (<Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
-        <Box className="floating-left" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
+        <Box className="absolute left-0 right-0 flex-col w-3/4 text-xl text-white" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
             <CardContent sx={{ flex: '1 0 auto', padding: '10px 20px' }}>
                 <Typography
                     variant="subtitle1"
@@ -31,7 +31,7 @@ export default function FavoriteComponent(props: { favorite: Favorite, isEditing
                 </Typography>
             </CardContent>
         </Box>
-        <Box className="floating-right">
+        <Box className="absolute right-0 flex items-center p-3">
             <CustomFab
                 entry={props.favorite}
                 color={lightColor}

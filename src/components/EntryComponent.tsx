@@ -15,7 +15,7 @@ export default function EntryComponent(props: { entry: Entry, isEditing?: boolea
     const time = getTime(getEntryDuration(props.entry), true)
 
     return (<Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
-        <Box className="floating-left" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
+        <Box className="absolute left-0 right-0 text-xl text-white flex-col w-3/4" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
             <CardContent sx={{ flex: '1 0 auto', padding: '10px 20px' }}>
                 <Typography
                     variant="subtitle1"
@@ -32,7 +32,7 @@ export default function EntryComponent(props: { entry: Entry, isEditing?: boolea
                 </Typography>
             </CardContent>
         </Box>
-        <Box className="floating-right">
+        <Box className="absolute right-0 flex items-center p-3">
             <Typography
                 variant="subtitle2"
                 component="div"

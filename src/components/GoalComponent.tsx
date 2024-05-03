@@ -15,15 +15,15 @@ export default function GoalComponent(props: { goal: Goal, isEditing: boolean, d
     const lightColor = colorShade(project?.color, +50) || '#B2BEB5'
 
     return (
-        <Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
+        <Card className='relative' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
             <LinearProgress
-                className='progress'
+                className='absolute w-full h-full'
                 variant={props.goal.isRunning ? "buffer" : "determinate"}
                 value={progress}
                 valueBuffer={progress + 5}
                 color='inherit'
                 style={{ height: '75px', color: project?.color }} />
-            <Box className="floating-left" >
+            <Box className="absolute left-0 right-0 flex-col w-3/4 text-xl text-white" >
                 <CardContent sx={{
                     flex: '1 0 auto',
                     padding: '10px 20px',
@@ -41,7 +41,7 @@ export default function GoalComponent(props: { goal: Goal, isEditing: boolean, d
                     </Typography>
                 </CardContent>
             </Box>
-            <Box className="floating-right">
+            <Box className="absolute right-0 flex items-center p-3">
                 <Typography
                     variant="subtitle2"
                     component="div"
