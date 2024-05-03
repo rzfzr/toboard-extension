@@ -14,8 +14,8 @@ export default function EntryComponent(props: { entry: Entry, isEditing?: boolea
 
     const time = getTime(getEntryDuration(props.entry), true)
 
-    return (<Card className='content' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
-        <Box className="absolute left-0 right-0 text-xl text-white flex-col w-3/4" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
+    return (<Card className='relative group' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
+        <Box className="absolute left-0 right-0 flex-col w-3/4 text-xl text-white" sx={{ display: 'flex', flexDirection: 'column', width: '75%', maxWidth: '75%' }}>
             <CardContent sx={{ flex: '1 0 auto', padding: '10px 20px' }}>
                 <Typography
                     variant="subtitle1"

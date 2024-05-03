@@ -15,7 +15,7 @@ export default function GoalComponent(props: { goal: Goal, isEditing: boolean, d
     const lightColor = colorShade(project?.color, +50) || '#B2BEB5'
 
     return (
-        <Card className='relative' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
+        <Card className='relative group' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
             <LinearProgress
                 className='absolute w-full h-full'
                 variant={props.goal.isRunning ? "buffer" : "determinate"}

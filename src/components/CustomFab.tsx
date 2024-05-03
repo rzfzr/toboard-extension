@@ -15,15 +15,16 @@ export default function CustomFab(props:
         delete?: (entry: any) => void
     }) {
     return <>
-        {props.isEditing ?
+        {props.isEditing && <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
+            onClick={() => { props.delete && props.delete(props.entry) }}>
+            <DeleteIcon sx={{ transform: 'scale(2)' }} />
+        </Fab>}
+
+
+        {!props.isEditing &&
             <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
-                onClick={() => { props.delete && props.delete(props.entry) }}>
-                <DeleteIcon sx={{ transform: 'scale(2)' }} />
-            </Fab>
-            :
-            <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
+                className='invisible group-hover:visible'
                 onClick={() => {
-                    console.log('trying', props.entry)
                     chrome.runtime.sendMessage({
                         message: 'toggle',
                         description: props.entry.description,
@@ -32,21 +33,21 @@ export default function CustomFab(props:
                         console.log(response)
                     })
                 }}>
-                {props.isRunning ?
-                    <>
-                        <PauseCircleIcon sx={{ transform: 'scale(2.2)' }} />
-                        <CircularProgress
-                            size={55}
-                            sx={{
-                                color: props.color,
-                                position: 'absolute',
-                                zIndex: 0,
-                            }}
-                        />
-                    </>
-                    :
-                    <PlayCircleIcon sx={{ transform: 'scale(2.2)' }} />
 
+                {props.isRunning && <>
+                    <PauseCircleIcon sx={{ transform: 'scale(2.2)' }} />
+                    <CircularProgress
+                        size={55}
+                        sx={{
+                            color: props.color,
+                            position: 'absolute',
+                            zIndex: 0,
+                        }}
+                    />
+                </>
+                }
+                {!props.isRunning &&
+                    <PlayCircleIcon sx={{ transform: 'scale(2.2)' }} />
                 }
             </Fab>
         }
