@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles'
 import useStore from './useStore'
 
 const darkTheme = createTheme({
@@ -27,9 +27,11 @@ function bootstrap(Component: React.ElementType) {
     }, [])
 
     return (
-      <ThemeProvider theme={darkTheme}>
-        <Component />
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={darkTheme}>
+          <Component />
+        </ThemeProvider>
+      </StyledEngineProvider>
     )
   }
 
