@@ -40,28 +40,34 @@ export default function CustomFab(props:
             variant="subtitle2"
             component="div"
             color="white"
-            className='block m-0 text-center align-middle group-hover:hidden'
+            className='absolute z-50 opacity-100  right-1 group-hover:opacity-0'
         >
             {props.nonHoverText || ''}
         </Typography >
 
-        <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
-            className='hidden group-hover:block'
+        <Fab
+            sx={{ color: props.color, transform: 'scale(0.5)' }}
+            className='relative opacity-0 group-hover:opacity-100'
             onClick={sendToggle}>
 
             {props.isRunning && <>
-                <PauseCircleIcon sx={{ transform: 'scale(2.2)' }} />
+                <PauseCircleIcon
+                    className='absolute'
+                    sx={{ transform: 'scale(2.2)' }} />
                 <CircularProgress
+                    className='absolute'
                     size={55}
                     sx={{
                         color: props.color,
                         zIndex: 0,
                     }}
                 />
-            </>
-            }
+            </>}
+
             {!props.isRunning &&
-                <PlayCircleIcon sx={{ transform: 'scale(2.2)' }} />
+                <PlayCircleIcon
+                    className='absolute'
+                    sx={{ transform: 'scale(2.2)' }} />
             }
         </Fab >
 
