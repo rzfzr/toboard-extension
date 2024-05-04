@@ -16,22 +16,22 @@ export default function GoalComponent(props: { goal: Goal, isEditing: boolean, d
 
     const time = `${getTime(props.goal.duration)} / ${getTime(props.goal.target * 60)}`
     return (
-        <Card className='relative flex items-center group' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
+        <Card className='relative flex items-center '
+            sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
 
             <Box className="left-0 right-0 flex flex-col w-3/4 text-xl text-white" >
                 <CardContent sx={{
-                    flex: '1 0 auto',
-                    padding: '10px 20px',
-                    paddingTop: props.goal.description != '' ? '10px' : '23px',
+                    className: 'flex flex-col w-3/4 text-xl text-white ',
                 }}>
                     <Typography
-                        component="div"
+                        className='relative z-50'
                         variant="subtitle1">
                         {props.goal.description != '' ? props.goal.description : project?.name}
                     </Typography>
                     <Typography
+                        className='relative z-50'
                         variant="subtitle2"
-                        component="div" >
+                    >
                         {props.goal.description != '' ? project?.name : ''}
                     </Typography>
                 </CardContent>

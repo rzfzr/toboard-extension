@@ -35,16 +35,15 @@ export default function CustomFab(props:
     }
 
 
-    return <>
+    return <div className='relative grid place-items-center group'>
         <Typography
             variant="subtitle2"
             component="div"
             color="white"
-            className='absolute z-50 opacity-100  right-1 group-hover:opacity-0'
+            className='absolute z-50 m-0 text-center align-middle opacity-100 right-1 group-hover:opacity-0'
         >
             {props.nonHoverText || ''}
         </Typography >
-
         <Fab
             sx={{ color: props.color, transform: 'scale(0.5)' }}
             className='relative opacity-0 group-hover:opacity-100'
@@ -70,6 +69,5 @@ export default function CustomFab(props:
                     sx={{ transform: 'scale(2.2)' }} />
             }
         </Fab >
-
-    </>
+    </div>
 }

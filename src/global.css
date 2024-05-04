@@ -2,8 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    background-color: #1e1e1e;
+@keyframes stream-ltr {
+    100% {
+        transform: translateX(-16px);
+    }
 }
 
 .MuiLinearProgress-dashed.MuiLinearProgress-dashedColorInherit {
@@ -18,15 +20,5 @@ body {
     bottom: 46%;
     border-bottom: 8px dotted;
     width: 100%;
-    z-index: 0;
 }
 
-@keyframes stream-ltr {
-    100% {
-        @apply -translate-x-4
-    }
-}
-
-.MuiCard-root {
-    @apply bg-gray-900 border border-gray-600 rounded-lg m-2.5;
-}
