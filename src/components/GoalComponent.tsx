@@ -14,16 +14,11 @@ export default function GoalComponent(props: { goal: Goal, isEditing: boolean, d
     const progress = Math.min((100 / props.goal.target) * (props.goal.duration / 60), 100)
     const lightColor = colorShade(project?.color, +50) || '#B2BEB5'
 
+    const time = `${getTime(props.goal.duration)} / ${getTime(props.goal.target * 60)}`
     return (
-        <Card className='relative group' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
-            <LinearProgress
-                className='absolute w-full h-full'
-                variant={props.goal.isRunning ? "buffer" : "determinate"}
-                value={progress}
-                valueBuffer={progress + 5}
-                color='inherit'
-                style={{ height: '75px', color: project?.color }} />
-            <Box className="absolute left-0 right-0 flex-col w-3/4 text-xl text-white" >
+        <Card className='relative flex items-center group' sx={{ height: '75px', display: 'flex', marginBottom: '5px' }}>
+
+            <Box className="left-0 right-0 flex flex-col w-3/4 text-xl text-white" >
                 <CardContent sx={{
                     flex: '1 0 auto',
                     padding: '10px 20px',
@@ -41,22 +36,27 @@ export default function GoalComponent(props: { goal: Goal, isEditing: boolean, d
                     </Typography>
                 </CardContent>
             </Box>
-            <Box className="absolute right-0 flex items-center p-3">
-                <Typography
-                    variant="subtitle2"
-                    component="div"
-                    color="white"
-                    style={{ position: 'relative', top: '33%', height: '25%' }}>
-                    {getTime(props.goal.duration)}/{getTime(props.goal.target * 60)}
-                </Typography>
-                <CustomFab
-                    isRunning={props.goal.isRunning}
-                    isEditing={props.isEditing}
-                    delete={props.delete}
-                    entry={props.goal}
-                    color={lightColor}
-                />
-            </Box>
+            {/* <Box className="flex items-center p-3"> */}
+            <CustomFab
+                isRunning={props.goal.isRunning}
+                isEditing={props.isEditing}
+                nonHoverText={time}
+                delete={props.delete}
+                entry={props.goal}
+                color={lightColor}
+            />
+            {/* </Box> */}
+
+
+            <LinearProgress
+                className='absolute w-full h-full'
+                variant={props.goal.isRunning ? "buffer" : "determinate"}
+                value={progress}
+                valueBuffer={progress + 5}
+                color='inherit'
+                style={{ height: '75px', color: project?.color }} />
+
+
         </Card>
     )
 }
