@@ -16,6 +16,8 @@ const useStore = create<StoreState>()(
                 setEntries: (entries: Entry[]) => set({ entries }),
                 addEntry: (entry: Entry) => set(state => ({ entries: [...state.entries, entry] })),
                 setGoals: (goals: Goal[]) => set({ goals }),
+                addGoal: (goal: Goal) => set(state => ({ goals: [...state.goals, goal] })),
+                delGoal: (goal: Goal) => set(state => ({ goals: state.goals.filter(g => g !== goal) })),
                 setProjects: (projects: Project[]) => set({ projects }),
                 setWorkspaces: (workspaces: Workspace[]) => set({ workspaces }),
                 setApiToken: (apiToken: string) => {

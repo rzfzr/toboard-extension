@@ -36,17 +36,14 @@ export default function GoalComponent(props: { goal: Goal, isEditing: boolean, d
                     </Typography>
                 </CardContent>
             </Box>
-            {/* <Box className="flex items-center p-3"> */}
             <CustomFab
                 isRunning={props.goal.isRunning}
                 isEditing={props.isEditing}
                 nonHoverText={time}
-                delete={props.delete}
+                delete={() => props.delete(props.goal)}
                 entry={props.goal}
                 color={lightColor}
             />
-            {/* </Box> */}
-
 
             <LinearProgress
                 className='absolute w-full h-full'
