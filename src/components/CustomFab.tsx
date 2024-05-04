@@ -26,7 +26,6 @@ export default function CustomFab(props:
             console.log(response)
         })
     }
-
     if (props.isEditing && props.delete) {
         return <Fab sx={{ color: props.color, transform: 'scale(0.5)' }}
             onClick={() => { props.delete && props.delete(props.entry) }}>

@@ -49,7 +49,7 @@ export default function GoalList() {
                 key={goal.id}
                 goal={goal}
                 isEditing={isEditing}
-                delete={delGoal} />
+                delGoal={delGoal} />
         )}
         <IconButton aria-label="edit" color="primary" size="large" onClick={() => { setIsEditing(!isEditing) }}>
             <EditIcon />
