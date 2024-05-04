@@ -40,7 +40,8 @@ export type StoreObjects = {
     goals: Goal[],
     projects: Project[],
     workspaces: Workspace[],
-    favorites: Favorite[]
+    favorites: Favorite[],
+    theme: 'dark' | 'light'
 }
 
 export type StoreActions = {
@@ -56,6 +57,7 @@ export type StoreActions = {
     addFavorite: (favorite: Favorite) => void,
     delFavorite: (favorite: Favorite) => void,
     clearStorage: () => void,
-    syncFromChromeStorage: () => void
+    syncFromChromeStorage: () => void,
+    setTheme: (theme: 'dark' | 'light') => void
 }
 export type StoreState = StoreObjects & StoreActions

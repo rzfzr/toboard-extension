@@ -13,6 +13,8 @@ const useStore = create<StoreState>()(
                 projects: [],
                 workspaces: [],
                 favorites: [],
+                theme: 'dark',
+                setTheme: (theme: 'dark' | 'light') => set({ theme }),
                 setEntries: (entries: Entry[]) => set({ entries }),
                 addEntry: (entry: Entry) => set(state => ({ entries: [...state.entries, entry] })),
                 setGoals: (goals: Goal[]) => set({ goals }),
