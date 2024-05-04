@@ -15,6 +15,7 @@ export default function CardText(props: { description: string | null | undefined
                 <Typography
                     className='relative z-50'
                     variant="subtitle2"
+                    color={props.project?.color || 'white'}
                 >
                     {props.description != '' ? props.project?.name : ''}
                 </Typography>
