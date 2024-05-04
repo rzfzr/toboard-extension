@@ -46,9 +46,8 @@ export default function CustomFab(props:
         </Typography >
         <Fab
             sx={{ color: props.color, transform: 'scale(0.5)' }}
-            className='relative opacity-0 group-hover:opacity-100'
+            className={props.nonHoverText && 'opacity-0 group-hover:opacity-100'}
             onClick={sendToggle}>
-
             {props.isRunning && <>
                 <PauseCircleIcon
                     className='absolute'
@@ -62,7 +61,6 @@ export default function CustomFab(props:
                     }}
                 />
             </>}
-
             {!props.isRunning &&
                 <PlayCircleIcon
                     className='absolute'
