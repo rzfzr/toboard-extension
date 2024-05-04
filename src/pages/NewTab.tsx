@@ -20,7 +20,7 @@ function NewTab() {
     return (<>
         {!apiToken && <NoTokenPrompt />}
         {apiToken &&
-            <Box className='flex justify-center' >
+            <Box className='flex flex-wrap justify-center' >
                 <GroupComponent title="Weekly Goals">
                     <GoalList />
                 </GroupComponent>
