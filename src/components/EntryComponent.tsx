@@ -33,17 +33,11 @@ export default function EntryComponent(props: { entry: Entry, isEditing?: boolea
             </CardContent>
         </Box>
         <Box className="absolute right-0 flex items-center p-3">
-            <Typography
-                variant="subtitle2"
-                component="div"
-                color="white"
-                style={{ position: 'relative', top: '33%', height: '25%' }}>
-                {time}
-            </Typography>
             <CustomFab
                 isRunning={props.entry.duration < 0}
                 entry={props.entry}
                 color={lightColor}
+                nonHoverText={time}
             />
         </Box>
     </Card>
