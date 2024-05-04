@@ -9,6 +9,7 @@ import NoTokenPrompt from "../components/NoTokenPrompt"
 import { useEffect } from "react"
 import GroupComponent from "../components/GroupComponent"
 import { Group } from "@mui/icons-material"
+import CurrentEntry from "../components/CurrentEntry"
 
 
 function NewTab() {
@@ -20,9 +21,12 @@ function NewTab() {
     return (<>
         {!apiToken && <NoTokenPrompt />}
         {apiToken &&
-            <Box className='flex flex-wrap justify-center' >
+            <Box className='flex flex-wrap justify-center'>
                 <GroupComponent title="Weekly Goals">
                     <GoalList />
+                </GroupComponent>
+                <GroupComponent title="Current Entry">
+                    <CurrentEntry />
                 </GroupComponent>
                 <GroupComponent title="Weekly List">
                     <EntryList />
