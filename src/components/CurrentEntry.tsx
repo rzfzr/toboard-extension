@@ -3,9 +3,9 @@ import EntryComponent from './EntryComponent.js'
 import useStore from '../useStore.js'
 
 export default function CurrentEntry() {
-    const entry = useStore((state) => state.entries[0])
+    const entry = useStore((state) => state.entries.find((e) => e.duration < 0))
 
-    if (entry.duration > 0) return null
+    if (!entry) return null
 
     return <EntryComponent
         entry={entry}
