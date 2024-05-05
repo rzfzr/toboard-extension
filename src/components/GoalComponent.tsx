@@ -21,10 +21,10 @@ export default function GoalComponent(
         `${getTime(props.goal.duration)} / ${getTime(props.goal.target * 60)}`)
 
     useEffect(() => {
-        if (props.goal.duration > 0) return
+        if (!props.goal.isRunning) return
         const interval = setInterval(() => {
             setTime(
-                `${getTime(props.goal.duration)} / ${getTime(props.goal.target * 60)}`)
+                `${getTime(props.goal.duration + 60)} / ${getTime(props.goal.target * 60)}`)
         }, 1000 * 60)
         return () => clearInterval(interval)
     }, [props.goal.duration])
