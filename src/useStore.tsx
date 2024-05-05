@@ -17,6 +17,9 @@ const useStore = create<StoreState>()(
                 setTheme: (theme: 'dark' | 'light') => set({ theme }),
                 setEntries: (entries: Entry[]) => set({ entries }),
                 addEntry: (entry: Entry) => set(state => ({ entries: [...state.entries, entry] })),
+                editEntry: (entry: Entry) => set(state => ({
+                    entries: state.entries.map(e => e.id === entry.id ? entry : e)
+                })),
                 setGoals: (goals: Goal[]) => set({ goals }),
                 addGoal: (goal: Goal) => set(state => ({ goals: [...state.goals, goal] })),
                 delGoal: (goal: Goal) => set(state => ({ goals: state.goals.filter(g => g !== goal) })),
@@ -38,6 +41,7 @@ const useStore = create<StoreState>()(
                     favorites: []
                 }),
                 syncFromChromeStorage: async () => {
+                    console.log('-> Syncing from chrome storage')
                     const data = await chrome.storage.local.get(null)
                     set({
                         apiToken: data.apiToken || null,

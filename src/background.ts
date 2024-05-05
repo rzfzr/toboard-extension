@@ -55,16 +55,9 @@ const isExpired = (selection: any) => {
 }
 
 const getCache = async () => {
-    const syncStorage = async () => {
-        try {
-            await chrome.runtime.sendMessage({ action: "syncStorage" })
-        } catch (error) {
-            console.log('Error refreshing storage', error)
-        }
-    }
+
     // if (!!storageCache.cacheTime && !isExpired('cache')) {//it has to exist and not have expired
     //     console.log('not expired', storageCache,)
-    //     syncStorage()
     //     return storageCache
     // }
 
@@ -103,13 +96,26 @@ const getCache = async () => {
         projects,
         entries
     }
-    syncStorage()
     return storageCache
 }
 
 (async () => {
     console.log('-> Starting service worker at', getTime(new Date().getTime()))
-    getCache()
+    chrome.runtime.onConnect.addListener(function (port) {
+        console.assert(port.name === "toboard")
+        port.onMessage.addListener(function (msg: string) {
+            switch (msg) {
+                case "syncStorage":
+                    getCache()
+                    // port.postMessage({ question: "Who's there?" })
+                    break
+                default:
+                    console.log('Unknown message:', msg)
+                    break
+            }
+        })
+    })
+
     setInterval(() => {
         getCache()
     }, 1000 * 60 * 1)
@@ -130,10 +136,8 @@ chrome.runtime.onMessage.addListener(
                 break
             case 'toggle':
                 (async () => {
-                    toggleEntry(description, projectId)
-                    sendResponse({
-                        status: 'ok'
-                    })
+                    const result = await toggleEntry(description, projectId)
+                    sendResponse(result)
                 })()
                 break
             default:
@@ -186,13 +190,31 @@ async function toggleEntry(entryDescription, projectID) {
     const client = await getTogglClient()
     const timeEntry = await client.getCurrentTimeEntry()
 
-    if (timeEntry?.pid == projectID &&
-        timeEntry?.description == entryDescription) {
-        stopEntry(timeEntry)
+    const diffEntries = []
+    if (!timeEntry) {//nothing running, just start
+        diffEntries.push({
+            entry: await startEntry(entryDescription, projectID),
+            status: 'started'
+        })
+    } else if (timeEntry.description === entryDescription &&
+        timeEntry.pid === projectID) {//already running, just stop
 
-    } else {
-        startEntry(entryDescription, projectID)
+        diffEntries.push({
+            entry: await stopEntry(timeEntry),
+            status: 'stopped'
+        })
+    } else {//running, but different, stop current and start new
+        diffEntries.push({
+            entry: await stopEntry(timeEntry),
+            status: 'stopped'
+        })
+
+        diffEntries.push({
+            entry: await startEntry(entryDescription, projectID),
+            status: 'started'
+        })
     }
+    return diffEntries
 }
 
 async function startEntry(description, pid) {
@@ -208,12 +230,12 @@ async function startEntry(description, pid) {
     })
 
     console.log('-> Created:', startedEntry.id)
-    getCache()
+    return startedEntry
 }
 
 async function stopEntry(entry) {
     const client = await getTogglClient()
     const stoppedEntry = await client.stopTimeEntry(entry.wid, entry.id)
     console.log('-> Stopped:', stoppedEntry.id)
-    getCache()
+    return stoppedEntry
 }
