@@ -8,7 +8,6 @@ import useStore from "../useStore"
 import NoTokenPrompt from "../components/NoTokenPrompt"
 import { useEffect } from "react"
 import GroupComponent from "../components/GroupComponent"
-import { Group } from "@mui/icons-material"
 import CurrentEntry from "../components/CurrentEntry"
 
 
