@@ -46,26 +46,47 @@ const updateWorkspacesAndProjects = async () => {
     const client = await getTogglClient()
 
     const workspaces = await getWorkspaces(client)
-    chrome.storage.local.set({ workspaces })
+    try {
+        await chrome.runtime.sendMessage({
+            func: 'setWorkspaces',
+            data: workspaces
+        })
+    } catch (error) {
+        chrome.storage.local.set({ workspaces })
+    }
 
     const projects = await getProjects(client, workspaces[0])
-    chrome.storage.local.set({ projects })
+    try {
+        await chrome.runtime.sendMessage({
+            func: 'setProjects',
+            data: projects
+        })
+    } catch (error) {
+        chrome.storage.local.set({ projects })
+    }
 }
 
 const updateEntries = async () => {
     console.log('-> Updating entries')
+
     const client = await getTogglClient()
-
     const entries = await getTimeEntries(client)
-    chrome.storage.local.set({ entries })
-}
 
+    try {
+        await chrome.runtime.sendMessage({
+            func: 'setEntries',
+            data: entries
+        })
+    } catch (error) {
+        chrome.storage.local.set({ entries })
+    }
+}
 
 const updateEntriesRoutine = async () => {
     updateEntries()
     setInterval(() => {
         updateEntries()
-    }, 1000 * 5)
+    }, 1000 * 10)
 }
 
 

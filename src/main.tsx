@@ -43,12 +43,26 @@ function bootstrap(Component: React.ElementType) {
 
   function App() {
     const syncFromChromeStorage = useStore((state) => state.syncFromChromeStorage)
-    const selectedTheme = useStore((state) => state.theme)
+    const { selectedTheme, setEntries, setProjects, setWorkspaces } = useStore((state) => ({
+      selectedTheme: state.theme,
+      setEntries: state.setEntries,
+      setProjects: state.setProjects,
+      setWorkspaces: state.setWorkspaces
+    }))
 
     useEffect(() => {
       syncFromChromeStorage()
       const handleMessage = (request: any, sender: any, sendResponse: any) => {
-        if (request.action === "syncStorage") {
+        switch (request.func) {
+          case 'setWorkspaces':
+            setWorkspaces(request.data)
+            break
+          case 'setProjects':
+            setProjects(request.data)
+            break
+          case 'setEntries':
+            setEntries(request.data)
+            break
         }
       }
       chrome.runtime.onMessage.addListener(handleMessage)
