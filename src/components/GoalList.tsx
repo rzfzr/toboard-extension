@@ -10,18 +10,16 @@ import useStore from '../useStore.js'
 import { getDurationSum } from '../utils.js'
 
 export default function GoalList() {
-    const { goals, setGoals } = useStore((state) => ({
+    const { goals, setGoals, addGoal, delGoal } = useStore((state) => ({
         goals: state.goals,
-        setGoals: state.setGoals
+        setGoals: state.setGoals,
+        addGoal: state.addGoal,
+        delGoal: state.delGoal,
     }))
 
     const entries = useStore((state) => state.entries)
 
     const [isEditing, setIsEditing] = useState(false)
-
-    const setAndSaveGoals = (goals: Goal[]) => {
-        setGoals(goals || [])
-    }
 
     useEffect(() => {
         if (!goals || goals.length === 0) {
@@ -30,13 +28,10 @@ export default function GoalList() {
         goals.forEach((goal: Goal) => {
             goal = getUpdatedGoal(goal, entries)
         })
-        setAndSaveGoals(goals)
+        setGoals(goals)
     }, [entries])
 
-    function deleteGoal(goal: any) {
-        setAndSaveGoals(goals.filter((f: any) => !(f.description === goal.description && f.project.name === goal.project.name)))
-    }
-    function addGoal(description: string, project: Project, target: number) {
+    function createGoal(description: string, project: Project, target: number) {
         const goal = getUpdatedGoal({
             id: Date.now(),
             duration: 0,
@@ -46,7 +41,7 @@ export default function GoalList() {
             period: 'week',
             type: 'total',
         }, entries)
-        setAndSaveGoals([...goals, goal])
+        addGoal(goal)
     }
     return <div >
         {goals.map((goal) =>
@@ -54,12 +49,12 @@ export default function GoalList() {
                 key={goal.id}
                 goal={goal}
                 isEditing={isEditing}
-                delete={deleteGoal} />
+                delGoal={delGoal} />
         )}
         <IconButton aria-label="edit" color="primary" size="large" onClick={() => { setIsEditing(!isEditing) }}>
             <EditIcon />
         </IconButton>
-        {isEditing && <NewGoal add={addGoal} />}</div>
+        {isEditing && <NewGoal add={createGoal} />}</div>
 }
 
 function getUpdatedGoal(goal: Goal, entries: Entry[]) {

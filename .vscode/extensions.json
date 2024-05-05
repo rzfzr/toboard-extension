@@ -1,0 +1,8 @@
+{
+	"recommendations": [
+		"bradlc.vscode-tailwindcss",
+		"heybourn.headwind",
+		"csstools.postcss"
+	],
+	"unwantedRecommendations": []
+}

@@ -40,7 +40,8 @@ export type StoreObjects = {
     goals: Goal[],
     projects: Project[],
     workspaces: Workspace[],
-    favorites: Favorite[]
+    favorites: Favorite[],
+    theme: 'dark' | 'light'
 }
 
 export type StoreActions = {
@@ -48,12 +49,15 @@ export type StoreActions = {
     setEntries: (entries: Entry[]) => void,
     addEntry: (entry: Entry) => void,
     setGoals: (goals: Goal[]) => void,
+    addGoal: (goal: Goal) => void,
+    delGoal: (goal: Goal) => void,
     setProjects: (projects: Project[]) => void,
     setWorkspaces: (workspaces: Workspace[]) => void,
     setFavorites: (favorites: Favorite[]) => void,
     addFavorite: (favorite: Favorite) => void,
     delFavorite: (favorite: Favorite) => void,
     clearStorage: () => void,
-    syncFromChromeStorage: () => void
+    syncFromChromeStorage: () => void,
+    setTheme: (theme: 'dark' | 'light') => void
 }
 export type StoreState = StoreObjects & StoreActions

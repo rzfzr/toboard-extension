@@ -10,12 +10,16 @@ import useStore from '../useStore.js'
 
 export default function FavoriteList() {
     const [isEditing, setIsEditing] = useState(false)
-    const favorites = useStore((state) => (state.favorites))
+    const { favorites, delFavorite } = useStore((state) => ({
+        favorites: state.favorites,
+        delFavorite: state.delFavorite
+    }))
 
     return <div>
         {favorites.map((favorite) => <FavoriteComponent
             key={favorite.id}
             favorite={favorite}
+            delFavorite={delFavorite}
             isEditing={isEditing} />
         )}
         <IconButton

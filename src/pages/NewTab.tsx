@@ -7,6 +7,9 @@ import Box from '@mui/material/Box'
 import useStore from "../useStore"
 import NoTokenPrompt from "../components/NoTokenPrompt"
 import { useEffect } from "react"
+import GroupComponent from "../components/GroupComponent"
+import { Group } from "@mui/icons-material"
+import CurrentEntry from "../components/CurrentEntry"
 
 
 function NewTab() {
@@ -18,19 +21,19 @@ function NewTab() {
     return (<>
         {!apiToken && <NoTokenPrompt />}
         {apiToken &&
-            <Box className='parentBox' >
-                <Box className='childBox'>
-                    <h2 className='boxLabel'> Weekly Goals </h2>
+            <Box className='flex flex-wrap justify-center'>
+                <GroupComponent title="Weekly Goals">
                     <GoalList />
-                </Box>
-                <Box className='childBox'>
-                    <h2 className='boxLabel'> Weekly List </h2>
+                </GroupComponent>
+                <GroupComponent title="Current Entry">
+                    <CurrentEntry />
+                </GroupComponent>
+                <GroupComponent title="Weekly List">
                     <EntryList />
-                </Box>
-                <Box className='childBox'>
-                    <h2 className='boxLabel'> My Favorites </h2>
+                </GroupComponent>
+                <GroupComponent title="Favorites">
                     <FavoriteList />
-                </Box>
+                </GroupComponent>
             </Box>}
     </>
     )
