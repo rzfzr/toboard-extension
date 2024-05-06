@@ -2,7 +2,7 @@
   "name": "toboard",
   "description": "Alternative client for quick switching entries with toggl's API",
   "private": false,
-  "version": "0.0.1001",
+  "version": "0.0.1002",
   "license": "GNU GPL V3",
   "author": "rzfzr",
   "bugs": {
