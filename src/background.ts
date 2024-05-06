@@ -86,7 +86,7 @@ const updateEntriesRoutine = async () => {
     updateEntries()
     setInterval(() => {
         updateEntries()
-    }, 1000 * 10)
+    }, 1000 * 15)
 }
 
 
