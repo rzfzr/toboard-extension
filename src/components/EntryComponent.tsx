@@ -6,12 +6,22 @@ import { getTime, colorShade, getEntryDuration } from '../utils.js'
 import { Entry } from '../toboard.js'
 import useStore from '../useStore.js'
 import CardText from './CardText.js'
+import { useEffect, useState } from 'react'
 
 export default function EntryComponent(props: { entry: Entry, isEditing?: boolean }) {
     const project = useStore((state) => state.projects.find((p) => p.id === props.entry.pid))
     const lightColor = colorShade(project?.color, +50) || '#B2BEB5'
 
-    const time = getTime(getEntryDuration(props.entry), true)
+    const [time, setTime] = useState(getTime(getEntryDuration(props.entry), true))
+
+    useEffect(() => {
+        if (props.entry.duration > 0) return
+        const interval = setInterval(() => {
+            setTime(getTime(getEntryDuration(props.entry), true))
+        }, 1000)
+        return () => clearInterval(interval)
+    }, [props.entry.duration])
+
 
     return (
         <Card className='relative flex items-center h-20 mb-1'>

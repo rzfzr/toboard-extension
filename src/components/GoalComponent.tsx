@@ -5,6 +5,7 @@ import { colorShade, getTime } from '../utils.js'
 import { Goal } from '../toboard.js'
 import useStore from '../useStore.js'
 import CardText from './CardText.js'
+import { useEffect, useState } from 'react'
 
 export default function GoalComponent(
     props: {
@@ -16,7 +17,13 @@ export default function GoalComponent(
     const progress = Math.min((100 / props.goal.target) * (props.goal.duration / 60), 100)
     const lightColor = colorShade(project?.color, +50) || '#B2BEB5'
 
-    const time = `${getTime(props.goal.duration)} / ${getTime(props.goal.target * 60)}`
+    const [time, setTime] = useState(
+        `${getTime(props.goal.duration)} / ${getTime(props.goal.target * 60)}`)
+
+    useEffect(() => {
+        setTime(`${getTime(props.goal.duration)} / ${getTime(props.goal.target * 60)}`)
+    }, [props.goal.duration])
+
     return (
         <Card className='relative flex items-center h-20 mb-1'>
             <CardText

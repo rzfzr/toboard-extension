@@ -17,6 +17,8 @@ export default function GoalList() {
         delGoal: state.delGoal,
     }))
 
+    const [runningGoal, setRunningGoal] = useState<Goal | null>(null)
+
     const entries = useStore((state) => state.entries)
 
     const [isEditing, setIsEditing] = useState(false)
@@ -27,9 +29,31 @@ export default function GoalList() {
         }
         goals.forEach((goal: Goal) => {
             goal = getUpdatedGoal(goal, entries)
+            if (goal.isRunning) {
+                setRunningGoal(goal)
+            }
         })
         setGoals(goals)
     }, [entries])
+
+
+    useEffect(() => {
+        if (!runningGoal) {
+            return
+        }
+        const interval = setInterval(() => {
+            const goal = getUpdatedGoal(runningGoal, entries)
+            console.log('interval', goal.duration, goal.isRunning)
+            if (goal.isRunning) {
+                setRunningGoal(goal)
+            } else {
+                setRunningGoal(null)
+                clearInterval(interval)
+            }
+        }, 1000 * 60)
+        return () => clearInterval(interval)
+
+    }, [runningGoal, entries])
 
     function createGoal(description: string, project: Project, target: number) {
         const goal = getUpdatedGoal({
@@ -51,7 +75,8 @@ export default function GoalList() {
                 isEditing={isEditing}
                 delGoal={delGoal} />
         )}
-        <IconButton aria-label="edit" color="primary" size="large" onClick={() => { setIsEditing(!isEditing) }}>
+        <IconButton aria-label="edit" color="primary" size="large" onClick={
+            () => { setIsEditing(!isEditing) }}>
             <EditIcon />
         </IconButton>
         {isEditing && <NewGoal add={createGoal} />}</div>
@@ -62,7 +87,14 @@ function getUpdatedGoal(goal: Goal, entries: Entry[]) {
         entries.filter((entry: Entry) => (entry.pid === goal.pid)) :
         entries.filter((entry: Entry) => (entry.pid === goal.pid && entry.description === goal.description))
 
-    goal.isRunning = !!goalEntries.find((e: any) => e.duration < 0)
-    goal.duration = getDurationSum(goalEntries)
+    const runningEntry = goalEntries.find((e: any) => e.duration < 0)
+    if (runningEntry) {
+        goal.isRunning = true
+        goal.duration = getDurationSum(goalEntries) + runningEntry.duration
+    } else {
+        goal.isRunning = false
+        goal.duration = getDurationSum(goalEntries)
+    }
+
     return goal
 }

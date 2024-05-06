@@ -16,7 +16,7 @@ export default function EntryList() {
 
     let days: any[] = []
 
-    entries.forEach((entry: any) => {
+    entries.reverse().forEach((entry: any) => {
         let entryDate = formatDate(new Date(entry.start))
         let day = days.find((d: any) => d.label == entryDate)
         if (!day) {
@@ -25,6 +25,12 @@ export default function EntryList() {
         }
         if (!day?.entries) day.entries = []
         day.entries.push(entry)
+    })
+
+    days.forEach((day) => {
+        day.entries.sort((a: any, b: any) => {
+            return new Date(b.start).getTime() - new Date(a.start).getTime()
+        })
     })
 
     days.sort()

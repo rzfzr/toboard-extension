@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import { Typography } from '@mui/material'
+import useStore from '../useStore'
 
 export default function CustomFab(props:
     {
@@ -17,13 +18,24 @@ export default function CustomFab(props:
         delete?: (entry: any) => void
     }) {
 
+    const { addEntry, editEntry } = useStore((state) => ({
+        addEntry: state.addEntry,
+        editEntry: state.editEntry
+    }))
+
     const sendToggle = () => {
         chrome.runtime.sendMessage({
             message: 'toggle',
             description: props.entry.description,
             projectId: props.entry.pid
-        }, function (response) {
-            console.log(response)
+        }, (result) => {
+            for (const change of result) {
+                if (change.status === 'started') {
+                    addEntry(change.entry)
+                } else if (change.status === 'stopped') {
+                    editEntry(change.entry)
+                }
+            }
         })
     }
     if (props.isEditing && props.delete) {

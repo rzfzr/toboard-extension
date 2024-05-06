@@ -48,6 +48,7 @@ export type StoreActions = {
     setApiToken: (apiToken: string) => void,
     setEntries: (entries: Entry[]) => void,
     addEntry: (entry: Entry) => void,
+    editEntry: (entry: Entry) => void,
     setGoals: (goals: Goal[]) => void,
     addGoal: (goal: Goal) => void,
     delGoal: (goal: Goal) => void,

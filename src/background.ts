@@ -23,13 +23,12 @@ async function getTogglClient() {
 
     try {
         togglClientInstance = new TogglClient({ apiToken })
+        return togglClientInstance
     } catch (error) {
         console.log("Error initializing TogglClient:", error)
+        return null
     }
-
-    return togglClientInstance
 }
-
 
 function getAllStorageSyncData() {
     return new Promise((resolve, reject) => {
@@ -42,98 +41,66 @@ function getAllStorageSyncData() {
     })
 }
 
-let storageCache = {}
-
-const timers = {
-    workspaces: 1000 * 60 * 60 * 12,//12 hours
-    projects: 1000 * 60 * 60 * 2,//2 hours
-}
-const isExpired = (selection: any) => {
-    //this is only working as inteded for 'cache', everything else is being postponed if cache is refreshed
-    //there should have a time value for each
-    return Date.now() - storageCache.cacheTime > timers[selection]
-}
-
-const getCache = async () => {
-    const syncStorage = async () => {
-        try {
-            await chrome.runtime.sendMessage({ action: "syncStorage" })
-        } catch (error) {
-            console.log('Error refreshing storage', error)
-        }
-    }
-    // if (!!storageCache.cacheTime && !isExpired('cache')) {//it has to exist and not have expired
-    //     console.log('not expired', storageCache,)
-    //     syncStorage()
-    //     return storageCache
-    // }
-
-    let { apiToken, workspaces, projects, entries } = await getAllStorageSyncData()
-
-    if (!apiToken) {
-        console.log('no api token')
-        return
-    }
-
+const updateWorkspacesAndProjects = async () => {
+    console.log('-> Updating workspaces and projects')
     const client = await getTogglClient()
 
-    if (!workspaces || workspaces.length === 0 || isExpired('workspaces')) {
-        workspaces = await getWorkspaces(client)
-        chrome.storage.local.set({
-            workspaces
+    const workspaces = await getWorkspaces(client)
+    try {
+        await chrome.runtime.sendMessage({
+            func: 'setWorkspaces',
+            data: workspaces
         })
+    } catch (error) {
+        chrome.storage.local.set({ workspaces })
     }
 
-    if (!projects || projects.length === 0 || isExpired('projects')) {
-        projects = await getProjects(client, workspaces[0])
-        chrome.storage.local.set({
-            projects
+    const projects = await getProjects(client, workspaces[0])
+    try {
+        await chrome.runtime.sendMessage({
+            func: 'setProjects',
+            data: projects
         })
+    } catch (error) {
+        chrome.storage.local.set({ projects })
     }
-
-    entries = await getTimeEntries(client)
-    chrome.storage.local.set({
-        entries
-    })
-
-    storageCache = {
-        cacheTime: Date.now(),
-        apiToken,
-        workspaces,
-        projects,
-        entries
-    }
-    syncStorage()
-    return storageCache
 }
 
-(async () => {
-    console.log('-> Starting service worker at', getTime(new Date().getTime()))
-    getCache()
-    setInterval(() => {
-        getCache()
-    }, 1000 * 60 * 1)
-})()
+const updateEntries = async () => {
+    console.log('-> Updating entries')
 
-chrome.runtime.onMessage.addListener(
-    function ({
+    const client = await getTogglClient()
+    const entries = await getTimeEntries(client)
+
+    try {
+        await chrome.runtime.sendMessage({
+            func: 'setEntries',
+            data: entries
+        })
+    } catch (error) {
+        chrome.storage.local.set({ entries })
+    }
+}
+
+const updateEntriesRoutine = async () => {
+    updateEntries()
+    setInterval(() => {
+        updateEntries()
+    }, 1000 * 10)
+}
+
+
+const setUpMessengers = () => {
+    chrome.runtime.onMessage.addListener(({
         message,
         description,
         projectId
-    }, sender, sendResponse) {
+    }, sender, sendResponse) => {
         switch (message) {
-            case 'refresh':
-                getCache()
-                sendResponse({
-                    status: 'ok'
-                })
-                break
             case 'toggle':
                 (async () => {
-                    toggleEntry(description, projectId)
-                    sendResponse({
-                        status: 'ok'
-                    })
+                    const result = await toggleEntry(description, projectId)
+                    sendResponse(result)
                 })()
                 break
             default:
@@ -144,7 +111,14 @@ chrome.runtime.onMessage.addListener(
         }
         return true
     }
-)
+    )
+}
+
+console.log('-> Starting service worker at', getTime(new Date()))
+setUpMessengers()
+updateEntriesRoutine()
+updateWorkspacesAndProjects()
+
 
 async function getWorkspaces(client) {
     return await new Promise((resolve, reject) => {
@@ -186,18 +160,36 @@ async function toggleEntry(entryDescription, projectID) {
     const client = await getTogglClient()
     const timeEntry = await client.getCurrentTimeEntry()
 
-    if (timeEntry?.pid == projectID &&
-        timeEntry?.description == entryDescription) {
-        stopEntry(timeEntry)
+    const diffEntries = []
+    if (!timeEntry) {//nothing running, just start
+        diffEntries.push({
+            entry: await startEntry(entryDescription, projectID),
+            status: 'started'
+        })
+    } else if (timeEntry.description === entryDescription &&
+        timeEntry.pid === projectID) {//already running, just stop
 
-    } else {
-        startEntry(entryDescription, projectID)
+        diffEntries.push({
+            entry: await stopEntry(timeEntry),
+            status: 'stopped'
+        })
+    } else {//running, but different, stop current and start new
+        diffEntries.push({
+            entry: await stopEntry(timeEntry),
+            status: 'stopped'
+        })
+
+        diffEntries.push({
+            entry: await startEntry(entryDescription, projectID),
+            status: 'started'
+        })
     }
+    return diffEntries
 }
 
 async function startEntry(description, pid) {
     const client = await getTogglClient()
-    const { workspaces } = await getCache()
+    const { workspaces } = await getAllStorageSyncData()
 
     const startedEntry = await client.startTimeEntry({
         workspace_id: workspaces[0].id,
@@ -208,12 +200,12 @@ async function startEntry(description, pid) {
     })
 
     console.log('-> Created:', startedEntry.id)
-    getCache()
+    return startedEntry
 }
 
 async function stopEntry(entry) {
     const client = await getTogglClient()
     const stoppedEntry = await client.stopTimeEntry(entry.wid, entry.id)
     console.log('-> Stopped:', stoppedEntry.id)
-    getCache()
+    return stoppedEntry
 }
