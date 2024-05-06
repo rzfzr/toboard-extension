@@ -8,6 +8,7 @@ export default function CurrentEntry() {
     if (!entry) return null
 
     return <EntryComponent
+        key={entry.id}
         entry={entry}
     />
 
