@@ -65,6 +65,8 @@ export default function NewGoal(props: { add: (description: string, project: Pro
                             if (!project) return
 
                             props.add(description, project, timeUnit == 'hours' ? target * 60 : target)
+                            setDescription('')
+                            setProject(null)
                             setEditing(false)
                         }}>Save</Button>
                     <Button
