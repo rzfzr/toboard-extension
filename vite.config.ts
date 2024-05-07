@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [react(),
   crx({ manifest }),
   nodePolyfills({
-    exclude: ['net'],
+    include: ['stream', 'https', 'http', 'util', 'url', 'buffer'],
     overrides: {
       stream: 'stream-browserify',
       https: "https-browserify",
