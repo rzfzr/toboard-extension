@@ -19,5 +19,8 @@ export default defineConfig({
       url: "url/",
       buffer: "buffer/",
     },
-  })]
+  })],
+  build: {
+    minify: true,
+  },
 })
