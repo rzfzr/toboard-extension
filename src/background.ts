@@ -44,6 +44,7 @@ function getAllStorageSyncData() {
 const updateWorkspacesAndProjects = async () => {
     console.log('-> Updating workspaces and projects')
     const client = await getTogglClient()
+    if (!client) return
 
     const workspaces = await getWorkspaces(client)
     try {
@@ -70,6 +71,8 @@ const updateEntries = async () => {
     console.log('-> Updating entries')
 
     const client = await getTogglClient()
+    if (!client) return
+
     const entries = await getTimeEntries(client)
 
     try {
@@ -158,6 +161,7 @@ async function getTimeEntries(client) {
 
 async function toggleEntry(entryDescription, projectID) {
     const client = await getTogglClient()
+    if (!client) return
     const timeEntry = await client.getCurrentTimeEntry()
 
     const diffEntries = []
@@ -189,6 +193,7 @@ async function toggleEntry(entryDescription, projectID) {
 
 async function startEntry(description, pid) {
     const client = await getTogglClient()
+    if (!client) return
     const { workspaces } = await getAllStorageSyncData()
 
     const startedEntry = await client.startTimeEntry({
@@ -205,6 +210,7 @@ async function startEntry(description, pid) {
 
 async function stopEntry(entry) {
     const client = await getTogglClient()
+    if (!client) return
     const stoppedEntry = await client.stopTimeEntry(entry.wid, entry.id)
     console.log('-> Stopped:', stoppedEntry.id)
     return stoppedEntry
