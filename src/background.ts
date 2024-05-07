@@ -1,4 +1,4 @@
-//@ts-nocheck
+//@ts-ignore
 import TogglClient from 'toggl-api'
 import 'babel-polyfill'
 
@@ -6,6 +6,7 @@ import {
     getTime,
     getPreviousMonday
 } from './utils'
+import { Entry, StoreObjects } from './toboard'
 
 let togglClientInstance: any = null
 
@@ -30,12 +31,13 @@ async function getTogglClient() {
     }
 }
 
-function getAllStorageSyncData() {
+function getAllStorageSyncData(): Promise<StoreObjects> {
     return new Promise((resolve, reject) => {
         chrome.storage.local.get(null, (items) => {
             if (chrome.runtime.lastError) {
                 return reject(chrome.runtime.lastError)
             }
+            //@ts-ignore
             resolve(items)
         })
     })
@@ -46,7 +48,8 @@ const updateWorkspacesAndProjects = async () => {
     const client = await getTogglClient()
     if (!client) return
 
-    const workspaces = await getWorkspaces(client)
+    const workspaces = await client.getWorkspaces()
+
     try {
         await chrome.runtime.sendMessage({
             func: 'setWorkspaces',
@@ -56,7 +59,8 @@ const updateWorkspacesAndProjects = async () => {
         chrome.storage.local.set({ workspaces })
     }
 
-    const projects = await getProjects(client, workspaces[0])
+    const projects = await client.getProjects(workspaces[0].id)
+
     try {
         await chrome.runtime.sendMessage({
             func: 'setProjects',
@@ -117,39 +121,21 @@ const setUpMessengers = () => {
     )
 }
 
-console.log('-> Starting service worker at', getTime(new Date()))
+console.log('-> Starting service worker at', new Date())
 setUpMessengers()
 updateEntriesRoutine()
 updateWorkspacesAndProjects()
 
 
-async function getWorkspaces(client) {
-    return await new Promise((resolve, reject) => {
-        if (!client) reject([])
-        client.getWorkspaces((err, workspaces) => {
-            if (err) return reject(err)
-            resolve(workspaces)
-        })
-    })
-}
 
-async function getProjects(client, workspace) {
-    return await new Promise((resolve, reject) => {
-        client.getWorkspaceProjects(workspace.id, (err, projects) => {
-            if (err) return reject(err)
-            resolve(projects)
-        })
-    })
-}
-
-async function getTimeEntries(client) {
+async function getTimeEntries(client: TogglClient) {
     return await new Promise(async (resolve, reject) => {
         client.getTimeEntries(
             getPreviousMonday(),
             new Date().toISOString(),
-            (err, timeEntries) => {
+            (err: any, timeEntries: any) => {
                 if (err) reject(err)
-                timeEntries.forEach((entry) => {
+                timeEntries.forEach((entry: any) => {
                     entry.isRunning = entry.duration < 0
                     entry.time = getTime(entry.duration)
                 })
@@ -159,7 +145,7 @@ async function getTimeEntries(client) {
     })
 }
 
-async function toggleEntry(entryDescription, projectID) {
+async function toggleEntry(entryDescription: string | null, projectID: number | null) {
     const client = await getTogglClient()
     if (!client) return
     const timeEntry = await client.getCurrentTimeEntry()
@@ -191,7 +177,7 @@ async function toggleEntry(entryDescription, projectID) {
     return diffEntries
 }
 
-async function startEntry(description, pid) {
+async function startEntry(description: string | null, pid: number | null) {
     const client = await getTogglClient()
     if (!client) return
     const { workspaces } = await getAllStorageSyncData()
@@ -208,7 +194,7 @@ async function startEntry(description, pid) {
     return startedEntry
 }
 
-async function stopEntry(entry) {
+async function stopEntry(entry: Entry) {
     const client = await getTogglClient()
     if (!client) return
     const stoppedEntry = await client.stopTimeEntry(entry.wid, entry.id)

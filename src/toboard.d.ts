@@ -8,6 +8,7 @@ export type Entry = {
     id: number,
     description: string,
     pid: number,
+    wid: number,
     start: string,
     end: string,
     duration: number,
@@ -31,7 +32,7 @@ export type Favorite = {
 }
 
 export type Workspace = {
-
+    id: number,
 }
 
 export type StoreObjects = {
