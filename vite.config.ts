@@ -5,7 +5,6 @@ import { crx } from '@crxjs/vite-plugin'
 import manifest from './manifest.config'
 
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
-//Polyfills needed for dev = stream, https, http
 
 export default defineConfig({
   plugins: [react(),
