@@ -15,18 +15,7 @@ export default defineConfig({
       'stream',
       'https',
       'http',
-      // 'util',
-      // 'url',
-      // 'buffer'
     ],
-    overrides: {
-      stream: 'stream-browserify',
-      https: "https-browserify",
-      http: "stream-http",
-      // util: "util/",
-      // url: "url/",
-      // buffer: "buffer/",
-    },
   })],
   build: {
     minify: false,
