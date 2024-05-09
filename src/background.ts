@@ -59,7 +59,7 @@ const updateWorkspacesAndProjects = async () => {
         chrome.storage.local.set({ workspaces })
     }
 
-    const projects = await client.getProjects(workspaces[0].id)
+    const projects = await client.getWorkspaceProjects(workspaces[0].id)
 
     try {
         await chrome.runtime.sendMessage({
@@ -89,41 +89,52 @@ const updateEntries = async () => {
     }
 }
 
-const updateEntriesRoutine = async () => {
-    updateEntries()
-    setInterval(() => {
-        updateEntries()
-    }, 1000 * 15)
-}
 
-
-const setUpMessengers = () => {
-    chrome.runtime.onMessage.addListener(({
-        message,
-        description,
-        projectId
-    }, sender, sendResponse) => {
-        switch (message) {
-            case 'toggle':
-                (async () => {
-                    const result = await toggleEntry(description, projectId)
-                    sendResponse(result)
-                })()
-                break
-            default:
-                sendResponse({
-                    error: 'Unknown request'
-                })
-                break
-        }
-        return true
+chrome.runtime.onInstalled.addListener(async ({ reason }) => {
+    if (reason !== 'install') {
+        return
     }
-    )
+
+    await chrome.alarms.create('updateEntries', {
+        delayInMinutes: 0.5,
+        periodInMinutes: 0.5
+    })
+})
+
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+    switch (alarm.name) {
+        case 'updateEntries':
+            updateEntries()
+            break
+        default:
+            break
+    }
+})
+
+chrome.runtime.onMessage.addListener(({
+    message,
+    description,
+    projectId
+}, sender, sendResponse) => {
+    switch (message) {
+        case 'toggle':
+            (async () => {
+                const result = await toggleEntry(description, projectId)
+                sendResponse(result)
+            })()
+            break
+        default:
+            sendResponse({
+                error: 'Unknown request'
+            })
+            break
+    }
+    return true
 }
+)
 
 console.log('-> Starting service worker at', new Date())
-setUpMessengers()
-updateEntriesRoutine()
 updateWorkspacesAndProjects()
 
 
