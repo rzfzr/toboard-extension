@@ -1,26 +1,23 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { crx } from '@crxjs/vite-plugin'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { crx } from "@crxjs/vite-plugin";
 //@ts-ignore
-import manifest from './manifest.config'
+import manifest from "./manifest.config";
 
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import commonjs from 'vite-plugin-commonjs'
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
   plugins: [
-    react(),
     crx({ manifest }),
+    react(),
     nodePolyfills({
-      include: [
-        'stream',
-        'https',
-        'http',
-      ],
+      include: ["stream", "https", "http", "buffer"],
+      globals: {
+        process: true,
+      },
     }),
-    commonjs(),
   ],
   build: {
     minify: false,
   },
-})
+});
