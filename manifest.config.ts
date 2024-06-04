@@ -18,7 +18,8 @@ export default defineManifest(async (env) => ({
     description: "Dashboard for quick switching entries with toggl's API",
     options_page: "src/templates/options.html",
     permissions: [
-        "storage"
+        "alarms",
+        "storage",
     ],
     host_permissions: [
         "*://*.api.track.toggl.com/*"
